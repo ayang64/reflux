@@ -278,7 +278,6 @@ func TestSubquery(t *testing.T) {
 			Statement: `select * from (select last(value) from cpu group by host) order by time asc`,
 			Fields:    map[string]influxql.DataType{"value": influxql.Float},
 			MapShardsFn: func(t *testing.T, tr influxql.TimeRange) CreateIteratorFn {
-
 				return func(ctx context.Context, m *influxql.Measurement, opt query.IteratorOptions) query.Iterator {
 					if got, want := m.Name, "cpu"; got != want {
 						t.Errorf("unexpected source: got=%s want=%s", got, want)
@@ -399,6 +398,7 @@ func (*openAuthorizer) AuthorizeQuery(database string, query *influxql.Query) er
 func (*openAuthorizer) AuthorizeSeriesRead(database string, measurement []byte, tags models.Tags) bool {
 	return true
 }
+
 func (*openAuthorizer) AuthorizeSeriesWrite(database string, measurement []byte, tags models.Tags) bool {
 	return true
 }

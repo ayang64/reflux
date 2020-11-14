@@ -156,7 +156,6 @@ func TestIndexSet_DedupeInmemIndexes(t *testing.T) {
 	for _, testCase := range testCases {
 		name := fmt.Sprintf("%d/%d/%d -> %d", testCase.tsiN, testCase.inmem1N, testCase.inmem2N, testCase.uniqueN)
 		t.Run(name, func(t *testing.T) {
-
 			var indexes []tsdb.Index
 			for i := 0; i < testCase.tsiN; i++ {
 				indexes = append(indexes, MustOpenNewIndex(tsi1.IndexName))
@@ -225,11 +224,11 @@ func TestIndex_Sketches(t *testing.T) {
 			t.Fatal(err)
 		}
 
-		if got, exp := int(sketch.Count()), measurements; got != exp { //got-exp < -delta(measurements) || got-exp > delta(measurements) {
+		if got, exp := int(sketch.Count()), measurements; got != exp { // got-exp < -delta(measurements) || got-exp > delta(measurements) {
 			t.Errorf("[%s] got measurement cardinality %d, expected ~%d", state, got, exp)
 		}
 
-		if got, exp := int(tsketch.Count()), tmeasurements; got != exp { //got-exp < -delta(tmeasurements) || got-exp > delta(tmeasurements) {
+		if got, exp := int(tsketch.Count()), tmeasurements; got != exp { // got-exp < -delta(tmeasurements) || got-exp > delta(tmeasurements) {
 			t.Errorf("[%s] got measurement tombstone cardinality %d, expected ~%d", state, got, exp)
 		}
 	}
@@ -431,7 +430,7 @@ func (i *Index) Close() error {
 	if err := i.sfile.Close(); err != nil {
 		return err
 	}
-	//return os.RemoveAll(i.rootPath)
+	// return os.RemoveAll(i.rootPath)
 	return nil
 }
 

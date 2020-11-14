@@ -17,8 +17,10 @@ import (
 	"github.com/influxdata/influxdb/models"
 )
 
-var db = "db0"
-var rp = "rp0"
+var (
+	db = "db0"
+	rp = "rp0"
+)
 
 // Makes it easy to debug times by emitting rfc formatted strings instead
 // of numbers.
@@ -30,8 +32,8 @@ var tme = func(t int64) string {
 type Command func() (string, error)
 
 func setupCommands(s *LocalServer, tracker *SeriesTracker) []Command {
-	var measurementN = 10
-	var seriesN = 100
+	measurementN := 10
+	seriesN := 100
 	var commands []Command
 
 	r := rand.New(rand.NewSource(seed))
@@ -436,7 +438,7 @@ func NewSeriesTracker(r *rand.Rand, server *LocalServer, db, rp string) *SeriesT
 		tracker.seriesPoints["a"] = append(tracker.seriesPoints["a"], 10000000+(int64(time.Hour)*24*7*int64(i)))
 	}
 	// Map initial series to measurement.
-	tracker.measurementsSeries["a"] = map[string]struct{}{"a": struct{}{}}
+	tracker.measurementsSeries["a"] = map[string]struct{}{"a": {}}
 	return tracker
 }
 
@@ -461,7 +463,7 @@ func (s *SeriesTracker) AddSeries(name string, tags models.Tags) string {
 
 	// Update measurement -> series mapping
 	if _, ok := s.measurementsSeries[name]; !ok {
-		s.measurementsSeries[name] = map[string]struct{}{string(key): struct{}{}}
+		s.measurementsSeries[name] = map[string]struct{}{string(key): {}}
 	} else {
 		s.measurementsSeries[name][string(key)] = struct{}{}
 	}
@@ -542,7 +544,7 @@ func (s *SeriesTracker) DeleteRandomRange(name string) (int64, int64) {
 		sort.Sort(sortedInt64(points))
 
 		// Find min and max index that fall in range.
-		var minIdx, maxIdx = -1, -1
+		minIdx, maxIdx := -1, -1
 		for i, p := range points {
 			if minIdx == -1 && p >= min {
 				minIdx = i

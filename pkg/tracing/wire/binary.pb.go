@@ -15,11 +15,13 @@
 */
 package wire
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
-import _ "github.com/gogo/protobuf/types"
+import (
+	proto "github.com/gogo/protobuf/proto"
+	fmt "fmt"
+	math "math"
+	_ "github.com/gogo/protobuf/gogoproto"
+	_ "github.com/gogo/protobuf/types"
+)
 
 import time "time"
 
@@ -28,10 +30,12 @@ import github_com_gogo_protobuf_types "github.com/gogo/protobuf/types"
 import io "io"
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
-var _ = time.Kitchen
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+	_ = time.Kitchen
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -58,6 +62,7 @@ var Field_FieldType_name = map[int32]string{
 	4: "DURATION",
 	6: "FLOAT_64",
 }
+
 var Field_FieldType_value = map[string]int32{
 	"STRING":   0,
 	"BOOL":     1,
@@ -191,6 +196,7 @@ type isField_Value interface {
 type Field_NumericVal struct {
 	NumericVal int64 `protobuf:"fixed64,3,opt,name=numeric_val,json=numericVal,proto3,oneof"`
 }
+
 type Field_StringVal struct {
 	StringVal string `protobuf:"bytes,4,opt,name=string_val,json=stringVal,proto3,oneof"`
 }
@@ -305,6 +311,7 @@ func init() {
 	proto.RegisterType((*Field)(nil), "wire.Field")
 	proto.RegisterEnum("wire.Field_FieldType", Field_FieldType_name, Field_FieldType_value)
 }
+
 func (m *SpanContext) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -478,6 +485,7 @@ func (m *Field_NumericVal) MarshalTo(dAtA []byte) (int, error) {
 	i = encodeFixed64Binary(dAtA, i, uint64(m.NumericVal))
 	return i, nil
 }
+
 func (m *Field_StringVal) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x22
@@ -486,6 +494,7 @@ func (m *Field_StringVal) MarshalTo(dAtA []byte) (int, error) {
 	i += copy(dAtA[i:], m.StringVal)
 	return i, nil
 }
+
 func encodeFixed64Binary(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	dAtA[offset+1] = uint8(v >> 8)
@@ -497,6 +506,7 @@ func encodeFixed64Binary(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset+7] = uint8(v >> 56)
 	return offset + 8
 }
+
 func encodeFixed32Binary(dAtA []byte, offset int, v uint32) int {
 	dAtA[offset] = uint8(v)
 	dAtA[offset+1] = uint8(v >> 8)
@@ -504,6 +514,7 @@ func encodeFixed32Binary(dAtA []byte, offset int, v uint32) int {
 	dAtA[offset+3] = uint8(v >> 24)
 	return offset + 4
 }
+
 func encodeVarintBinary(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -513,6 +524,7 @@ func encodeVarintBinary(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+
 func (m *SpanContext) Size() (n int) {
 	var l int
 	_ = l
@@ -588,6 +600,7 @@ func (m *Field_NumericVal) Size() (n int) {
 	n += 9
 	return n
 }
+
 func (m *Field_StringVal) Size() (n int) {
 	var l int
 	_ = l
@@ -606,9 +619,11 @@ func sovBinary(x uint64) (n int) {
 	}
 	return n
 }
+
 func sozBinary(x uint64) (n int) {
 	return sovBinary(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+
 func (m *SpanContext) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -697,6 +712,7 @@ func (m *SpanContext) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *Span) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -915,6 +931,7 @@ func (m *Span) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *Trace) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -996,6 +1013,7 @@ func (m *Trace) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *Field) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1141,6 +1159,7 @@ func (m *Field) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipBinary(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

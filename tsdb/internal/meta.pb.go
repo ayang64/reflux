@@ -3,16 +3,20 @@
 
 package tsdb
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
+import (
+	proto "github.com/gogo/protobuf/proto"
+	fmt "fmt"
+	math "math"
+)
 
 import io "io"
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -34,9 +38,11 @@ func (*Series) ProtoMessage()    {}
 func (*Series) Descriptor() ([]byte, []int) {
 	return fileDescriptor_meta_3108ecf7b17f779e, []int{0}
 }
+
 func (m *Series) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *Series) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_Series.Marshal(b, m, deterministic)
@@ -49,12 +55,15 @@ func (m *Series) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
+
 func (dst *Series) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Series.Merge(dst, src)
 }
+
 func (m *Series) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *Series) XXX_DiscardUnknown() {
 	xxx_messageInfo_Series.DiscardUnknown(m)
 }
@@ -89,9 +98,11 @@ func (*Tag) ProtoMessage()    {}
 func (*Tag) Descriptor() ([]byte, []int) {
 	return fileDescriptor_meta_3108ecf7b17f779e, []int{1}
 }
+
 func (m *Tag) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *Tag) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_Tag.Marshal(b, m, deterministic)
@@ -104,12 +115,15 @@ func (m *Tag) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
+
 func (dst *Tag) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Tag.Merge(dst, src)
 }
+
 func (m *Tag) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *Tag) XXX_DiscardUnknown() {
 	xxx_messageInfo_Tag.DiscardUnknown(m)
 }
@@ -144,9 +158,11 @@ func (*MeasurementFields) ProtoMessage()    {}
 func (*MeasurementFields) Descriptor() ([]byte, []int) {
 	return fileDescriptor_meta_3108ecf7b17f779e, []int{2}
 }
+
 func (m *MeasurementFields) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MeasurementFields) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MeasurementFields.Marshal(b, m, deterministic)
@@ -159,12 +175,15 @@ func (m *MeasurementFields) XXX_Marshal(b []byte, deterministic bool) ([]byte, e
 		return b[:n], nil
 	}
 }
+
 func (dst *MeasurementFields) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MeasurementFields.Merge(dst, src)
 }
+
 func (m *MeasurementFields) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MeasurementFields) XXX_DiscardUnknown() {
 	xxx_messageInfo_MeasurementFields.DiscardUnknown(m)
 }
@@ -199,9 +218,11 @@ func (*Field) ProtoMessage()    {}
 func (*Field) Descriptor() ([]byte, []int) {
 	return fileDescriptor_meta_3108ecf7b17f779e, []int{3}
 }
+
 func (m *Field) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *Field) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_Field.Marshal(b, m, deterministic)
@@ -214,12 +235,15 @@ func (m *Field) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
+
 func (dst *Field) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Field.Merge(dst, src)
 }
+
 func (m *Field) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *Field) XXX_DiscardUnknown() {
 	xxx_messageInfo_Field.DiscardUnknown(m)
 }
@@ -253,9 +277,11 @@ func (*MeasurementFieldSet) ProtoMessage()    {}
 func (*MeasurementFieldSet) Descriptor() ([]byte, []int) {
 	return fileDescriptor_meta_3108ecf7b17f779e, []int{4}
 }
+
 func (m *MeasurementFieldSet) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *MeasurementFieldSet) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_MeasurementFieldSet.Marshal(b, m, deterministic)
@@ -268,12 +294,15 @@ func (m *MeasurementFieldSet) XXX_Marshal(b []byte, deterministic bool) ([]byte,
 		return b[:n], nil
 	}
 }
+
 func (dst *MeasurementFieldSet) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_MeasurementFieldSet.Merge(dst, src)
 }
+
 func (m *MeasurementFieldSet) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *MeasurementFieldSet) XXX_DiscardUnknown() {
 	xxx_messageInfo_MeasurementFieldSet.DiscardUnknown(m)
 }
@@ -294,6 +323,7 @@ func init() {
 	proto.RegisterType((*Field)(nil), "tsdb.Field")
 	proto.RegisterType((*MeasurementFieldSet)(nil), "tsdb.MeasurementFieldSet")
 }
+
 func (m *Series) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -479,6 +509,7 @@ func encodeVarintMeta(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+
 func (m *Series) Size() (n int) {
 	var l int
 	_ = l
@@ -575,9 +606,11 @@ func sovMeta(x uint64) (n int) {
 	}
 	return n
 }
+
 func sozMeta(x uint64) (n int) {
 	return sovMeta(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+
 func (m *Series) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -689,6 +722,7 @@ func (m *Series) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *Tag) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -798,6 +832,7 @@ func (m *Tag) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MeasurementFields) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -911,6 +946,7 @@ func (m *MeasurementFields) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *Field) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1012,6 +1048,7 @@ func (m *Field) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *MeasurementFieldSet) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1094,6 +1131,7 @@ func (m *MeasurementFieldSet) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipMeta(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

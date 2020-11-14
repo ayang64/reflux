@@ -114,8 +114,8 @@ func NewService(c Config) (*Service, error) {
 	parser, err := NewParserWithOptions(Options{
 		Templates:   d.Templates,
 		DefaultTags: d.DefaultTags(),
-		Separator:   d.Separator})
-
+		Separator:   d.Separator,
+	})
 	if err != nil {
 		return nil, err
 	}
@@ -374,6 +374,7 @@ func (s *Service) trackConnection(c net.Conn) {
 		connectTime: time.Now().UTC(),
 	}
 }
+
 func (s *Service) untrackConnection(c net.Conn) {
 	s.tcpConnectionsMu.Lock()
 	defer s.tcpConnectionsMu.Unlock()

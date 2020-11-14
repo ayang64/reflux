@@ -203,7 +203,6 @@ func TestIndex_DropMeasurement(t *testing.T) {
 		if itr := fs.TagValueIterator([]byte("cpu"), []byte("region")); itr != nil {
 			t.Fatal("expected nil tag value iterator")
 		}
-
 	})
 }
 
@@ -242,7 +241,7 @@ func TestIndex_Open(t *testing.T) {
 			// Manually create a MANIFEST file for an incompatible index version.
 			// under one of the partitions.
 			partitionPath := filepath.Join(idx.Path(), "2")
-			os.MkdirAll(partitionPath, 0777)
+			os.MkdirAll(partitionPath, 0o777)
 
 			mpath := filepath.Join(partitionPath, tsi1.ManifestFileName)
 			m := tsi1.NewManifest(mpath)

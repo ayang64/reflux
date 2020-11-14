@@ -10,11 +10,9 @@ import (
 	"github.com/golang/snappy"
 )
 
-var (
-	// ErrDigestManifestAlreadyRead is returned if the client attempts to read
-	// a manifest from a digest more than once on the same reader.
-	ErrDigestManifestAlreadyRead = errors.New("digest manifest already read")
-)
+// ErrDigestManifestAlreadyRead is returned if the client attempts to read
+// a manifest from a digest more than once on the same reader.
+var ErrDigestManifestAlreadyRead = errors.New("digest manifest already read")
 
 type DigestReader struct {
 	r            io.ReadCloser

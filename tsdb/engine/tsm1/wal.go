@@ -187,7 +187,7 @@ func (l *WAL) Open() error {
 	l.traceLogger.Info("tsm1 WAL starting", zap.Int("segment_size", l.SegmentSize))
 	l.traceLogger.Info("tsm1 WAL writing", zap.String("path", l.path))
 
-	if err := os.MkdirAll(l.path, 0777); err != nil {
+	if err := os.MkdirAll(l.path, 0o777); err != nil {
 		return err
 	}
 
@@ -213,7 +213,7 @@ func (l *WAL) Open() error {
 			os.Remove(lastSegment)
 			segments = segments[:len(segments)-1]
 		} else {
-			fd, err := os.OpenFile(lastSegment, os.O_RDWR, 0666)
+			fd, err := os.OpenFile(lastSegment, os.O_RDWR, 0o666)
 			if err != nil {
 				return err
 			}
@@ -448,7 +448,6 @@ func (l *WAL) writeToLog(entry WALEntry) (int, error) {
 		l.lastWriteTime = time.Now().UTC()
 
 		return l.currentSegmentID, nil
-
 	}()
 
 	bytesPool.Put(encBuf)
@@ -569,7 +568,7 @@ func (l *WAL) newSegmentFile() error {
 	}
 
 	fileName := filepath.Join(l.path, fmt.Sprintf("%s%05d.%s", WALFilePrefix, l.currentSegmentID, WALFileExtension))
-	fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0666)
+	fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0o666)
 	if err != nil {
 		return err
 	}

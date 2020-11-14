@@ -119,7 +119,6 @@ func TestByteStream(t *testing.T) {
 	}
 
 	u, err := br.ReadBits(13)
-
 	if err != nil {
 		t.Error("ReadBits returned error err=", err.Error())
 		return

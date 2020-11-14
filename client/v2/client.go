@@ -174,7 +174,7 @@ func (c *client) Ping(timeout time.Duration) (time.Duration, string, error) {
 	}
 
 	if resp.StatusCode != http.StatusNoContent {
-		var err = errors.New(string(body))
+		err := errors.New(string(body))
 		return 0, "", err
 	}
 
@@ -424,7 +424,7 @@ func (c *client) Write(bp BatchPoints) error {
 	}
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
-		var err = errors.New(string(body))
+		err := errors.New(string(body))
 		return err
 	}
 
@@ -679,7 +679,6 @@ func (c *client) createDefaultRequest(ctx context.Context, q Query) (*http.Reque
 	req.URL.RawQuery = params.Encode()
 
 	return req, nil
-
 }
 
 // duplexReader reads responses and writes it to another writer while

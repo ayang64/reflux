@@ -89,7 +89,6 @@ func ValuesAreEqual(got, expected interface{}) bool {
 	}
 
 	return reflect.DeepEqual(expected, got)
-
 }
 
 // ValuesAreExactlyEqual determines if the values are equal and

@@ -233,7 +233,6 @@ func TestStatementExecutor_ExecuteQuery_WriteInto(t *testing.T) {
 }
 
 func TestStatementExecutor_NormalizeStatement(t *testing.T) {
-
 	testCases := []struct {
 		name       string
 		query      string

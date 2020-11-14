@@ -20,17 +20,20 @@ func init() {
 		fullBlockFloat64Ones = append(fullBlockFloat64Ones, 1.0)
 	}
 }
+
 func TestFloatArrayEncodeAll(t *testing.T) {
 	examples := [][]float64{
 		{12, 12, 24, 13, 24, 24, 24, 24}, // From example paper.
-		{-3.8970913068231994e+307, -9.036931257783943e+307, 1.7173073833490201e+308,
+		{
+			-3.8970913068231994e+307, -9.036931257783943e+307, 1.7173073833490201e+308,
 			-9.312369166661538e+307, -2.2435523083555231e+307, 1.4779121287289644e+307,
 			1.771273431601434e+308, 8.140360378221364e+307, 4.783405048208089e+307,
 			-2.8044680049605344e+307, 4.412915337205696e+307, -1.2779380602005046e+308,
 			1.6235802318921885e+308, -1.3402901846299688e+307, 1.6961015582104055e+308,
 			-1.067980796435633e+308, -3.02868987458268e+307, 1.7641793640790284e+308,
 			1.6587191845856813e+307, -1.786073304985983e+308, 1.0694549382051123e+308,
-			3.5635180996210295e+307}, // Failed during early development
+			3.5635180996210295e+307,
+		}, // Failed during early development
 		{6.00065e+06, 6.000656e+06, 6.000657e+06, 6.000659e+06, 6.000661e+06}, // Similar values.
 		twoHoursData,
 		fullBlockFloat64Ones,
@@ -179,7 +182,7 @@ func Test_FloatArrayEncodeAll_Quick(t *testing.T) {
 			t.Fatalf("unexpected error: %v", err)
 		}
 
-		if got, exp := result, src[:len(src)]; !reflect.DeepEqual(got, exp) {
+		if got, exp := result, src[:]; !reflect.DeepEqual(got, exp) {
 			t.Fatalf("got result %v, expected %v", got, exp)
 		}
 		return true
@@ -199,7 +202,6 @@ func TestDecodeFloatArrayAll_Empty(t *testing.T) {
 	if _, err := tsm1.FloatArrayDecodeAll(b, got); err != nil {
 		t.Fatal(err)
 	}
-
 }
 
 func TestFloatArrayDecodeAll_Simple(t *testing.T) {
@@ -307,7 +309,6 @@ func BenchmarkEncodeFloats(b *testing.B) {
 					}
 				}
 			})
-
 		})
 
 		b.Run(fmt.Sprintf("%d_ran", n), func(b *testing.B) {

@@ -859,7 +859,6 @@ func (c *Compactor) WriteSnapshot(cache *Cache) ([]string, error) {
 			iter := NewCacheKeyIterator(sp, tsdb.DefaultMaxPointsPerBlock, intC)
 			files, err := c.writeNewFiles(c.FileStore.NextGeneration(), 0, nil, iter, throttle)
 			resC <- res{files: files, err: err}
-
 		}(splits[i])
 	}
 
@@ -1015,7 +1014,6 @@ func (c *Compactor) CompactFast(tsmFiles []string) ([]string, error) {
 	}
 
 	return files, err
-
 }
 
 // removeTmpFiles is responsible for cleaning up a compaction that
@@ -1082,7 +1080,7 @@ func (c *Compactor) writeNewFiles(generation, sequence int, src []string, iter K
 }
 
 func (c *Compactor) write(path string, iter KeyIterator, throttle bool) (err error) {
-	fd, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_EXCL, 0666)
+	fd, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_EXCL, 0o666)
 	if err != nil {
 		return errCompactionInProgress{err: err}
 	}

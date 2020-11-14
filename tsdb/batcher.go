@@ -61,7 +61,6 @@ func (b *PointBatcher) Start() {
 	var batch []models.Point
 
 	emit := func() {
-
 		timer.Stop()
 		select {
 		case <-timer.C:
@@ -75,7 +74,6 @@ func (b *PointBatcher) Start() {
 		b.out <- batch
 		atomic.AddUint64(&b.stats.BatchTotal, 1)
 		batch = nil
-
 	}
 
 	b.wg = &sync.WaitGroup{}

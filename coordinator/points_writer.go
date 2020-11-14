@@ -286,7 +286,6 @@ func (w *PointsWriter) WritePointsInto(p *IntoWriteRequest) error {
 // A wrapper for WritePointsWithContext()
 func (w *PointsWriter) WritePoints(database, retentionPolicy string, consistencyLevel models.ConsistencyLevel, user meta.User, points []models.Point) error {
 	return w.WritePointsWithContext(context.Background(), database, retentionPolicy, consistencyLevel, user, points)
-
 }
 
 type ContextKey int
@@ -380,7 +379,6 @@ func (w *PointsWriter) WritePointsPrivilegedWithContext(ctx context.Context, dat
 
 	if err == nil && len(shardMappings.Dropped) > 0 {
 		err = tsdb.PartialWriteError{Reason: "points beyond retention policy", Dropped: len(shardMappings.Dropped)}
-
 	}
 	timeout := time.NewTimer(w.WriteTimeout)
 	defer timeout.Stop()
@@ -399,11 +397,6 @@ func (w *PointsWriter) WritePointsPrivilegedWithContext(ctx context.Context, dat
 		}
 	}
 	return err
-}
-
-// writeToShards writes points to a shard.
-func (w *PointsWriter) writeToShard(shard *meta.ShardInfo, database, retentionPolicy string, points []models.Point) error {
-	return w.writeToShardWithContext(context.Background(), shard, database, retentionPolicy, points)
 }
 
 func (w *PointsWriter) writeToShardWithContext(ctx context.Context, shard *meta.ShardInfo, database, retentionPolicy string, points []models.Point) error {

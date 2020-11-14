@@ -50,7 +50,7 @@ func newIndexSeriesCursor(ctx context.Context, shards []*tsdb.Shard) (*indexSeri
 	if p.sqry != nil && err == nil {
 		var itr query.Iterator
 		var fi query.FloatIterator
-		var opt = query.IteratorOptions{
+		opt := query.IteratorOptions{
 			Aux:        []influxql.VarRef{{Val: "key"}},
 			Authorizer: query.OpenAuthorizer,
 			Ascending:  true,

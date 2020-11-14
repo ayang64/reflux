@@ -35,7 +35,8 @@ func BenchmarkWrite(b *testing.B) {
 
 	bp := client.BatchPoints{
 		Points: []client.Point{
-			{Fields: map[string]interface{}{"value": 101}}},
+			{Fields: map[string]interface{}{"value": 101}},
+		},
 	}
 	for i := 0; i < b.N; i++ {
 		r, err := c.Write(bp)
@@ -927,7 +928,6 @@ war3JNM1mGB3o2iAtuOJlFIKLpI1x+1e8pI=
 -----END CERTIFICATE-----
 `
 	cer, err := tls.X509KeyPair([]byte(cert), []byte(key))
-
 	if err != nil {
 		t.Fatalf("Received error: %v", err)
 	}

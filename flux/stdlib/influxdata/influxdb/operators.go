@@ -65,6 +65,7 @@ type ReadRangePhysSpec struct {
 func (s *ReadRangePhysSpec) Kind() plan.ProcedureKind {
 	return ReadRangePhysKind
 }
+
 func (s *ReadRangePhysSpec) Copy() plan.ProcedureSpec {
 	ns := new(ReadRangePhysSpec)
 

@@ -45,7 +45,6 @@ func TestCompactor_Snapshot(t *testing.T) {
 	}
 	if len(files) > 0 {
 		t.Fatalf("no files should be compacted: got %v", len(files))
-
 	}
 
 	compactor.Open()
@@ -65,7 +64,7 @@ func TestCompactor_Snapshot(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -181,7 +180,6 @@ func TestCompactor_CompactFull(t *testing.T) {
 	}
 	if len(files) > 0 {
 		t.Fatalf("no files should be compacted: got %v", len(files))
-
 	}
 
 	compactor.Open()
@@ -220,7 +218,7 @@ func TestCompactor_CompactFull(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -291,7 +289,6 @@ func TestCompactor_DecodeError(t *testing.T) {
 	}
 	if len(files) > 0 {
 		t.Fatalf("no files should be compacted: got %v", len(files))
-
 	}
 
 	compactor.Open()
@@ -349,7 +346,7 @@ func TestCompactor_Compact_OverlappingBlocks(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -429,7 +426,7 @@ func TestCompactor_Compact_OverlappingBlocksMultiple(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -497,7 +494,7 @@ func TestCompactor_Compact_UnsortedBlocks(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -571,7 +568,7 @@ func TestCompactor_Compact_UnsortedBlocksOverlapping(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -661,7 +658,7 @@ func TestCompactor_CompactFull_SkipFullBlocks(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -763,7 +760,7 @@ func TestCompactor_CompactFull_TombstonedSkipBlock(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -866,7 +863,7 @@ func TestCompactor_CompactFull_TombstonedPartialBlock(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -974,7 +971,7 @@ func TestCompactor_CompactFull_TombstonedMultipleRanges(t *testing.T) {
 		t.Fatalf("keys length mismatch: got %v, exp %v", got, exp)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		points []tsm1.Value
 	}{
@@ -1224,7 +1221,7 @@ func TestTSMKeyIterator_MultipleKeysDeleted(t *testing.T) {
 	}
 
 	var readValues bool
-	var data = []struct {
+	data := []struct {
 		key   string
 		value tsm1.Value
 	}{
@@ -1305,7 +1302,7 @@ func TestTSMKeyIterator_SingleDeletes(t *testing.T) {
 	}
 
 	var readValues int
-	var data = []struct {
+	data := []struct {
 		key   string
 		value tsm1.Value
 	}{
@@ -1497,7 +1494,7 @@ func TestCacheKeyIterator_Abort(t *testing.T) {
 
 	var aborted bool
 	for iter.Next() {
-		//Abort
+		// Abort
 		close(intC)
 
 		_, _, _, _, err := iter.Read()
@@ -1642,8 +1639,10 @@ func TestDefaultPlanner_Plan_MultipleGroups(t *testing.T) {
 		},
 	}, tsdb.DefaultCompactFullWriteColdDuration)
 
-	expFiles := []tsm1.FileStat{data[0], data[1], data[2], data[3],
-		data[4], data[5], data[6], data[7]}
+	expFiles := []tsm1.FileStat{
+		data[0], data[1], data[2], data[3],
+		data[4], data[5], data[6], data[7],
+	}
 	tsm := cp.Plan(time.Now())
 
 	if got, exp := len(tsm), 2; got != exp {
@@ -1669,7 +1668,6 @@ func TestDefaultPlanner_Plan_MultipleGroups(t *testing.T) {
 			t.Fatalf("tsm file mismatch: got %v, exp %v", got, exp)
 		}
 	}
-
 }
 
 // Ensure that the planner grabs the smallest compaction step
@@ -2379,7 +2377,6 @@ func TestDefaultPlanner_PlanOptimize_Tombstones(t *testing.T) {
 			t.Fatalf("tsm file mismatch: got %v, exp %v", got, exp)
 		}
 	}
-
 }
 
 // Ensure that the planner will compact all files if no writes
@@ -2874,7 +2871,6 @@ func TestDefaultPlanner_Plan_ForceFull(t *testing.T) {
 		t.Fatalf("tsm file length mismatch: got %v, exp %v", got, exp)
 	}
 	cp.Release(tsm)
-
 }
 
 func assertValueEqual(t *testing.T, a, b tsm1.Value) {
@@ -2902,7 +2898,7 @@ func MustTSMWriter(dir string, gen int) (tsm1.TSMWriter, string) {
 	}
 
 	var err error
-	f, err = os.OpenFile(newName, os.O_RDWR, 0666)
+	f, err = os.OpenFile(newName, os.O_RDWR, 0o666)
 	if err != nil {
 		panic(fmt.Sprintf("open tsm files: %v", err))
 	}

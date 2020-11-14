@@ -84,7 +84,7 @@ func (cmd *Command) Run(args ...string) error {
 			return nil
 		}
 
-		file, err := os.OpenFile(path, os.O_RDONLY, 0600)
+		file, err := os.OpenFile(path, os.O_RDONLY, 0o600)
 		if err != nil {
 			fmt.Fprintf(cmd.Stderr, "error: %s: %v. Skipping.\n", path, err)
 			return nil

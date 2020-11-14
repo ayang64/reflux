@@ -22,7 +22,7 @@ func IntegerArrayEncodeAll(src []int64, b []byte) ([]byte, error) {
 		return nil, nil // Nothing to do
 	}
 
-	var max = uint64(0)
+	max := uint64(0)
 
 	// To prevent an allocation of the entire block we're encoding reuse the
 	// src slice to store the encoded deltas.
@@ -38,7 +38,7 @@ func IntegerArrayEncodeAll(src []int64, b []byte) ([]byte, error) {
 	deltas[0] = ZigZagEncode(int64(deltas[0]))
 
 	if len(deltas) > 2 {
-		var rle = true
+		rle := true
 		for i := 2; i < len(deltas); i++ {
 			if deltas[1] != deltas[i] {
 				rle = false
@@ -128,14 +128,12 @@ func UnsignedArrayEncodeAll(src []uint64, b []byte) ([]byte, error) {
 	return IntegerArrayEncodeAll(srcint, b)
 }
 
-var (
-	integerBatchDecoderFunc = [...]func(b []byte, dst []int64) ([]int64, error){
-		integerBatchDecodeAllUncompressed,
-		integerBatchDecodeAllSimple,
-		integerBatchDecodeAllRLE,
-		integerBatchDecodeAllInvalid,
-	}
-)
+var integerBatchDecoderFunc = [...]func(b []byte, dst []int64) ([]int64, error){
+	integerBatchDecodeAllUncompressed,
+	integerBatchDecodeAllSimple,
+	integerBatchDecodeAllRLE,
+	integerBatchDecodeAllInvalid,
+}
 
 func IntegerArrayDecodeAll(b []byte, dst []int64) ([]int64, error) {
 	if len(b) == 0 {

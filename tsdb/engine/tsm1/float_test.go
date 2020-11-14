@@ -212,7 +212,6 @@ func TestFloatEncoder_Empty(t *testing.T) {
 
 func Test_FloatEncoder_Quick(t *testing.T) {
 	quick.Check(func(values []float64) bool {
-
 		expected := values
 		if values == nil {
 			expected = []float64{}

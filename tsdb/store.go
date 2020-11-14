@@ -36,7 +36,7 @@ var (
 	ErrShardDeletion = errors.New("shard is being deleted")
 	// ErrMultipleIndexTypes is returned when trying to do deletes on a database with
 	// multiple index types.
-	ErrMultipleIndexTypes = errors.New("cannot delete data. DB contains shards using both inmem and tsi1 indexes. Please convert all shards to use the same index type to delete data.")
+	ErrMultipleIndexTypes = errors.New("cannot delete data. DB contains shards using both inmem and tsi1 indexes. Please convert all shards to use the same index type to delete data")
 )
 
 // Statistics gathered by the store.
@@ -215,7 +215,7 @@ func (s *Store) Open() error {
 	s.Logger.Info("Using data dir", zap.String("path", s.Path()))
 
 	// Create directory.
-	if err := os.MkdirAll(s.path, 0777); err != nil {
+	if err := os.MkdirAll(s.path, 0o777); err != nil {
 		return err
 	}
 
@@ -372,7 +372,7 @@ func (s *Store) loadShards() error {
 					shardID, err := strconv.ParseUint(sh, 10, 64)
 					if err != nil {
 						log.Info("invalid shard ID found at path", zap.String("path", path))
-						resC <- &res{err: fmt.Errorf("%s is not a valid ID. Skipping shard.", sh)}
+						resC <- &res{err: fmt.Errorf("%s is not a valid ID. Skipping shard", sh)}
 						return
 					}
 
@@ -620,13 +620,13 @@ func (s *Store) CreateShard(database, retentionPolicy string, shardID uint64, en
 	}
 
 	// Create the db and retention policy directories if they don't exist.
-	if err := os.MkdirAll(filepath.Join(s.path, database, retentionPolicy), 0700); err != nil {
+	if err := os.MkdirAll(filepath.Join(s.path, database, retentionPolicy), 0o700); err != nil {
 		return err
 	}
 
 	// Create the WAL directory.
 	walPath := filepath.Join(s.EngineOptions.Config.WALDir, database, retentionPolicy, fmt.Sprintf("%d", shardID))
-	if err := os.MkdirAll(walPath, 0700); err != nil {
+	if err := os.MkdirAll(walPath, 0o700); err != nil {
 		return err
 	}
 
@@ -1184,7 +1184,6 @@ func (s *Store) MeasurementsCardinality(database string) (int64, error) {
 		}
 		return sh.MeasurementsSketches()
 	})
-
 	if err != nil {
 		return 0, err
 	}

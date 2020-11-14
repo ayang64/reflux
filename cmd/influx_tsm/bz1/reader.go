@@ -60,7 +60,7 @@ func NewReader(path string, stats *stats.Stats, chunkSize int) *Reader {
 // Open opens the reader.
 func (r *Reader) Open() error {
 	// Open underlying storage.
-	db, err := bolt.Open(r.path, 0666, &bolt.Options{Timeout: 1 * time.Second})
+	db, err := bolt.Open(r.path, 0o666, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		return err
 	}

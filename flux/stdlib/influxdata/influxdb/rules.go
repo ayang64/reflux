@@ -36,8 +36,7 @@ func (rule PushDownGroupRule) Rewrite(node plan.Node) (plan.Node, bool, error) {
 	grp := node.ProcedureSpec().(*universe.GroupProcedureSpec)
 
 	switch grp.GroupMode {
-	case
-		flux.GroupModeBy:
+	case flux.GroupModeBy:
 	default:
 		return node, false, nil
 	}

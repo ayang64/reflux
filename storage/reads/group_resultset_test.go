@@ -31,7 +31,8 @@ func TestNewGroupResultSet_Sorting(t *testing.T) {
 					"cpu,tag0=val01,tag1=val10",
 					"cpu,tag0=val01,tag1=val11",
 					"cpu,tag0=val01,tag1=val12",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag1"},
 			exp: `group:
@@ -60,7 +61,8 @@ group:
 					"cpu,tag0=0,tag1=00111",
 					"cpu,tag0=0001,tag1=11",
 					"cpu,tag0=00011,tag1=1",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag0", "tag1"},
 			exp: `group:
@@ -92,7 +94,8 @@ group:
 					"cpu,tag0=a,tag1=b",
 					"cpu,tag0=a*,tag1=b",
 					"cpu,tag0=a*",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag0", "tag1"},
 			exp: `group:
@@ -115,7 +118,8 @@ group:
 				rows: newSeriesRows(
 					"cpu,tag0=a,tag1=b",
 					"cpu,tag1=b",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag0", "tag1"},
 			exp: `group:
@@ -140,7 +144,8 @@ group:
 					"cpu,tag0=val01,tag1=val10",
 					"cpu,tag0=val01,tag1=val11",
 					"cpu,tag0=val01,tag1=val12",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag1"},
 			exp: `group:
@@ -177,7 +182,8 @@ group:
 					"mem,tag1=val10,tag2=val20",
 					"mem,tag1=val11,tag2=val20",
 					"mem,tag1=val11,tag2=val21",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag2", "tag1"},
 			exp: `group:
@@ -223,7 +229,8 @@ group:
 					"mem,tag1=val10,tag2=val20",
 					"mem,tag1=val11,tag2=val20",
 					"mem,tag1=val11,tag2=val21",
-				)},
+				),
+			},
 			group: datatypes.GroupBy,
 			keys:  []string{"tag0", "tag2"},
 			exp: `group:
@@ -252,7 +259,6 @@ group:
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-
 			newCursor := func() (reads.SeriesCursor, error) {
 				return tt.cur, nil
 			}
@@ -284,7 +290,8 @@ func TestNewGroupResultSet_GroupNone_NoDataReturnsNil(t *testing.T) {
 			rows: newSeriesRows(
 				"aaa,tag0=val00",
 				"aaa,tag0=val01",
-			)}, nil
+			),
+		}, nil
 	}
 
 	rs := reads.NewGroupResultSet(context.Background(), &datatypes.ReadGroupRequest{Group: datatypes.GroupNone}, newCursor)
@@ -299,7 +306,8 @@ func TestNewGroupResultSet_GroupBy_NoDataReturnsNil(t *testing.T) {
 			rows: newSeriesRows(
 				"aaa,tag0=val00",
 				"aaa,tag0=val01",
-			)}, nil
+			),
+		}, nil
 	}
 
 	rs := reads.NewGroupResultSet(context.Background(), &datatypes.ReadGroupRequest{Group: datatypes.GroupBy, GroupKeys: []string{"tag0"}}, newCursor)
@@ -380,7 +388,8 @@ group:
 						"mem,tag1=val10,tag2=val20",
 						"mem,tag1=val11,tag2=val20",
 						"mem,tag1=val11,tag2=val21",
-					)}, nil
+					),
+				}, nil
 			}
 
 			var hints datatypes.HintFlags

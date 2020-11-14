@@ -60,7 +60,6 @@ func TestRadix(t *testing.T) {
 			t.Fatalf("value mis-match: %v %v", out, v)
 		}
 	}
-
 }
 
 func TestDeletePrefix(t *testing.T) {

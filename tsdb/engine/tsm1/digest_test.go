@@ -15,7 +15,7 @@ import (
 func TestDigest_None(t *testing.T) {
 	dir := MustTempDir()
 	dataDir := filepath.Join(dir, "data")
-	if err := os.Mkdir(dataDir, 0755); err != nil {
+	if err := os.Mkdir(dataDir, 0o755); err != nil {
 		t.Fatalf("create data dir: %v", err)
 	}
 
@@ -64,13 +64,13 @@ func TestDigest_None(t *testing.T) {
 func TestDigest_One(t *testing.T) {
 	dir := MustTempDir()
 	dataDir := filepath.Join(dir, "data")
-	if err := os.Mkdir(dataDir, 0755); err != nil {
+	if err := os.Mkdir(dataDir, 0o755); err != nil {
 		t.Fatalf("create data dir: %v", err)
 	}
 
 	a1 := tsm1.NewValue(1, 1.1)
 	writes := map[string][]tsm1.Value{
-		"cpu,host=A#!~#value": []tsm1.Value{a1},
+		"cpu,host=A#!~#value": {a1},
 	}
 	MustWriteTSM(dir, 1, writes)
 
@@ -127,25 +127,25 @@ func TestDigest_One(t *testing.T) {
 func TestDigest_TimeFilter(t *testing.T) {
 	dir := MustTempDir()
 	dataDir := filepath.Join(dir, "data")
-	if err := os.Mkdir(dataDir, 0755); err != nil {
+	if err := os.Mkdir(dataDir, 0o755); err != nil {
 		t.Fatalf("create data dir: %v", err)
 	}
 
 	a1 := tsm1.NewValue(1, 1.1)
 	writes := map[string][]tsm1.Value{
-		"cpu,host=A#!~#value": []tsm1.Value{a1},
+		"cpu,host=A#!~#value": {a1},
 	}
 	MustWriteTSM(dir, 1, writes)
 
 	a2 := tsm1.NewValue(2, 2.1)
 	writes = map[string][]tsm1.Value{
-		"cpu,host=A#!~#value": []tsm1.Value{a2},
+		"cpu,host=A#!~#value": {a2},
 	}
 	MustWriteTSM(dir, 2, writes)
 
 	a3 := tsm1.NewValue(3, 3.1)
 	writes = map[string][]tsm1.Value{
-		"cpu,host=A#!~#value": []tsm1.Value{a3},
+		"cpu,host=A#!~#value": {a3},
 	}
 	MustWriteTSM(dir, 3, writes)
 
@@ -208,25 +208,25 @@ func TestDigest_TimeFilter(t *testing.T) {
 func TestDigest_KeyFilter(t *testing.T) {
 	dir := MustTempDir()
 	dataDir := filepath.Join(dir, "data")
-	if err := os.Mkdir(dataDir, 0755); err != nil {
+	if err := os.Mkdir(dataDir, 0o755); err != nil {
 		t.Fatalf("create data dir: %v", err)
 	}
 
 	a1 := tsm1.NewValue(1, 1.1)
 	writes := map[string][]tsm1.Value{
-		"cpu,host=A#!~#value": []tsm1.Value{a1},
+		"cpu,host=A#!~#value": {a1},
 	}
 	MustWriteTSM(dir, 1, writes)
 
 	a2 := tsm1.NewValue(2, 2.1)
 	writes = map[string][]tsm1.Value{
-		"cpu,host=B#!~#value": []tsm1.Value{a2},
+		"cpu,host=B#!~#value": {a2},
 	}
 	MustWriteTSM(dir, 2, writes)
 
 	a3 := tsm1.NewValue(3, 3.1)
 	writes = map[string][]tsm1.Value{
-		"cpu,host=C#!~#value": []tsm1.Value{a3},
+		"cpu,host=C#!~#value": {a3},
 	}
 	MustWriteTSM(dir, 3, writes)
 
@@ -239,7 +239,8 @@ func TestDigest_KeyFilter(t *testing.T) {
 
 	if err := tsm1.DigestWithOptions(dir, files, tsm1.DigestOptions{
 		MinKey: []byte("cpu,host=B#!~#value"),
-		MaxKey: []byte("cpu,host=B#!~#value")}, df); err != nil {
+		MaxKey: []byte("cpu,host=B#!~#value"),
+	}, df); err != nil {
 		t.Fatalf("digest error: %v", err)
 	}
 
@@ -292,7 +293,7 @@ func TestDigest_Manifest(t *testing.T) {
 	// Create a point to write to the tsm files.
 	a1 := tsm1.NewValue(1, 1.1)
 	writes := map[string][]tsm1.Value{
-		"cpu,host=A#!~#value": []tsm1.Value{a1},
+		"cpu,host=A#!~#value": {a1},
 	}
 
 	// Write a few tsm files.
@@ -425,7 +426,7 @@ func TestDigest_Manifest(t *testing.T) {
 	}
 
 	// Open one of the tsm files and write data to it.
-	f, err := os.OpenFile(files[0], os.O_WRONLY|os.O_APPEND, 0666)
+	f, err := os.OpenFile(files[0], os.O_WRONLY|os.O_APPEND, 0o666)
 	if err != nil {
 		t.Fatal(err)
 	}

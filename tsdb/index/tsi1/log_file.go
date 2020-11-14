@@ -92,7 +92,7 @@ func (f *LogFile) bytes() int {
 	b += int(unsafe.Sizeof(f.id))
 	// Do not include f.data because it is mmap'd
 	// TODO(jacobmarble): Uncomment when we are using go >= 1.10.0
-	//b += int(unsafe.Sizeof(f.w)) + f.w.Size()
+	// b += int(unsafe.Sizeof(f.w)) + f.w.Size()
 	b += int(unsafe.Sizeof(f.buf)) + len(f.buf)
 	b += int(unsafe.Sizeof(f.keyBuf)) + len(f.keyBuf)
 	// Do not count SeriesFile because it belongs to the code that constructed this Index.
@@ -118,7 +118,7 @@ func (f *LogFile) open() error {
 	f.id, _ = ParseFilename(f.path)
 
 	// Open file for appending.
-	file, err := os.OpenFile(f.Path(), os.O_WRONLY|os.O_CREATE, 0666)
+	file, err := os.OpenFile(f.Path(), os.O_WRONLY|os.O_CREATE, 0o666)
 	if err != nil {
 		return err
 	}

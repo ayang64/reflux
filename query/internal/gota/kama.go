@@ -31,7 +31,7 @@ func (ker *KER) WarmCount() int {
 
 // Add adds a new sample value to the algorithm and returns the computed value.
 func (ker *KER) Add(v float64) float64 {
-	//TODO this does not return a sensible value if not warmed.
+	// TODO this does not return a sensible value if not warmed.
 	n := len(ker.points)
 	idxOldest := ker.idx + 1
 	if idxOldest >= n {

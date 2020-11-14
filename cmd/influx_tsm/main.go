@@ -10,6 +10,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -19,7 +20,6 @@ import (
 	"text/tabwriter"
 	"time"
 
-	"net/http"
 	_ "net/http/pprof"
 
 	"github.com/influxdata/influxdb/cmd/influx_tsm/b1"

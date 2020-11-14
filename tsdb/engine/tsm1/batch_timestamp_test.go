@@ -490,7 +490,8 @@ func TestTimeArrayEncodeAll_RLESeconds(t *testing.T) {
 }
 
 func TestTimeArrayEncodeAll_Count_Uncompressed(t *testing.T) {
-	src := []int64{time.Unix(0, 0).UnixNano(),
+	src := []int64{
+		time.Unix(0, 0).UnixNano(),
 		time.Unix(1, 0).UnixNano(),
 	}
 
@@ -986,7 +987,6 @@ func BenchmarkEncodeTimestamps(b *testing.B) {
 					copy(input, src) // Reset input that gets modified in IntegerArrayEncodeAll
 				}
 			})
-
 		})
 
 		b.Run(fmt.Sprintf("%d_ran", n), func(b *testing.B) {

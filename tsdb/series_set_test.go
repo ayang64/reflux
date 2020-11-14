@@ -439,6 +439,7 @@ func BenchmarkSeriesIDSet_Clone(b *testing.B) {
 		})
 	}
 }
+
 func BenchmarkSeriesIDSet_AddMany(b *testing.B) {
 	cardinalities := []int{1, 1e3, 1e4, 1e5, 1e6}
 	toAddCardinalities := []int{1e3, 1e4, 1e5}

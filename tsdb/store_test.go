@@ -525,15 +525,15 @@ func TestStore_Open(t *testing.T) {
 		s := NewStore(index)
 		defer s.Close()
 
-		if err := os.MkdirAll(filepath.Join(s.Path(), "db0", "rp0", "2"), 0777); err != nil {
+		if err := os.MkdirAll(filepath.Join(s.Path(), "db0", "rp0", "2"), 0o777); err != nil {
 			t.Fatal(err)
 		}
 
-		if err := os.MkdirAll(filepath.Join(s.Path(), "db0", "rp2", "4"), 0777); err != nil {
+		if err := os.MkdirAll(filepath.Join(s.Path(), "db0", "rp2", "4"), 0o777); err != nil {
 			t.Fatal(err)
 		}
 
-		if err := os.MkdirAll(filepath.Join(s.Path(), "db1", "rp0", "1"), 0777); err != nil {
+		if err := os.MkdirAll(filepath.Join(s.Path(), "db1", "rp0", "1"), 0o777); err != nil {
 			t.Fatal(err)
 		}
 
@@ -595,7 +595,7 @@ func TestStore_Open_InvalidRetentionPolicy(t *testing.T) {
 		defer s.Close()
 
 		// Create an RP file instead of a directory.
-		if err := os.MkdirAll(filepath.Join(s.Path(), "db0"), 0777); err != nil {
+		if err := os.MkdirAll(filepath.Join(s.Path(), "db0"), 0o777); err != nil {
 			t.Fatal(err)
 		} else if _, err := os.Create(filepath.Join(s.Path(), "db0", "rp0")); err != nil {
 			t.Fatal(err)
@@ -625,7 +625,7 @@ func TestStore_Open_InvalidShard(t *testing.T) {
 		defer s.Close()
 
 		// Create a non-numeric shard file.
-		if err := os.MkdirAll(filepath.Join(s.Path(), "db0", "rp0"), 0777); err != nil {
+		if err := os.MkdirAll(filepath.Join(s.Path(), "db0", "rp0"), 0o777); err != nil {
 			t.Fatal(err)
 		} else if _, err := os.Create(filepath.Join(s.Path(), "db0", "rp0", "bad_shard")); err != nil {
 			t.Fatal(err)
@@ -810,6 +810,7 @@ func TestStore_BackupRestoreShard(t *testing.T) {
 		})
 	}
 }
+
 func TestStore_Shard_SeriesN(t *testing.T) {
 	t.Parallel()
 
@@ -1115,7 +1116,6 @@ func TestStore_Cardinality_Duplicates(t *testing.T) {
 // Creates a large number of series in multiple shards, which will force
 // compactions to occur.
 func testStoreCardinalityCompactions(store *Store) error {
-
 	// Generate point data to write to the shards.
 	series := genTestSeries(300, 5, 5) // 937,500 series
 	expCardinality := len(series)
@@ -1597,7 +1597,6 @@ func TestStore_Measurements_Auth(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestStore_TagKeys_Auth(t *testing.T) {
@@ -1695,7 +1694,6 @@ func TestStore_TagKeys_Auth(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestStore_TagValues_Auth(t *testing.T) {
@@ -1728,7 +1726,6 @@ func TestStore_TagValues_Auth(t *testing.T) {
 			LHS: &influxql.VarRef{Val: "_tagKey"},
 			RHS: &influxql.StringLiteral{Val: "host"},
 		})
-
 		if err != nil {
 			return err
 		}

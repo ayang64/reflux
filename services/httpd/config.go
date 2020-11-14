@@ -84,7 +84,7 @@ func NewConfig() Config {
 		MaxRowLimit:           0,
 		Realm:                 DefaultRealm,
 		UnixSocketEnabled:     false,
-		UnixSocketPermissions: 0777,
+		UnixSocketPermissions: 0o777,
 		BindSocket:            DefaultBindSocket,
 		MaxBodySize:           DefaultMaxBodySize,
 		EnqueuedWriteTimeout:  DefaultEnqueuedWriteTimeout,

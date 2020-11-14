@@ -191,7 +191,7 @@ func BenchmarkIntegerArray_ExcludeLast_1000(b *testing.B) {
 }
 
 func BenchmarkIntegerArray_ExcludeNone_10000(b *testing.B) {
-	benchExclude(b, makeIntegerArray(10000, 10000, 20000), 00, 5000)
+	benchExclude(b, makeIntegerArray(10000, 10000, 20000), 0o0, 5000)
 }
 
 func BenchmarkIntegerArray_ExcludeMiddleHalf_10000(b *testing.B) {
@@ -238,7 +238,7 @@ func BenchmarkIntegerArray_IncludeLast_1000(b *testing.B) {
 }
 
 func BenchmarkIntegerArray_IncludeNone_10000(b *testing.B) {
-	benchInclude(b, makeIntegerArray(10000, 10000, 20000), 00, 5000)
+	benchInclude(b, makeIntegerArray(10000, 10000, 20000), 0o0, 5000)
 }
 
 func BenchmarkIntegerArray_IncludeMiddleHalf_10000(b *testing.B) {

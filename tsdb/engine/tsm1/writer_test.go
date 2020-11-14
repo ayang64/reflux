@@ -60,7 +60,6 @@ func TestTSMWriter_Write_Single(t *testing.T) {
 	values := []tsm1.Value{tsm1.NewValue(0, 1.0)}
 	if err := w.Write([]byte("cpu"), values); err != nil {
 		t.Fatalf("unexpected error writing: %v", err)
-
 	}
 	if err := w.WriteIndex(); err != nil {
 		t.Fatalf("unexpected error writing index: %v", err)
@@ -123,7 +122,7 @@ func TestTSMWriter_Write_Multiple(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		values []tsm1.Value
 	}{
@@ -184,17 +183,21 @@ func TestTSMWriter_Write_MultipleKeyValues(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		values []tsm1.Value
 	}{
-		{"cpu", []tsm1.Value{
-			tsm1.NewValue(0, 1.0),
-			tsm1.NewValue(1, 2.0)},
+		{
+			"cpu", []tsm1.Value{
+				tsm1.NewValue(0, 1.0),
+				tsm1.NewValue(1, 2.0),
+			},
 		},
-		{"mem", []tsm1.Value{
-			tsm1.NewValue(0, 1.5),
-			tsm1.NewValue(1, 2.5)},
+		{
+			"mem", []tsm1.Value{
+				tsm1.NewValue(0, 1.5),
+				tsm1.NewValue(1, 2.5),
+			},
 		},
 	}
 
@@ -252,17 +255,21 @@ func TestTSMWriter_Write_SameKey(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		values []tsm1.Value
 	}{
-		{"cpu", []tsm1.Value{
-			tsm1.NewValue(0, 1.0),
-			tsm1.NewValue(1, 2.0)},
+		{
+			"cpu", []tsm1.Value{
+				tsm1.NewValue(0, 1.0),
+				tsm1.NewValue(1, 2.0),
+			},
 		},
-		{"cpu", []tsm1.Value{
-			tsm1.NewValue(2, 3.0),
-			tsm1.NewValue(3, 4.0)},
+		{
+			"cpu", []tsm1.Value{
+				tsm1.NewValue(2, 3.0),
+				tsm1.NewValue(3, 4.0),
+			},
 		},
 	}
 
@@ -321,17 +328,21 @@ func TestTSMWriter_Read_Multiple(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		values []tsm1.Value
 	}{
-		{"cpu", []tsm1.Value{
-			tsm1.NewValue(0, 1.0),
-			tsm1.NewValue(1, 2.0)},
+		{
+			"cpu", []tsm1.Value{
+				tsm1.NewValue(0, 1.0),
+				tsm1.NewValue(1, 2.0),
+			},
 		},
-		{"cpu", []tsm1.Value{
-			tsm1.NewValue(2, 3.0),
-			tsm1.NewValue(3, 4.0)},
+		{
+			"cpu", []tsm1.Value{
+				tsm1.NewValue(2, 3.0),
+				tsm1.NewValue(3, 4.0),
+			},
 		},
 	}
 
@@ -439,7 +450,7 @@ func TestTSMWriter_WriteBlock_Multiple(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = []struct {
+	data := []struct {
 		key    string
 		values []tsm1.Value
 	}{
@@ -607,7 +618,6 @@ func TestTSMWriter_Sync(t *testing.T) {
 	values := []tsm1.Value{tsm1.NewValue(0, 1.0)}
 	if err := w.Write([]byte("cpu"), values); err != nil {
 		t.Fatalf("unexpected error writing: %v", err)
-
 	}
 	if err := w.WriteIndex(); err != nil {
 		t.Fatalf("unexpected error writing index: %v", err)

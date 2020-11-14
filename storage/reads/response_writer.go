@@ -51,7 +51,8 @@ type ResponseWriter struct {
 }
 
 func NewResponseWriter(stream ResponseStream, hints datatypes.HintFlags) *ResponseWriter {
-	rw := &ResponseWriter{stream: stream,
+	rw := &ResponseWriter{
+		stream: stream,
 		res: &datatypes.ReadResponse{
 			Frames: make([]datatypes.ReadResponse_Frame, 0, frameCount),
 		},

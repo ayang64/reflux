@@ -96,7 +96,7 @@ func ParseConnectionString(path string, ssl bool) (url.URL, error) {
 
 		port, err = strconv.Atoi(prt)
 		if err != nil {
-			return url.URL{}, fmt.Errorf("invalid port number %q: %s\n", path, err)
+			return url.URL{}, fmt.Errorf("invalid port number %q: %s", path, err)
 		}
 	}
 
@@ -373,7 +373,7 @@ func (c *Client) Write(bp BatchPoints) (*Response, error) {
 	}
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
-		var err = fmt.Errorf(string(body))
+		err := fmt.Errorf(string(body))
 		response.Err = err
 		return &response, err
 	}

@@ -1259,6 +1259,7 @@ func TestStringValues_Merge(t *testing.T) {
 		}
 	}
 }
+
 func getTimes(n, step int, precision time.Duration) []int64 {
 	t := time.Now().Round(precision).UnixNano()
 	a := make([]int64, n)
@@ -1864,6 +1865,7 @@ func BenchmarkValues_EncodeFloat(b *testing.B) {
 		tsm1.Values(a).Encode(buf)
 	}
 }
+
 func BenchmarkValues_EncodeString(b *testing.B) {
 	valueCount := 1024
 	times := getTimes(valueCount, 60, time.Second)
@@ -1879,6 +1881,7 @@ func BenchmarkValues_EncodeString(b *testing.B) {
 		tsm1.Values(a).Encode(buf)
 	}
 }
+
 func BenchmarkValues_EncodeBool(b *testing.B) {
 	valueCount := 1024
 	times := getTimes(valueCount, 60, time.Second)

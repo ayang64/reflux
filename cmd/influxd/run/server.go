@@ -133,7 +133,7 @@ func NewServer(c *Config, buildInfo *BuildInfo) (*Server, error) {
 	// We need to ensure that a meta directory always exists even if
 	// we don't start the meta store.  node.json is always stored under
 	// the meta directory.
-	if err := os.MkdirAll(c.Meta.Dir, 0777); err != nil {
+	if err := os.MkdirAll(c.Meta.Dir, 0o777); err != nil {
 		return nil, fmt.Errorf("mkdir all: %s", err)
 	}
 

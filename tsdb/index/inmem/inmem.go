@@ -188,7 +188,6 @@ func (i *Index) MeasurementIterator() (tsdb.MeasurementIterator, error) {
 // index and sets its ID or returns the existing series object
 func (i *Index) CreateSeriesListIfNotExists(seriesIDSet *tsdb.SeriesIDSet, measurements map[string]int,
 	keys, names [][]byte, tagsSlice []models.Tags, opt *tsdb.EngineOptions, ignoreLimits bool) error {
-
 	// Verify that the series will not exceed limit.
 	if !ignoreLimits {
 		i.mu.RLock()
@@ -845,7 +844,6 @@ func (i *Index) SeriesKeys() []string {
 	}
 	i.mu.RUnlock()
 	return s
-
 }
 
 // SetFieldSet sets a shared field set from the engine.
@@ -1069,7 +1067,6 @@ func (i *Index) Rebuild() {
 // do not exists yet.
 func (i *Index) assignExistingSeries(shardID uint64, seriesIDSet *tsdb.SeriesIDSet, measurements map[string]int,
 	keys, names [][]byte, tagsSlice []models.Tags) ([][]byte, [][]byte, []models.Tags) {
-
 	i.mu.RLock()
 	var n int
 	for j, key := range keys {

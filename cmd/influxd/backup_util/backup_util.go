@@ -141,7 +141,7 @@ func (manifest *Manifest) Save(filename string) error {
 		return fmt.Errorf("create manifest: %v", err)
 	}
 
-	return ioutil.WriteFile(filename, b, 0600)
+	return ioutil.WriteFile(filename, b, 0o600)
 }
 
 // LoadIncremental loads multiple manifest files from a given directory.

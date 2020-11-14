@@ -213,13 +213,13 @@ func (cmd *Command) writePIDFile(path string) error {
 	}
 
 	// Ensure the required directory structure exists.
-	if err := os.MkdirAll(filepath.Dir(path), 0777); err != nil {
+	if err := os.MkdirAll(filepath.Dir(path), 0o777); err != nil {
 		return fmt.Errorf("mkdir: %s", err)
 	}
 
 	// Retrieve the PID and write it.
 	pid := strconv.Itoa(os.Getpid())
-	if err := ioutil.WriteFile(path, []byte(pid), 0666); err != nil {
+	if err := ioutil.WriteFile(path, []byte(pid), 0o666); err != nil {
 		return fmt.Errorf("write file: %s", err)
 	}
 

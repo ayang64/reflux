@@ -39,7 +39,6 @@ func TestLogFile_AddSeriesList(t *testing.T) {
 			models.NewTags(map[string]string{"host": "serverA"}),
 		},
 	)
-
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -293,7 +292,7 @@ func TestLogFile_Open(t *testing.T) {
 		buf[len(buf)-1] = 0
 
 		// Overwrite file with corrupt entry and reopen.
-		if err := ioutil.WriteFile(f.LogFile.Path(), buf, 0666); err != nil {
+		if err := ioutil.WriteFile(f.LogFile.Path(), buf, 0o666); err != nil {
 			t.Fatal(err)
 		} else if err := f.LogFile.Open(); err != nil {
 			t.Fatal(err)

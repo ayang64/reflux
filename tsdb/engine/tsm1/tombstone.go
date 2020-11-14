@@ -298,7 +298,7 @@ func (t *Tombstoner) prepareV4() error {
 	}
 
 	tmpPath := fmt.Sprintf("%s.%s", t.tombstonePath(), CompactionTempExtension)
-	tmp, err := os.OpenFile(tmpPath, os.O_CREATE|os.O_RDWR|os.O_EXCL, 0666)
+	tmp, err := os.OpenFile(tmpPath, os.O_CREATE|os.O_RDWR|os.O_EXCL, 0o666)
 	if err != nil {
 		return err
 	}

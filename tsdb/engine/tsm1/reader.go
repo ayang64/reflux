@@ -1208,7 +1208,7 @@ func (d *indirectIndex) UnmarshalBinary(b []byte) error {
 		return nil
 	}
 
-	//var minKey, maxKey []byte
+	// var minKey, maxKey []byte
 	var minTime, maxTime int64 = math.MaxInt64, 0
 
 	// To create our "indirect" index, we need to find the location of all the keys in
@@ -1492,7 +1492,7 @@ func (m *mmapAccessor) readBlock(entry *IndexEntry, values []Value) ([]Value, er
 	if int64(len(m.b)) < entry.Offset+int64(entry.Size) {
 		return nil, ErrTSMClosed
 	}
-	//TODO: Validate checksum
+	// TODO: Validate checksum
 	var err error
 	values, err = DecodeBlock(m.b[entry.Offset+4:entry.Offset+int64(entry.Size)], values)
 	if err != nil {
@@ -1548,7 +1548,7 @@ func (m *mmapAccessor) readAll(key []byte) ([]Value, error) {
 		if skip {
 			continue
 		}
-		//TODO: Validate checksum
+		// TODO: Validate checksum
 		temp = temp[:0]
 		// The +4 is the 4 byte checksum length
 		temp, err = DecodeBlock(m.b[block.Offset+4:block.Offset+int64(block.Size)], temp)

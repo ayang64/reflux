@@ -136,7 +136,7 @@ func (w *Writer) nextTSM() {
 	w.files = append(w.files, fileName)
 	w.seq++
 
-	fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0666)
+	fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0o666)
 	if err != nil {
 		w.err = err
 		return

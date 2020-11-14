@@ -45,25 +45,25 @@ func (o *Optimizer) Optimize(
 ) (float64, []float64) {
 	n := len(start)
 
-	//holds vertices of simplex
+	// holds vertices of simplex
 	v := make([][]float64, n+1)
 	for i := range v {
 		v[i] = make([]float64, n)
 	}
 
-	//value of function at each vertex
+	// value of function at each vertex
 	f := make([]float64, n+1)
 
-	//reflection - coordinates
+	// reflection - coordinates
 	vr := make([]float64, n)
 
-	//expansion - coordinates
+	// expansion - coordinates
 	ve := make([]float64, n)
 
-	//contraction - coordinates
+	// contraction - coordinates
 	vc := make([]float64, n)
 
-	//centroid - coordinates
+	// centroid - coordinates
 	vm := make([]float64, n)
 
 	// create the initial simplex

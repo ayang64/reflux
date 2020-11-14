@@ -95,7 +95,6 @@ func (v *verifyTSM) loadFiles(dataPath string) error {
 		}
 		return nil
 	})
-
 	if err != nil {
 		return errors.Wrap(err, "could not load storage files (use -dir for custom storage root)")
 	}
@@ -113,7 +112,7 @@ func (v *verifyTSM) Next() bool {
 }
 
 func (v *verifyTSM) TSMReader() (string, *tsm1.TSMReader) {
-	file, err := os.OpenFile(v.f, os.O_RDONLY, 0600)
+	file, err := os.OpenFile(v.f, os.O_RDONLY, 0o600)
 	if err != nil {
 		v.err = err
 		return "", nil

@@ -18,10 +18,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	fluxPath = "/api/v2/query"
-)
-
 // Shared transports for all clients to prevent leaking connections
 var (
 	skipVerifyTransport = &http.Transport{
@@ -132,7 +128,7 @@ func QueryRequestFromProxyRequest(req *ProxyRequest) (*QueryRequest, error) {
 	}
 	switch d := req.Dialect.(type) {
 	case *csv.Dialect:
-		var header = !d.ResultEncoderConfig.NoHeader
+		header := !d.ResultEncoderConfig.NoHeader
 		qr.Dialect.Header = &header
 		qr.Dialect.Delimiter = string(d.ResultEncoderConfig.Delimiter)
 		qr.Dialect.CommentPrefix = "#"

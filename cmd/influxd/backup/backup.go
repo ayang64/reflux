@@ -209,11 +209,11 @@ func (cmd *Command) parseFlags(args []string) (err error) {
 
 	// Ensure that only one arg is specified.
 	if fs.NArg() != 1 {
-		return errors.New("Exactly one backup path is required.")
+		return errors.New("exactly one backup path is required")
 	}
 	cmd.path = fs.Arg(0)
 
-	err = os.MkdirAll(cmd.path, 0700)
+	err = os.MkdirAll(cmd.path, 0o700)
 
 	return err
 }
@@ -271,7 +271,7 @@ func (cmd *Command) backupShard(db, rp, sid string) error {
 
 		filePrefix := cmd.portableFileBase + ".s" + sid
 		filename := filePrefix + ".tar.gz"
-		out, err := os.OpenFile(filepath.Join(cmd.path, filename), os.O_CREATE|os.O_RDWR, 0600)
+		out, err := os.OpenFile(filepath.Join(cmd.path, filename), os.O_CREATE|os.O_RDWR, 0o600)
 		if err != nil {
 			return err
 		}
@@ -324,7 +324,6 @@ func (cmd *Command) backupShard(db, rp, sid string) error {
 		cmd.BackupFiles = append(cmd.BackupFiles, filename)
 	}
 	return nil
-
 }
 
 // backupDatabase will request the database information from the server and then backup
@@ -371,7 +370,6 @@ func (cmd *Command) backupRetentionPolicy() error {
 
 // backupResponsePaths will backup all shards identified by shard paths in the response struct
 func (cmd *Command) backupResponsePaths(response *snapshotter.Response) error {
-
 	// loop through the returned paths and back up each shard
 	for _, path := range response.Paths {
 		db, rp, id, err := backup_util.DBRetentionAndShardFromPath(path)
@@ -450,7 +448,7 @@ func (cmd *Command) backupMetastore() error {
 		if err != nil {
 			return err
 		}
-		if err := ioutil.WriteFile(filepath.Join(cmd.path, filename), protoBytes, 0644); err != nil {
+		if err := ioutil.WriteFile(filepath.Join(cmd.path, filename), protoBytes, 0o644); err != nil {
 			fmt.Fprintln(cmd.Stdout, "Error.")
 			return err
 		}
@@ -621,5 +619,4 @@ Usage: influxd backup [options] PATH
     -skip-errors 
             Optional flag to continue backing up the remaining shards when the current shard fails to backup. 
 `)
-
 }

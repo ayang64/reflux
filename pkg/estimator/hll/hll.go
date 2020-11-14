@@ -126,7 +126,7 @@ func NewDefaultPlus() *Plus {
 
 // Clone returns a deep copy of h.
 func (h *Plus) Clone() estimator.Sketch {
-	var hll = &Plus{
+	hll := &Plus{
 		hash:       h.hash,
 		p:          h.p,
 		pp:         h.pp,

@@ -24,7 +24,6 @@ func almostEqual(a, b, e float64) bool {
 }
 
 func Test_Optimize(t *testing.T) {
-
 	constraints := func(x []float64) {
 		for i := range x {
 			x[i] = round(x[i], 5)
@@ -60,5 +59,4 @@ func Test_Optimize(t *testing.T) {
 	if !almostEqual(parameters[1], 1, 1e-2) {
 		t.Errorf("unexpected parameters[1]: got %f exp 1", parameters[1])
 	}
-
 }

@@ -29,7 +29,6 @@ func TestTSMReader_Type(t *testing.T) {
 	values := []Value{NewValue(0, int64(1))}
 	if err := w.Write([]byte("cpu"), values); err != nil {
 		t.Fatalf("unexpected error writing: %v", err)
-
 	}
 	if err := w.WriteIndex(); err != nil {
 		t.Fatalf("unexpected error closing: %v", err)
@@ -69,12 +68,12 @@ func TestTSMReader_MMAP_ReadAll(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = map[string][]Value{
-		"float":  []Value{NewValue(1, 1.0)},
-		"int":    []Value{NewValue(1, int64(1))},
-		"uint":   []Value{NewValue(1, ^uint64(0))},
-		"bool":   []Value{NewValue(1, true)},
-		"string": []Value{NewValue(1, "foo")},
+	data := map[string][]Value{
+		"float":  {NewValue(1, 1.0)},
+		"int":    {NewValue(1, int64(1))},
+		"uint":   {NewValue(1, ^uint64(0))},
+		"bool":   {NewValue(1, true)},
+		"string": {NewValue(1, "foo")},
 	}
 
 	keys := make([]string, 0, len(data))
@@ -143,17 +142,22 @@ func TestTSMReader_MMAP_Read(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = map[string][]Value{
-		"float": []Value{
-			NewValue(1, 1.0)},
-		"int": []Value{
-			NewValue(1, int64(1))},
-		"uint": []Value{
-			NewValue(1, ^uint64(0))},
-		"bool": []Value{
-			NewValue(1, true)},
-		"string": []Value{
-			NewValue(1, "foo")},
+	data := map[string][]Value{
+		"float": {
+			NewValue(1, 1.0),
+		},
+		"int": {
+			NewValue(1, int64(1)),
+		},
+		"uint": {
+			NewValue(1, ^uint64(0)),
+		},
+		"bool": {
+			NewValue(1, true),
+		},
+		"string": {
+			NewValue(1, "foo"),
+		},
 	}
 
 	keys := make([]string, 0, len(data))
@@ -222,17 +226,22 @@ func TestTSMReader_MMAP_Keys(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = map[string][]Value{
-		"float": []Value{
-			NewValue(1, 1.0)},
-		"int": []Value{
-			NewValue(1, int64(1))},
-		"uint": []Value{
-			NewValue(1, ^uint64(0))},
-		"bool": []Value{
-			NewValue(1, true)},
-		"string": []Value{
-			NewValue(1, "foo")},
+	data := map[string][]Value{
+		"float": {
+			NewValue(1, 1.0),
+		},
+		"int": {
+			NewValue(1, int64(1)),
+		},
+		"uint": {
+			NewValue(1, ^uint64(0)),
+		},
+		"bool": {
+			NewValue(1, true),
+		},
+		"string": {
+			NewValue(1, "foo"),
+		},
 	}
 
 	keys := make([]string, 0, len(data))
@@ -533,7 +542,6 @@ func TestTSMReader_MMAP_TombstoneOutsideKeyRange(t *testing.T) {
 
 	if got, exp := len(r.TombstoneFiles()), 0; got != exp {
 		t.Fatalf("TombstoneFiles len mismatch: got %v, exp %v", got, exp)
-
 	}
 }
 
@@ -582,7 +590,8 @@ func TestTSMReader_MMAP_TombstoneOverlapKeyRange(t *testing.T) {
 	if err := r.DeleteRange([][]byte{
 		[]byte("cpu,app=foo,host=server-0#!~#value"),
 		[]byte("cpu,app=foo,host=server-73379#!~#value"),
-		[]byte("cpu,app=foo,host=server-99999#!~#value")},
+		[]byte("cpu,app=foo,host=server-99999#!~#value"),
+	},
 		math.MinInt64, math.MaxInt64); err != nil {
 		t.Fatalf("unexpected error deleting: %v", err)
 	}
@@ -992,7 +1001,6 @@ func TestTSMReader_MMAP_TombstoneOutsideRange(t *testing.T) {
 	if got, exp := len(values), len(memValues[:2]); got != exp {
 		t.Fatalf("values length mismatch: got %v, exp %v", got, exp)
 	}
-
 }
 
 func TestTSMReader_MMAP_Stats(t *testing.T) {
@@ -1203,7 +1211,6 @@ func TestBlockIterator_Single(t *testing.T) {
 	values := []Value{NewValue(0, int64(1))}
 	if err := w.Write([]byte("cpu"), values); err != nil {
 		t.Fatalf("unexpected error writing: %v", err)
-
 	}
 	if err := w.WriteIndex(); err != nil {
 		t.Fatalf("unexpected error closing: %v", err)
@@ -1352,7 +1359,6 @@ func TestBlockIterator_MultipleBlocks(t *testing.T) {
 	var i int
 	for iter.Next() {
 		key, minTime, maxTime, typ, _, buf, err := iter.Read()
-
 		if err != nil {
 			t.Fatalf("unexpected error creating iterator: %v", err)
 		}
@@ -1397,11 +1403,11 @@ func TestBlockIterator_Sorted(t *testing.T) {
 	}
 
 	values := map[string][]Value{
-		"mem":    []Value{NewValue(0, int64(1))},
-		"cycles": []Value{NewValue(0, ^uint64(0))},
-		"cpu":    []Value{NewValue(1, float64(2))},
-		"disk":   []Value{NewValue(1, true)},
-		"load":   []Value{NewValue(1, "string")},
+		"mem":    {NewValue(0, int64(1))},
+		"cycles": {NewValue(0, ^uint64(0))},
+		"cpu":    {NewValue(1, float64(2))},
+		"disk":   {NewValue(1, true)},
+		"load":   {NewValue(1, "string")},
 	}
 
 	keys := make([]string, 0, len(values))
@@ -1413,7 +1419,6 @@ func TestBlockIterator_Sorted(t *testing.T) {
 	for _, k := range keys {
 		if err := w.Write([]byte(k), values[k]); err != nil {
 			t.Fatalf("unexpected error writing: %v", err)
-
 		}
 	}
 
@@ -1511,7 +1516,6 @@ func TestCompacted_NotFull(t *testing.T) {
 	values := []Value{NewValue(0, 1.0)}
 	if err := w.Write([]byte("cpu"), values); err != nil {
 		t.Fatalf("unexpected error writing: %v", err)
-
 	}
 	if err := w.WriteIndex(); err != nil {
 		t.Fatalf("unexpected error writing index: %v", err)
@@ -1561,17 +1565,22 @@ func TestTSMReader_File_ReadAll(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = map[string][]Value{
-		"float": []Value{
-			NewValue(1, 1.0)},
-		"int": []Value{
-			NewValue(1, int64(1))},
-		"uint": []Value{
-			NewValue(1, ^uint64(0))},
-		"bool": []Value{
-			NewValue(1, true)},
-		"string": []Value{
-			NewValue(1, "foo")},
+	data := map[string][]Value{
+		"float": {
+			NewValue(1, 1.0),
+		},
+		"int": {
+			NewValue(1, int64(1)),
+		},
+		"uint": {
+			NewValue(1, ^uint64(0)),
+		},
+		"bool": {
+			NewValue(1, true),
+		},
+		"string": {
+			NewValue(1, "foo"),
+		},
 	}
 
 	keys := make([]string, 0, len(data))
@@ -1664,7 +1673,7 @@ func TestTSMReader_FuzzCrashes(t *testing.T) {
 			defer os.RemoveAll(dir)
 
 			filename := filepath.Join(dir, "x.tsm")
-			if err := ioutil.WriteFile(filename, []byte(c), 0600); err != nil {
+			if err := ioutil.WriteFile(filename, []byte(c), 0o600); err != nil {
 				t.Fatalf("exp no error, got %s", err)
 			}
 			defer os.RemoveAll(dir)
@@ -1709,17 +1718,22 @@ func TestTSMReader_File_Read(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = map[string][]Value{
-		"float": []Value{
-			NewValue(1, 1.0)},
-		"int": []Value{
-			NewValue(1, int64(1))},
-		"uint": []Value{
-			NewValue(1, ^uint64(0))},
-		"bool": []Value{
-			NewValue(1, true)},
-		"string": []Value{
-			NewValue(1, "foo")},
+	data := map[string][]Value{
+		"float": {
+			NewValue(1, 1.0),
+		},
+		"int": {
+			NewValue(1, int64(1)),
+		},
+		"uint": {
+			NewValue(1, ^uint64(0)),
+		},
+		"bool": {
+			NewValue(1, true),
+		},
+		"string": {
+			NewValue(1, "foo"),
+		},
 	}
 
 	keys := make([]string, 0, len(data))
@@ -1788,17 +1802,22 @@ func TestTSMReader_References(t *testing.T) {
 		t.Fatalf("unexpected error creating writer: %v", err)
 	}
 
-	var data = map[string][]Value{
-		"float": []Value{
-			NewValue(1, 1.0)},
-		"int": []Value{
-			NewValue(1, int64(1))},
-		"uint": []Value{
-			NewValue(1, ^uint64(0))},
-		"bool": []Value{
-			NewValue(1, true)},
-		"string": []Value{
-			NewValue(1, "foo")},
+	data := map[string][]Value{
+		"float": {
+			NewValue(1, 1.0),
+		},
+		"int": {
+			NewValue(1, int64(1)),
+		},
+		"uint": {
+			NewValue(1, ^uint64(0)),
+		},
+		"bool": {
+			NewValue(1, true),
+		},
+		"string": {
+			NewValue(1, "foo"),
+		},
 	}
 
 	keys := make([]string, 0, len(data))

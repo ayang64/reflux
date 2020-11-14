@@ -44,9 +44,11 @@ import (
 // UUID - unique identifier type representing a 128 bit number
 type UUID [16]byte
 
-var timeBase = time.Date(1582, time.October, 15, 0, 0, 0, 0, time.UTC).Unix()
-var hardwareAddr = hwAddrFunc()
-var clockSeq uint32
+var (
+	timeBase     = time.Date(1582, time.October, 15, 0, 0, 0, 0, time.UTC).Unix()
+	hardwareAddr = hwAddrFunc()
+	clockSeq     uint32
+)
 
 func hwAddrFunc() [6]byte {
 	u := [6]byte{}
@@ -100,7 +102,7 @@ func FromTime(aTime time.Time) UUID {
 // String returns the UUID in it's canonical form, a 32 digit hexadecimal
 // number in the form of xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx.
 func (u UUID) String() string {
-	var offsets = [...]int{0, 2, 4, 6, 9, 11, 14, 16, 19, 21, 24, 26, 28, 30, 32, 34}
+	offsets := [...]int{0, 2, 4, 6, 9, 11, 14, 16, 19, 21, 24, 26, 28, 30, 32, 34}
 	const hexString = "0123456789abcdef"
 	r := make([]byte, 36)
 	for i, b := range u {
@@ -112,5 +114,4 @@ func (u UUID) String() string {
 	r[18] = '-'
 	r[23] = '-'
 	return string(r)
-
 }

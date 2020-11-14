@@ -86,5 +86,4 @@ func Test_parseDatabaseAndretentionPolicy(t *testing.T) {
 			t.Errorf("unexpected retention policy: got: %s, exp: %s", rp, test.rp)
 		}
 	}
-
 }

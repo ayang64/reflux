@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"math/rand"
 	"os"
 	"os/signal"
 	"syscall"
@@ -25,23 +24,24 @@ var (
 	branch  string
 )
 
-func init() {
-	// If commit, branch, or build time are not set, make that clear.
-	if version == "" {
-		version = "unknown"
-	}
-	if commit == "" {
-		commit = "unknown"
-	}
-	if branch == "" {
-		branch = "unknown"
-	}
-}
-
 func main() {
-	rand.Seed(time.Now().UnixNano())
+	stror := func(ss ...string) string {
+		for _, s := range ss {
+			if s == "" {
+				continue
+			}
+			return s
+		}
+		return ""
+	}
+
+	// If commit, branch, or build time are not set, make that clear.
+	version = stror(version, "unknown")
+	commit = stror(commit, "unknown")
+	branch = stror(branch, "unknown")
 
 	m := NewMain()
+
 	if err := m.Run(os.Args[1:]...); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
@@ -128,7 +128,7 @@ func (m *Main) Run(args ...string) error {
 			return fmt.Errorf("help: %s", err)
 		}
 	default:
-		return fmt.Errorf(`unknown command "%s"`+"\n"+`Run 'influxd help' for usage`+"\n\n", name)
+		return fmt.Errorf("unknown command %q", name)
 	}
 
 	return nil

@@ -917,7 +917,7 @@ cpu,secret=foo value=100 0
 
 		fitr := itr.(query.FloatIterator)
 		defer fitr.Close()
-		var expCount = 2
+		expCount := 2
 		var gotCount int
 		for {
 			f, err := fitr.Next()
@@ -1635,6 +1635,7 @@ func TestMeasurementFieldSet_Corrupt(t *testing.T) {
 		t.Fatal("expecte fields to be nil")
 	}
 }
+
 func TestMeasurementFieldSet_DeleteEmpty(t *testing.T) {
 	dir, cleanup := MustTempDir()
 	defer cleanup()
@@ -1686,7 +1687,7 @@ func TestMeasurementFieldSet_InvalidFormat(t *testing.T) {
 
 	path := filepath.Join(dir, "fields.idx")
 
-	if err := ioutil.WriteFile(path, []byte{0, 0}, 0666); err != nil {
+	if err := ioutil.WriteFile(path, []byte{0, 0}, 0o666); err != nil {
 		t.Fatalf("error writing fields.index: %v", err)
 	}
 
@@ -1706,27 +1707,35 @@ func BenchmarkWritePoints_NewSeries_1M(b *testing.B)   { benchmarkWritePoints(b,
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_100_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 100, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_500_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 500, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_1000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 1000, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_5000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 5000, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_10000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 10000, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_50000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 50000, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_100000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 100000, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_500000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 500000, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_1000000_TagValues(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 1000000, 1)
 }
@@ -1735,9 +1744,11 @@ func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_1000000_TagValues(b *
 func BenchmarkWritePoints_NewSeries_100_Measurements_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 100, 1, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_500_Measurements_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 500, 1, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1000, 1, 1, 1)
 }
@@ -1745,6 +1756,7 @@ func BenchmarkWritePoints_NewSeries_1000_Measurement_1_TagKey_1_TagValue(b *test
 func BenchmarkWritePoints_NewSeries_5000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 5000, 1, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_10000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 10000, 1, 1, 1)
 }
@@ -1756,6 +1768,7 @@ func BenchmarkWritePoints_NewSeries_1000_Measurement_10_TagKey_1_TagValue(b *tes
 func BenchmarkWritePoints_NewSeries_50000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 50000, 1, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_100000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 100000, 1, 1, 1)
 }
@@ -1763,6 +1776,7 @@ func BenchmarkWritePoints_NewSeries_100000_Measurement_1_TagKey_1_TagValue(b *te
 func BenchmarkWritePoints_NewSeries_500000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 500000, 1, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1000000_Measurement_1_TagKey_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1000000, 1, 1, 1)
 }
@@ -1771,30 +1785,39 @@ func BenchmarkWritePoints_NewSeries_1000000_Measurement_1_TagKey_1_TagValue(b *t
 func BenchmarkWritePoints_NewSeries_1_Measurement_2_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<1, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurements_4_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<2, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurements_8_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<3, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_16_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<4, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_32_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<5, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_64_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<6, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_128_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<7, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_256_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<8, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_512_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<9, 1, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_1024_TagKeys_1_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1<<10, 1, 1)
 }
@@ -1803,15 +1826,19 @@ func BenchmarkWritePoints_NewSeries_1_Measurement_1024_TagKeys_1_TagValue(b *tes
 func BenchmarkWritePoints_NewSeries_1_Measurement_1_TagKey_65536_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 1, 1<<16, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_2_TagKeys_256_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 2, 1<<8, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_4_TagKeys_16_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 4, 1<<4, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_8_TagKeys_4_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 8, 1<<2, 1)
 }
+
 func BenchmarkWritePoints_NewSeries_1_Measurement_16_TagKeys_2_TagValue(b *testing.B) {
 	benchmarkWritePoints(b, 1, 16, 1<<1, 1)
 }
@@ -1819,6 +1846,7 @@ func BenchmarkWritePoints_NewSeries_1_Measurement_16_TagKeys_2_TagValue(b *testi
 func BenchmarkWritePoints_ExistingSeries_1K(b *testing.B) {
 	benchmarkWritePointsExistingSeries(b, 38, 3, 3, 1)
 }
+
 func BenchmarkWritePoints_ExistingSeries_100K(b *testing.B) {
 	benchmarkWritePointsExistingSeries(b, 32, 5, 5, 1)
 }
@@ -1826,9 +1854,11 @@ func BenchmarkWritePoints_ExistingSeries_100K(b *testing.B) {
 func BenchmarkWritePoints_ExistingSeries_250K(b *testing.B) {
 	benchmarkWritePointsExistingSeries(b, 80, 5, 5, 1)
 }
+
 func BenchmarkWritePoints_ExistingSeries_500K(b *testing.B) {
 	benchmarkWritePointsExistingSeries(b, 160, 5, 5, 1)
 }
+
 func BenchmarkWritePoints_ExistingSeries_1M(b *testing.B) {
 	benchmarkWritePointsExistingSeries(b, 320, 5, 5, 1)
 }

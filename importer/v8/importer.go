@@ -66,11 +66,11 @@ func (i *Importer) Import() error {
 	// Create a client and try to connect.
 	cl, err := client.NewClient(i.config.Config)
 	if err != nil {
-		return fmt.Errorf("could not create client %s", err)
+		return fmt.Errorf("could not create client %w", err)
 	}
 	i.client = cl
 	if _, _, e := i.client.Ping(); e != nil {
-		return fmt.Errorf("failed to connect to %s\n", i.client.Addr())
+		return fmt.Errorf("failed to connect to %q", i.client.Addr())
 	}
 
 	// Validate args

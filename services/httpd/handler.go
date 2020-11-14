@@ -171,67 +171,67 @@ func NewHandler(c Config) *Handler {
 	}
 
 	h.AddRoutes([]Route{
-		Route{
+		{
 			"query-options", // Satisfy CORS checks.
 			"OPTIONS", "/query", false, true, h.serveOptions,
 		},
-		Route{
+		{
 			"query", // Query serving route.
 			"GET", "/query", true, true, h.serveQuery,
 		},
-		Route{
+		{
 			"query", // Query serving route.
 			"POST", "/query", true, true, h.serveQuery,
 		},
-		Route{
+		{
 			"write-options", // Satisfy CORS checks.
 			"OPTIONS", "/write", false, true, h.serveOptions,
 		},
-		Route{
+		{
 			"write", // Data-ingest route.
 			"POST", "/write", true, writeLogEnabled, h.serveWriteV1,
 		},
-		Route{
+		{
 			"write", // Data-ingest route.
 			"POST", "/api/v2/write", true, writeLogEnabled, h.serveWriteV2,
 		},
-		Route{ // Enable CORS
+		{ // Enable CORS
 			"write-options",
 			"OPTIONS", "/api/v2/write", false, true, h.serveOptions,
 		},
-		Route{
+		{
 			"prometheus-write", // Prometheus remote write
 			"POST", "/api/v1/prom/write", false, true, h.servePromWrite,
 		},
-		Route{
+		{
 			"prometheus-read", // Prometheus remote read
 			"POST", "/api/v1/prom/read", true, true, h.servePromRead,
 		},
-		Route{ // Ping
+		{ // Ping
 			"ping",
 			"GET", "/ping", false, true, authWrapper(h.servePing),
 		},
-		Route{ // Ping
+		{ // Ping
 			"ping-head",
 			"HEAD", "/ping", false, true, authWrapper(h.servePing),
 		},
-		Route{ // Ping w/ status
+		{ // Ping w/ status
 			"status",
 			"GET", "/status", false, true, authWrapper(h.serveStatus),
 		},
-		Route{ // Ping w/ status
+		{ // Ping w/ status
 			"status-head",
 			"HEAD", "/status", false, true, authWrapper(h.serveStatus),
 		},
-		Route{ // Health
+		{ // Health
 			"health",
 			"GET", "/health", false, true, authWrapper(h.serveHealth),
 		},
-		Route{ // Enable CORS
+		{ // Enable CORS
 			"health-options",
 			"OPTIONS", "/health", false, true, h.serveOptions,
 		},
-		Route{
+		{
 			"prometheus-metrics",
 			"GET", "/metrics", false, true, authWrapper(promhttp.Handler().ServeHTTP),
 		},
@@ -251,27 +251,27 @@ func NewHandler(c Config) *Handler {
 			}
 		}
 		h.AddRoutes([]Route{
-			Route{
+			{
 				"pprof-cmdline",
 				"GET", "/debug/pprof/cmdline", true, true, authWrapper(httppprof.Cmdline),
 			},
-			Route{
+			{
 				"pprof-profile",
 				"GET", "/debug/pprof/profile", true, true, authWrapper(httppprof.Profile),
 			},
-			Route{
+			{
 				"pprof-symbol",
 				"GET", "/debug/pprof/symbol", true, true, authWrapper(httppprof.Symbol),
 			},
-			Route{
+			{
 				"pprof-all",
 				"GET", "/debug/pprof/all", true, true, authWrapper(h.archiveProfilesAndQueries),
 			},
-			Route{
+			{
 				"debug-expvar",
 				"GET", "/debug/vars", true, true, authWrapper(h.serveExpvar),
 			},
-			Route{
+			{
 				"debug-requests",
 				"GET", "/debug/requests", true, true, authWrapper(h.serveDebugRequests),
 			},
@@ -304,7 +304,7 @@ func (h *Handler) Open() {
 		path := "stderr"
 
 		if h.Config.AccessLogPath != "" {
-			f, err := os.OpenFile(h.Config.AccessLogPath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+			f, err := os.OpenFile(h.Config.AccessLogPath, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0o666)
 			if err != nil {
 				h.Logger.Error("unable to open access log, falling back to stderr", zap.Error(err), zap.String("path", h.Config.AccessLogPath))
 				return
@@ -1454,7 +1454,7 @@ func (h *Handler) serveFluxQuery(w http.ResponseWriter, r *http.Request, user me
 func (h *Handler) logFluxQuery(n int64, stats flux.Statistics, compiler flux.Compiler, err error) {
 	var q string
 	switch c := compiler.(type) {
-	//case lang.SpecCompiler:
+	// case lang.SpecCompiler:
 	//	q = fmt.Sprint(flux.Formatted(c.Spec))
 	case lang.FluxCompiler:
 		q = c.Query

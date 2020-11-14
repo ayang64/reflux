@@ -86,20 +86,25 @@ func TestTagBlockWriter(t *testing.T) {
 	}
 }
 
-var benchmarkTagBlock10x1000 *tsi1.TagBlock
-var benchmarkTagBlock100x1000 *tsi1.TagBlock
-var benchmarkTagBlock1000x1000 *tsi1.TagBlock
-var benchmarkTagBlock1x1000000 *tsi1.TagBlock
+var (
+	benchmarkTagBlock10x1000   *tsi1.TagBlock
+	benchmarkTagBlock100x1000  *tsi1.TagBlock
+	benchmarkTagBlock1000x1000 *tsi1.TagBlock
+	benchmarkTagBlock1x1000000 *tsi1.TagBlock
+)
 
 func BenchmarkTagBlock_SeriesN_10_1000(b *testing.B) {
 	benchmarkTagBlock_SeriesN(b, 10, 1000, &benchmarkTagBlock10x1000)
 }
+
 func BenchmarkTagBlock_SeriesN_100_1000(b *testing.B) {
 	benchmarkTagBlock_SeriesN(b, 100, 1000, &benchmarkTagBlock100x1000)
 }
+
 func BenchmarkTagBlock_SeriesN_1000_1000(b *testing.B) {
 	benchmarkTagBlock_SeriesN(b, 1000, 1000, &benchmarkTagBlock1000x1000)
 }
+
 func BenchmarkTagBlock_SeriesN_1_1000000(b *testing.B) {
 	benchmarkTagBlock_SeriesN(b, 1, 1000000, &benchmarkTagBlock1x1000000)
 }

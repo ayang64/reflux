@@ -47,6 +47,7 @@ func (f *File) TagKeyIterator(name []byte) tsi1.TagKeyIterator { return f.TagKey
 func (f *File) TagValue(name, key, value []byte) tsi1.TagValueElem {
 	return f.TagValuef(name, key, value)
 }
+
 func (f *File) TagValueIterator(name, key []byte) tsi1.TagValueIterator {
 	return f.TagValueIteratorf(name, key)
 }
@@ -54,9 +55,11 @@ func (f *File) SeriesIDIterator() tsdb.SeriesIDIterator { return f.SeriesIDItera
 func (f *File) MeasurementSeriesIDIterator(name []byte) tsdb.SeriesIDIterator {
 	return f.MeasurementSeriesIDIteratorf(name)
 }
+
 func (f *File) TagKeySeriesIDIterator(name, key []byte) tsdb.SeriesIDIterator {
 	return f.TagKeySeriesIDIteratorf(name, key)
 }
+
 func (f *File) TagValueSeriesIDIterator(name, key, value []byte) tsdb.SeriesIDIterator {
 	return f.TagValueSeriesIDIteratorf(name, key, value)
 }

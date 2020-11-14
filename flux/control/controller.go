@@ -13,8 +13,10 @@ import (
 	"go.uber.org/zap"
 )
 
-type MetaClient = coordinator.MetaClient
-type Authorizer = influxdb.Authorizer
+type (
+	MetaClient = coordinator.MetaClient
+	Authorizer = influxdb.Authorizer
+)
 
 func NewController(mc MetaClient, reader influxdb.Reader, auth Authorizer, authEnabled bool, logger *zap.Logger) *Controller {
 	builtin.Initialize()
@@ -52,6 +54,7 @@ func (c *Controller) Query(ctx context.Context, compiler flux.Compiler) (flux.Qu
 	alloc := &memory.Allocator{}
 	return p.Start(ctx, alloc)
 }
+
 func (c *Controller) PrometheusCollectors() []prometheus.Collector {
 	return nil
 }

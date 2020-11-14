@@ -23,7 +23,6 @@ type Command struct {
 	Stdin  io.Reader
 	Stdout io.Writer
 	Stderr io.Writer
-	deps   Dependencies
 	server server.Interface
 	filter SeriesGeneratorFilter
 
@@ -142,8 +141,7 @@ func (cmd *Command) parseFlags(args []string) error {
 	return nil
 }
 
-var (
-	tomlSchema = template.Must(template.New("schema").Parse(`
+var tomlSchema = template.Must(template.New("schema").Parse(`
 title = "CLI schema"
 
 [[measurements]]
@@ -156,7 +154,6 @@ tags = [
 fields = [
 	{ name = "v0", count = {{ .PointsPerSeriesPerShard }}, source = 1.0 },
 ]`))
-)
 
 func (cmd *Command) planToSpec(p *generate.SchemaPlan) *gen.Spec {
 	var sb strings.Builder

@@ -762,17 +762,21 @@ func NewExponentialMovingAverageReducer(period int, holdPeriod int, warmupType g
 func (r *ExponentialMovingAverageReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *ExponentialMovingAverageReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *ExponentialMovingAverageReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *ExponentialMovingAverageReducer) aggregate(v float64, t int64) {
 	r.v = r.ema.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *ExponentialMovingAverageReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -809,17 +813,21 @@ func NewDoubleExponentialMovingAverageReducer(period int, holdPeriod int, warmup
 func (r *DoubleExponentialMovingAverageReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *DoubleExponentialMovingAverageReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *DoubleExponentialMovingAverageReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *DoubleExponentialMovingAverageReducer) aggregate(v float64, t int64) {
 	r.v = r.dema.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *DoubleExponentialMovingAverageReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -856,17 +864,21 @@ func NewTripleExponentialMovingAverageReducer(period int, holdPeriod int, warmup
 func (r *TripleExponentialMovingAverageReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *TripleExponentialMovingAverageReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *TripleExponentialMovingAverageReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *TripleExponentialMovingAverageReducer) aggregate(v float64, t int64) {
 	r.v = r.tema.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *TripleExponentialMovingAverageReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -899,20 +911,25 @@ func NewRelativeStrengthIndexReducer(period int, holdPeriod int, warmupType gota
 		holdPeriod: uint32(holdPeriod),
 	}
 }
+
 func (r *RelativeStrengthIndexReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *RelativeStrengthIndexReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *RelativeStrengthIndexReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *RelativeStrengthIndexReducer) aggregate(v float64, t int64) {
 	r.v = r.rsi.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *RelativeStrengthIndexReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -945,20 +962,25 @@ func NewTripleExponentialDerivativeReducer(period int, holdPeriod int, warmupTyp
 		holdPeriod: uint32(holdPeriod),
 	}
 }
+
 func (r *TripleExponentialDerivativeReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *TripleExponentialDerivativeReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *TripleExponentialDerivativeReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *TripleExponentialDerivativeReducer) aggregate(v float64, t int64) {
 	r.v = r.trix.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *TripleExponentialDerivativeReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -994,20 +1016,25 @@ func NewKaufmansEfficiencyRatioReducer(period int, holdPeriod int) *KaufmansEffi
 		holdPeriod: uint32(holdPeriod),
 	}
 }
+
 func (r *KaufmansEfficiencyRatioReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *KaufmansEfficiencyRatioReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *KaufmansEfficiencyRatioReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *KaufmansEfficiencyRatioReducer) aggregate(v float64, t int64) {
 	r.v = r.ker.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *KaufmansEfficiencyRatioReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -1043,20 +1070,25 @@ func NewKaufmansAdaptiveMovingAverageReducer(period int, holdPeriod int) *Kaufma
 		holdPeriod: uint32(holdPeriod),
 	}
 }
+
 func (r *KaufmansAdaptiveMovingAverageReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *KaufmansAdaptiveMovingAverageReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *KaufmansAdaptiveMovingAverageReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *KaufmansAdaptiveMovingAverageReducer) aggregate(v float64, t int64) {
 	r.v = r.kama.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *KaufmansAdaptiveMovingAverageReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil
@@ -1098,20 +1130,25 @@ func NewChandeMomentumOscillatorReducer(period int, holdPeriod int, warmupType g
 		holdPeriod: uint32(holdPeriod),
 	}
 }
+
 func (r *ChandeMomentumOscillatorReducer) AggregateFloat(p *FloatPoint) {
 	r.aggregate(p.Value, p.Time)
 }
+
 func (r *ChandeMomentumOscillatorReducer) AggregateInteger(p *IntegerPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *ChandeMomentumOscillatorReducer) AggregateUnsigned(p *UnsignedPoint) {
 	r.aggregate(float64(p.Value), p.Time)
 }
+
 func (r *ChandeMomentumOscillatorReducer) aggregate(v float64, t int64) {
 	r.v = r.cmo.Add(v)
 	r.t = t
 	r.count++
 }
+
 func (r *ChandeMomentumOscillatorReducer) Emit() []FloatPoint {
 	if r.count <= r.holdPeriod {
 		return nil

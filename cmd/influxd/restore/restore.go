@@ -186,11 +186,10 @@ func (cmd *Command) parseFlags(args []string) error {
 			var err error
 			cmd.manifestMeta, cmd.manifestFiles, err = backup_util.LoadIncremental(cmd.backupFilesPath)
 			if err != nil {
-				return fmt.Errorf("restore failed while processing manifest files: %s", err.Error())
+				return fmt.Errorf("restore failed while processing manifest files: %w", err)
 			} else if cmd.manifestMeta == nil {
 				// No manifest files found.
-				return fmt.Errorf("No manifest files found in: %s\n", cmd.backupFilesPath)
-
+				return fmt.Errorf("no manifest files found in %q", cmd.backupFilesPath)
 			}
 		}
 	} else {
@@ -281,12 +280,12 @@ func (cmd *Command) unpackMeta() error {
 	c.Dir = cmd.metadir
 
 	// Create the meta dir
-	if err := os.MkdirAll(c.Dir, 0700); err != nil {
+	if err := os.MkdirAll(c.Dir, 0o700); err != nil {
 		return err
 	}
 
 	// Write node.json back to meta dir
-	if err := ioutil.WriteFile(filepath.Join(c.Dir, "node.json"), nodeBytes, 0655); err != nil {
+	if err := ioutil.WriteFile(filepath.Join(c.Dir, "node.json"), nodeBytes, 0o655); err != nil {
 		return err
 	}
 
@@ -348,13 +347,11 @@ func (cmd *Command) updateMetaPortable() error {
 	shardIDMap, err := cmd.client.UpdateMeta(req, bytes.NewReader(metaBytes))
 	cmd.shardIDMap = shardIDMap
 	return err
-
 }
 
 // updateMetaLive takes a metadata backup and sends it to the influx server
 // for a live merger of metadata.
 func (cmd *Command) updateMetaLegacy() error {
-
 	var metaBytes []byte
 
 	// find the meta file
@@ -561,7 +558,7 @@ func (cmd *Command) unpackTar(tarFile string) error {
 	}
 
 	shardPath := filepath.Join(cmd.datadir, pathParts[0], pathParts[1], strings.Trim(pathParts[2], "0"))
-	os.MkdirAll(shardPath, 0755)
+	os.MkdirAll(shardPath, 0o755)
 
 	return tarstream.Restore(f, shardPath)
 }

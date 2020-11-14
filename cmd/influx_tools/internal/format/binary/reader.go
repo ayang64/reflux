@@ -37,14 +37,16 @@ const (
 func NewReader(reader io.Reader) *Reader {
 	state := readHeader
 	var stats readerStats
-	r := &Reader{r: reader, state: &state, stats: &stats,
-		pr: &PointsReader{r: reader, values: make(tsm1.Values, tsdb.DefaultMaxPointsPerBlock), state: &state, stats: &stats}}
+	r := &Reader{
+		r: reader, state: &state, stats: &stats,
+		pr: &PointsReader{r: reader, values: make(tsm1.Values, tsdb.DefaultMaxPointsPerBlock), state: &state, stats: &stats},
+	}
 	return r
 }
 
 func (r *Reader) ReadHeader() (*Header, error) {
 	if *r.state != readHeader {
-		return nil, fmt.Errorf("expected reader in state %v, was in state %v\n", readHeader, *r.state)
+		return nil, fmt.Errorf("expected reader in state %v, was in state %v", readHeader, *r.state)
 	}
 
 	var magic [len(Magic)]byte

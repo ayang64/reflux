@@ -142,7 +142,6 @@ func TestServer_BackupAndRestore(t *testing.T) {
 		if err := cmd.Run("-portable", "-host", hostAddress, "-db", "mydb", "-start", "1970-01-01T00:00:00.001Z", "-end", "1970-01-01T00:00:00.009Z", portableBackupDir); err != nil {
 			t.Fatalf("error backing up: %s, hostAddress: %s", err.Error(), hostAddress)
 		}
-
 	}()
 
 	if _, err := os.Stat(config.Meta.Dir); err == nil || !os.IsNotExist(err) {
@@ -154,10 +153,10 @@ func TestServer_BackupAndRestore(t *testing.T) {
 	}
 
 	// if doing a real restore, these dirs should exist in the real DB.
-	if err := os.MkdirAll(config.Data.Dir, 0777); err != nil {
+	if err := os.MkdirAll(config.Data.Dir, 0o777); err != nil {
 		t.Fatalf("error making restore dir: %s", err.Error())
 	}
-	if err := os.MkdirAll(config.Meta.Dir, 0777); err != nil {
+	if err := os.MkdirAll(config.Meta.Dir, 0o777); err != nil {
 		t.Fatalf("error making restore dir: %s", err.Error())
 	}
 
@@ -273,7 +272,6 @@ func TestServer_BackupAndRestore(t *testing.T) {
 	if res != expected {
 		t.Fatalf("query results wrong:\n\texp: %s\n\tgot: %s", expected, res)
 	}
-
 }
 
 func freePort() string {

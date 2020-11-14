@@ -290,7 +290,6 @@ func TestClient500_Query(t *testing.T) {
 
 	query := Query{}
 	resp, err := c.Query(query)
-
 	if err != nil {
 		t.Errorf("unexpected error.  expected nothing, actual %v", err)
 	}
@@ -387,7 +386,6 @@ func TestClient500_ChunkedQuery(t *testing.T) {
 
 	query := Query{Chunked: true}
 	resp, err := c.Query(query)
-
 	if err != nil {
 		t.Errorf("unexpected error.  expected nothing, actual %v", err)
 	}

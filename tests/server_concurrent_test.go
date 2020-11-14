@@ -35,11 +35,11 @@ func TestConcurrentServer_WriteValues(t *testing.T) {
 	}, "\n")
 
 	var i int64
-	var f1 = func() {
+	f1 := func() {
 		s.Write("db0", "rp0", fmt.Sprintf(write, i), nil)
 	}
 
-	var f2 = func() { s.DropDatabase("db0") }
+	f2 := func() { s.DropDatabase("db0") }
 	runTest(10*time.Second, f1, f2)
 }
 
@@ -64,7 +64,7 @@ func TestConcurrentServer_TagValues(t *testing.T) {
 		fmt.Sprintf(`a,host=serverA,region=usnorth val=23.2 %d`, mustParseTime(time.RFC3339Nano, "2000-01-01T00:00:00Z").UnixNano()),
 	}, "\n")
 
-	var f1 = func() {
+	f1 := func() {
 		s.Write("db0", "rp0", write, nil)
 	}
 
@@ -78,7 +78,7 @@ func TestConcurrentServer_TagValues(t *testing.T) {
 	}
 
 	cond := rewrite.(*influxql.ShowTagValuesStatement).Condition
-	var f2 = func() {
+	f2 := func() {
 		srv, ok := s.(*LocalServer)
 		if !ok {
 			t.Fatal("Not a local server")
@@ -98,7 +98,7 @@ func TestConcurrentServer_TagValues(t *testing.T) {
 		srv.TSDBStore.TagValues(nil, ids, cond)
 	}
 
-	var f3 = func() { s.DropDatabase("db0") }
+	f3 := func() { s.DropDatabase("db0") }
 	runTest(10*time.Second, f1, f2, f3)
 }
 
@@ -123,12 +123,12 @@ func TestConcurrentServer_ShowMeasurements(t *testing.T) {
 		fmt.Sprintf(`a,host=serverA,region=usnorth val=23.2 %d`, mustParseTime(time.RFC3339Nano, "2000-01-01T00:00:00Z").UnixNano()),
 	}, "\n")
 
-	var f1 = func() {
+	f1 := func() {
 		s.Write("db0", "rp0", write, nil)
 		s.DropDatabase("db0")
 	}
 
-	var f2 = func() {
+	f2 := func() {
 		srv, ok := s.(*LocalServer)
 		if !ok {
 			t.Fatal("Not a local server")

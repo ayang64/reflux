@@ -991,6 +991,7 @@ func ZigZagEncode(x int64) uint64 {
 func ZigZagDecode(v uint64) int64 {
 	return int64((v >> 1) ^ uint64((int64(v&1)<<63)>>63))
 }
+
 func getTimeEncoder(sz int) TimeEncoder {
 	x := timeEncoderPool.Get(sz).(TimeEncoder)
 	x.Reset()

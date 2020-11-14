@@ -279,7 +279,6 @@ func testEncode(t *testing.T, n int, val uint64) {
 	if got != n {
 		t.Fatalf("Count mismatch: got %v, exp %v", got, n)
 	}
-
 }
 
 func Test_Bytes(t *testing.T) {
@@ -313,7 +312,6 @@ func Test_Encode_ValueTooLarge(t *testing.T) {
 	_, err := enc.Bytes()
 	if err == nil {
 		t.Fatalf("Expected error, got nil")
-
 	}
 }
 
@@ -480,6 +478,7 @@ func BenchmarkEncoder(b *testing.B) {
 		b.SetBytes(int64(len(x)) * 8)
 	}
 }
+
 func BenchmarkDecode(b *testing.B) {
 	total := 0
 

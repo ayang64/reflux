@@ -130,7 +130,7 @@ func (s *SeriesSegment) InitForWrite() (err error) {
 	}
 
 	// Open file handler for writing & seek to end of data.
-	if s.file, err = os.OpenFile(s.path, os.O_WRONLY|os.O_CREATE, 0666); err != nil {
+	if s.file, err = os.OpenFile(s.path, os.O_WRONLY|os.O_CREATE, 0o666); err != nil {
 		return err
 	} else if _, err := s.file.Seek(int64(s.size), io.SeekStart); err != nil {
 		return err

@@ -69,7 +69,7 @@ func (h *Handler) archiveProfilesAndQueries(w http.ResponseWriter, r *http.Reque
 		Duration time.Duration // duration of profile if applicable.  curently only used by cpu and trace
 	}
 
-	var profiles = []prof{
+	profiles := []prof{
 		{Name: "goroutine"},
 		{Name: "block"},
 		{Name: "mutex"},
@@ -241,7 +241,7 @@ func (h *Handler) archiveProfilesAndQueries(w http.ResponseWriter, r *http.Reque
 		// Write the profile file's header.
 		err := tw.WriteHeader(&tar.Header{
 			Name: path.Join("profiles", profile.Name+".pb.gz"),
-			Mode: 0600,
+			Mode: 0o600,
 			Size: int64(buf.Len()),
 		})
 		if err != nil {
@@ -258,7 +258,7 @@ func (h *Handler) archiveProfilesAndQueries(w http.ResponseWriter, r *http.Reque
 	}
 
 	// Collect and write out the queries.
-	var allQueries = []struct {
+	allQueries := []struct {
 		name string
 		fn   func() ([]*models.Row, error)
 	}{
@@ -311,7 +311,7 @@ func (h *Handler) archiveProfilesAndQueries(w http.ResponseWriter, r *http.Reque
 
 		err = tw.WriteHeader(&tar.Header{
 			Name: path.Join("profiles", query.name+".txt"),
-			Mode: 0600,
+			Mode: 0o600,
 			Size: int64(buf.Len()),
 		})
 		if err != nil {

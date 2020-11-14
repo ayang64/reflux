@@ -144,7 +144,6 @@ func TestTagValueSeriesIDCache_addToSet(t *testing.T) {
 	if !tsdb.NewSeriesIDSet(20).Equals(ss) {
 		t.Fatalf("series id set was %v", ss)
 	}
-
 }
 
 func TestTagValueSeriesIDCache_ConcurrentGetPut(t *testing.T) {

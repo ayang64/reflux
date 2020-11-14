@@ -557,7 +557,6 @@ func (b *exprIteratorBuilder) buildCallIterator(ctx context.Context, expr *influ
 			return nil, fmt.Errorf("unsupported call: %s", expr.Name)
 		}
 	}()
-
 	if err != nil {
 		return nil, err
 	}

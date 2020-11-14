@@ -143,7 +143,6 @@ func (r *ring) count() int {
 // encountered will be returned, if any. apply is safe for use by multiple
 // goroutines.
 func (r *ring) apply(f func([]byte, *entry) error) error {
-
 	var (
 		wg  sync.WaitGroup
 		res = make(chan error, len(r.partitions))
@@ -313,5 +312,4 @@ func (p *partition) count() int {
 	}
 	p.mu.RUnlock()
 	return n
-
 }

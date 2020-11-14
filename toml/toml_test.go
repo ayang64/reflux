@@ -70,9 +70,9 @@ func TestFileMode_MarshalText(t *testing.T) {
 		mode int
 		want string
 	}{
-		{mode: 0755, want: `0755`},
-		{mode: 0777, want: `0777`},
-		{mode: 01777, want: `1777`},
+		{mode: 0o755, want: `0755`},
+		{mode: 0o777, want: `0777`},
+		{mode: 0o1777, want: `1777`},
 	} {
 		mode := itoml.FileMode(test.mode)
 		if got, err := mode.MarshalText(); err != nil {
@@ -89,10 +89,10 @@ func TestFileMode_UnmarshalText(t *testing.T) {
 		want uint32
 	}{
 		{str: ``, want: 0},
-		{str: `0777`, want: 0777},
-		{str: `777`, want: 0777},
-		{str: `1777`, want: 01777},
-		{str: `0755`, want: 0755},
+		{str: `0777`, want: 0o777},
+		{str: `777`, want: 0o777},
+		{str: `1777`, want: 0o1777},
+		{str: `0755`, want: 0o755},
 	} {
 		var mode itoml.FileMode
 		if err := mode.UnmarshalText([]byte(test.str)); err != nil {

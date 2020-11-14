@@ -67,7 +67,7 @@ func TestService_Open_TypesDBDir(t *testing.T) {
 	defer os.RemoveAll(tmpDir)
 
 	// Write types.db.
-	if err := ioutil.WriteFile(path.Join(tmpDir, "types.db"), []byte(typesDBText), 0777); err != nil {
+	if err := ioutil.WriteFile(path.Join(tmpDir, "types.db"), []byte(typesDBText), 0o777); err != nil {
 		t.Fatal(err)
 	}
 
@@ -319,7 +319,6 @@ Loop:
 			t.Fatalf("\n\texp = %s\n\tgot = %s\n", exp, got)
 		}
 	}
-
 }
 
 // Test that the collectd service correctly batches points using BatchDuration.

@@ -283,7 +283,7 @@ func (t *Tree) deletePrefix(parent, n *node, prefix []byte) int {
 	if len(prefix) == 0 {
 		// Remove the leaf node
 		subTreeSize := 0
-		//recursively walk from all edges of the node to be deleted
+		// recursively walk from all edges of the node to be deleted
 		recursiveWalk(n, func(s []byte, v int) bool {
 			subTreeSize++
 			return false

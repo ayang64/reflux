@@ -99,7 +99,7 @@ func (p *StoragePlan) InitFileSystem(client server.MetaClient) error {
 			return fmt.Errorf("multiple shards for the same owner %v", sgi.Shards[0].Owners)
 		}
 
-		if err = os.MkdirAll(filepath.Join(p.ShardPath(), strconv.Itoa(int(sgi.Shards[0].ID))), 0777); err != nil {
+		if err = os.MkdirAll(filepath.Join(p.ShardPath(), strconv.Itoa(int(sgi.Shards[0].ID))), 0o777); err != nil {
 			return err
 		}
 	}
@@ -190,6 +190,7 @@ func (v *planValidator) Visit(node Node) Visitor {
 
 	return v
 }
+
 func (v *planValidator) Err() error {
 	return v.errs.Err()
 }

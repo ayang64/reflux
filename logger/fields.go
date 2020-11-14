@@ -34,14 +34,13 @@ const (
 	// DBShardIDKey is the logging context key used for identifying name of the relevant shard number.
 	DBShardIDKey = "db_shard_id"
 )
+
 const (
 	eventStart = "start"
 	eventEnd   = "end"
 )
 
-var (
-	gen = snowflake.New(0)
-)
+var gen = snowflake.New(0)
 
 func nextID() string {
 	return gen.NextString()

@@ -377,7 +377,6 @@ func ParsePointsWithPrecision(buf []byte, defaultTime time.Time, precision strin
 		return points, fmt.Errorf("%s", strings.Join(failed, "\n"))
 	}
 	return points, nil
-
 }
 
 func parsePoint(buf []byte, defaultTime time.Time, precision string) (Point, error) {
@@ -1073,7 +1072,6 @@ func scanBoolean(buf []byte, i int) (int, []byte, error) {
 	}
 
 	return i, buf[start:i], nil
-
 }
 
 // skipWhitespace returns the end position within buf, starting at i after

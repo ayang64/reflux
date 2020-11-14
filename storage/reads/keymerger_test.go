@@ -74,7 +74,6 @@ func TestKeyMerger_MergeTagKeys(t *testing.T) {
 var commaB = []byte(",")
 
 func TestKeyMerger_MergeKeys(t *testing.T) {
-
 	tests := []struct {
 		name string
 		keys [][][]byte

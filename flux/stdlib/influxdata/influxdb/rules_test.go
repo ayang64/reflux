@@ -143,7 +143,8 @@ func TestPushDownFilterRule(t *testing.T) {
 				Object:   &semantic.IdentifierExpression{Name: "r"},
 				Property: "_measurement",
 			},
-			Right: &semantic.StringLiteral{Value: "cpu"}}
+			Right: &semantic.StringLiteral{Value: "cpu"},
+		}
 
 		pushableExpr2 = &semantic.BinaryExpression{
 			Operator: ast.EqualOperator,
@@ -151,14 +152,16 @@ func TestPushDownFilterRule(t *testing.T) {
 				Object:   &semantic.IdentifierExpression{Name: "r"},
 				Property: "_field",
 			},
-			Right: &semantic.StringLiteral{Value: "cpu"}}
+			Right: &semantic.StringLiteral{Value: "cpu"},
+		}
 
 		unpushableExpr = &semantic.BinaryExpression{
 			Operator: ast.LessThanOperator,
 			Left:     &semantic.FloatLiteral{Value: 0.5},
 			Right: &semantic.MemberExpression{
 				Object:   &semantic.IdentifierExpression{Name: "r"},
-				Property: "_value"},
+				Property: "_value",
+			},
 		}
 
 		statementFn = interpreter.ResolvedFunction{
@@ -304,7 +307,8 @@ func TestPushDownFilterRule(t *testing.T) {
 						Bounds: bounds,
 					}),
 					plan.CreatePhysicalNode("filter", &universe.FilterProcedureSpec{
-						Fn: makeResolvedFilterFn(pushableExpr1)},
+						Fn: makeResolvedFilterFn(pushableExpr1),
+					},
 					),
 				},
 				Edges: [][2]int{

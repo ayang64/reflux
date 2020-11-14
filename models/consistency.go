@@ -25,11 +25,9 @@ const (
 	ConsistencyLevelAll
 )
 
-var (
-	// ErrInvalidConsistencyLevel is returned when parsing the string version
-	// of a consistency level.
-	ErrInvalidConsistencyLevel = errors.New("invalid consistency level")
-)
+// ErrInvalidConsistencyLevel is returned when parsing the string version
+// of a consistency level.
+var ErrInvalidConsistencyLevel = errors.New("invalid consistency level")
 
 // ParseConsistencyLevel converts a consistency level string to the corresponding ConsistencyLevel const.
 func ParseConsistencyLevel(level string) (ConsistencyLevel, error) {

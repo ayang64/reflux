@@ -21,10 +21,8 @@ import (
 // largest box we could imagine running influx.
 const ringShards = 16
 
-var (
-	// ErrSnapshotInProgress is returned if a snapshot is attempted while one is already running.
-	ErrSnapshotInProgress = fmt.Errorf("snapshot in progress")
-)
+// ErrSnapshotInProgress is returned if a snapshot is attempted while one is already running.
+var ErrSnapshotInProgress = fmt.Errorf("snapshot in progress")
 
 // ErrCacheMemorySizeLimitExceeded returns an error indicating an operation
 // could not be completed due to exceeding the cache-max-memory-size setting.
@@ -702,11 +700,10 @@ func NewCacheLoader(files []string) *CacheLoader {
 // file is truncated up to and including the last valid byte, and processing
 // continues with the next segment file.
 func (cl *CacheLoader) Load(cache *Cache) error {
-
 	var r *WALSegmentReader
 	for _, fn := range cl.files {
 		if err := func() error {
-			f, err := os.OpenFile(fn, os.O_CREATE|os.O_RDWR, 0666)
+			f, err := os.OpenFile(fn, os.O_CREATE|os.O_RDWR, 0o666)
 			if err != nil {
 				return err
 			}

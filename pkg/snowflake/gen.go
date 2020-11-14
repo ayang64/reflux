@@ -107,7 +107,8 @@ var digits = [...]byte{
 	'U', 'V', 'W', 'X', 'Y', 'Z', '_', 'a', 'b', 'c',
 	'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
 	'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
-	'x', 'y', 'z', '~'}
+	'x', 'y', 'z', '~',
+}
 
 func encode(s *[11]byte, n uint64) {
 	s[10], n = digits[n&0x3f], n>>6

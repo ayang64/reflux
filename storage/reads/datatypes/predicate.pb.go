@@ -6,16 +6,19 @@ package datatypes
 import (
 	encoding_binary "encoding/binary"
 	fmt "fmt"
-	_ "github.com/gogo/protobuf/gogoproto"
-	proto "github.com/gogo/protobuf/proto"
 	io "io"
 	math "math"
+
+	_ "github.com/gogo/protobuf/gogoproto"
+	proto "github.com/gogo/protobuf/proto"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -155,9 +158,11 @@ func (*Node) ProtoMessage()    {}
 func (*Node) Descriptor() ([]byte, []int) {
 	return fileDescriptor_87cba9804b436f42, []int{0}
 }
+
 func (m *Node) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *Node) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_Node.Marshal(b, m, deterministic)
@@ -170,12 +175,15 @@ func (m *Node) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
+
 func (m *Node) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Node.Merge(m, src)
 }
+
 func (m *Node) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *Node) XXX_DiscardUnknown() {
 	xxx_messageInfo_Node.DiscardUnknown(m)
 }
@@ -191,30 +199,39 @@ type isNode_Value interface {
 type Node_StringValue struct {
 	StringValue string `protobuf:"bytes,3,opt,name=string_value,json=stringValue,proto3,oneof"`
 }
+
 type Node_BooleanValue struct {
 	BooleanValue bool `protobuf:"varint,4,opt,name=bool_value,json=boolValue,proto3,oneof"`
 }
+
 type Node_IntegerValue struct {
 	IntegerValue int64 `protobuf:"varint,5,opt,name=int_value,json=intValue,proto3,oneof"`
 }
+
 type Node_UnsignedValue struct {
 	UnsignedValue uint64 `protobuf:"varint,6,opt,name=uint_value,json=uintValue,proto3,oneof"`
 }
+
 type Node_FloatValue struct {
 	FloatValue float64 `protobuf:"fixed64,7,opt,name=float_value,json=floatValue,proto3,oneof"`
 }
+
 type Node_RegexValue struct {
 	RegexValue string `protobuf:"bytes,8,opt,name=regex_value,json=regexValue,proto3,oneof"`
 }
+
 type Node_TagRefValue struct {
 	TagRefValue string `protobuf:"bytes,9,opt,name=tag_ref_value,json=tagRefValue,proto3,oneof"`
 }
+
 type Node_FieldRefValue struct {
 	FieldRefValue string `protobuf:"bytes,10,opt,name=field_ref_value,json=fieldRefValue,proto3,oneof"`
 }
+
 type Node_Logical_ struct {
 	Logical Node_Logical `protobuf:"varint,11,opt,name=logical,proto3,enum=influxdata.platform.storage.Node_Logical,oneof"`
 }
+
 type Node_Comparison_ struct {
 	Comparison Node_Comparison `protobuf:"varint,12,opt,name=comparison,proto3,enum=influxdata.platform.storage.Node_Comparison,oneof"`
 }
@@ -515,9 +532,11 @@ func (*Predicate) ProtoMessage()    {}
 func (*Predicate) Descriptor() ([]byte, []int) {
 	return fileDescriptor_87cba9804b436f42, []int{1}
 }
+
 func (m *Predicate) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
+
 func (m *Predicate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
 		return xxx_messageInfo_Predicate.Marshal(b, m, deterministic)
@@ -530,12 +549,15 @@ func (m *Predicate) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 		return b[:n], nil
 	}
 }
+
 func (m *Predicate) XXX_Merge(src proto.Message) {
 	xxx_messageInfo_Predicate.Merge(m, src)
 }
+
 func (m *Predicate) XXX_Size() int {
 	return m.Size()
 }
+
 func (m *Predicate) XXX_DiscardUnknown() {
 	xxx_messageInfo_Predicate.DiscardUnknown(m)
 }
@@ -668,6 +690,7 @@ func (m *Node_StringValue) MarshalTo(dAtA []byte) (int, error) {
 	i += copy(dAtA[i:], m.StringValue)
 	return i, nil
 }
+
 func (m *Node_BooleanValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x20
@@ -680,6 +703,7 @@ func (m *Node_BooleanValue) MarshalTo(dAtA []byte) (int, error) {
 	i++
 	return i, nil
 }
+
 func (m *Node_IntegerValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x28
@@ -687,6 +711,7 @@ func (m *Node_IntegerValue) MarshalTo(dAtA []byte) (int, error) {
 	i = encodeVarintPredicate(dAtA, i, uint64(m.IntegerValue))
 	return i, nil
 }
+
 func (m *Node_UnsignedValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x30
@@ -694,6 +719,7 @@ func (m *Node_UnsignedValue) MarshalTo(dAtA []byte) (int, error) {
 	i = encodeVarintPredicate(dAtA, i, uint64(m.UnsignedValue))
 	return i, nil
 }
+
 func (m *Node_FloatValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x39
@@ -702,6 +728,7 @@ func (m *Node_FloatValue) MarshalTo(dAtA []byte) (int, error) {
 	i += 8
 	return i, nil
 }
+
 func (m *Node_RegexValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x42
@@ -710,6 +737,7 @@ func (m *Node_RegexValue) MarshalTo(dAtA []byte) (int, error) {
 	i += copy(dAtA[i:], m.RegexValue)
 	return i, nil
 }
+
 func (m *Node_TagRefValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x4a
@@ -718,6 +746,7 @@ func (m *Node_TagRefValue) MarshalTo(dAtA []byte) (int, error) {
 	i += copy(dAtA[i:], m.TagRefValue)
 	return i, nil
 }
+
 func (m *Node_FieldRefValue) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x52
@@ -726,6 +755,7 @@ func (m *Node_FieldRefValue) MarshalTo(dAtA []byte) (int, error) {
 	i += copy(dAtA[i:], m.FieldRefValue)
 	return i, nil
 }
+
 func (m *Node_Logical_) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x58
@@ -733,6 +763,7 @@ func (m *Node_Logical_) MarshalTo(dAtA []byte) (int, error) {
 	i = encodeVarintPredicate(dAtA, i, uint64(m.Logical))
 	return i, nil
 }
+
 func (m *Node_Comparison_) MarshalTo(dAtA []byte) (int, error) {
 	i := 0
 	dAtA[i] = 0x60
@@ -740,6 +771,7 @@ func (m *Node_Comparison_) MarshalTo(dAtA []byte) (int, error) {
 	i = encodeVarintPredicate(dAtA, i, uint64(m.Comparison))
 	return i, nil
 }
+
 func (m *Predicate) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -777,6 +809,7 @@ func encodeVarintPredicate(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+
 func (m *Node) Size() (n int) {
 	if m == nil {
 		return 0
@@ -808,6 +841,7 @@ func (m *Node_StringValue) Size() (n int) {
 	n += 1 + l + sovPredicate(uint64(l))
 	return n
 }
+
 func (m *Node_BooleanValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -817,6 +851,7 @@ func (m *Node_BooleanValue) Size() (n int) {
 	n += 2
 	return n
 }
+
 func (m *Node_IntegerValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -826,6 +861,7 @@ func (m *Node_IntegerValue) Size() (n int) {
 	n += 1 + sovPredicate(uint64(m.IntegerValue))
 	return n
 }
+
 func (m *Node_UnsignedValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -835,6 +871,7 @@ func (m *Node_UnsignedValue) Size() (n int) {
 	n += 1 + sovPredicate(uint64(m.UnsignedValue))
 	return n
 }
+
 func (m *Node_FloatValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -844,6 +881,7 @@ func (m *Node_FloatValue) Size() (n int) {
 	n += 9
 	return n
 }
+
 func (m *Node_RegexValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -854,6 +892,7 @@ func (m *Node_RegexValue) Size() (n int) {
 	n += 1 + l + sovPredicate(uint64(l))
 	return n
 }
+
 func (m *Node_TagRefValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -864,6 +903,7 @@ func (m *Node_TagRefValue) Size() (n int) {
 	n += 1 + l + sovPredicate(uint64(l))
 	return n
 }
+
 func (m *Node_FieldRefValue) Size() (n int) {
 	if m == nil {
 		return 0
@@ -874,6 +914,7 @@ func (m *Node_FieldRefValue) Size() (n int) {
 	n += 1 + l + sovPredicate(uint64(l))
 	return n
 }
+
 func (m *Node_Logical_) Size() (n int) {
 	if m == nil {
 		return 0
@@ -883,6 +924,7 @@ func (m *Node_Logical_) Size() (n int) {
 	n += 1 + sovPredicate(uint64(m.Logical))
 	return n
 }
+
 func (m *Node_Comparison_) Size() (n int) {
 	if m == nil {
 		return 0
@@ -892,6 +934,7 @@ func (m *Node_Comparison_) Size() (n int) {
 	n += 1 + sovPredicate(uint64(m.Comparison))
 	return n
 }
+
 func (m *Predicate) Size() (n int) {
 	if m == nil {
 		return 0
@@ -915,9 +958,11 @@ func sovPredicate(x uint64) (n int) {
 	}
 	return n
 }
+
 func sozPredicate(x uint64) (n int) {
 	return sovPredicate(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+
 func (m *Node) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1264,6 +1309,7 @@ func (m *Node) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *Predicate) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1353,6 +1399,7 @@ func (m *Predicate) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipPredicate(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

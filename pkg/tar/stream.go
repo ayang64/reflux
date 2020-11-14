@@ -132,7 +132,7 @@ func extractFile(tr *tar.Reader, dir string) error {
 	// Make sure the dir we need to write into exists.  It should, but just double check in
 	// case we get a slightly invalid tarball.
 	if subDir != "" {
-		if err := os.MkdirAll(filepath.Join(dir, subDir), 0755); err != nil {
+		if err := os.MkdirAll(filepath.Join(dir, subDir), 0o755); err != nil {
 			return err
 		}
 	}

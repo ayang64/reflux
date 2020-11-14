@@ -529,7 +529,7 @@ func (f *FileStore) Open() error {
 			f.currentGeneration = generation + 1
 		}
 
-		file, err := os.OpenFile(fn, os.O_RDONLY, 0666)
+		file, err := os.OpenFile(fn, os.O_RDONLY, 0o666)
 		if err != nil {
 			return fmt.Errorf("error opening file %s: %v", fn, err)
 		}
@@ -742,7 +742,7 @@ func (f *FileStore) replace(oldFiles, newFiles []string, updatedFn func(r []TSMF
 			return err
 		}
 
-		var oldName, newName = file, file
+		oldName, newName := file, file
 		if strings.HasSuffix(oldName, tsmTmpExt) {
 			// The new TSM files have a tmp extension.  First rename them.
 			newName = file[:len(file)-4]
@@ -1092,7 +1092,7 @@ func (f *FileStore) CreateSnapshot() (string, error) {
 
 	// create the tmp directory and add the hard links. there is no longer any
 	// shared mutable state.
-	if err := os.Mkdir(tmpPath, 0777); err != nil {
+	if err := os.Mkdir(tmpPath, 0o777); err != nil {
 		return "", err
 	}
 

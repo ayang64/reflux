@@ -27,7 +27,6 @@ func (itr *floatIterator) Next() (*FloatPoint, error) {
 }
 
 func TestSortedMergeHeap_DetectFast(t *testing.T) {
-
 	suite := []*struct {
 		inputs    []FloatIterator
 		ascending bool

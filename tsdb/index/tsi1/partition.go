@@ -160,7 +160,7 @@ func (p *Partition) Open() error {
 	}
 
 	// Create directory if it doesn't exist.
-	if err := os.MkdirAll(p.path, 0777); err != nil {
+	if err := os.MkdirAll(p.path, 0o777); err != nil {
 		return err
 	}
 
@@ -942,7 +942,6 @@ func (p *Partition) compact() {
 			// Start compacting in a separate goroutine.
 			p.currentCompactionN++
 			go func() {
-
 				// Compact to a new level.
 				p.compactToLevel(files, level+1, interrupt)
 
@@ -1300,7 +1299,7 @@ func (m *Manifest) Write() (int64, error) {
 	}
 	buf = append(buf, '\n')
 
-	if err := ioutil.WriteFile(m.path, buf, 0666); err != nil {
+	if err := ioutil.WriteFile(m.path, buf, 0o666); err != nil {
 		return 0, err
 	}
 	return int64(len(buf)), nil

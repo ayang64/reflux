@@ -142,7 +142,7 @@ func (i *importer) StartShardGroup(start int64, end int64) error {
 	}
 
 	shardPath = filepath.Join(shardsPath, strconv.Itoa(int(shardID)))
-	if err = os.MkdirAll(shardPath, 0777); err != nil {
+	if err = os.MkdirAll(shardPath, 0o777); err != nil {
 		return err
 	}
 

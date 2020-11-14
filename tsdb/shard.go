@@ -82,10 +82,8 @@ var (
 	fieldsIndexMagicNumber = []byte{0, 6, 1, 3}
 )
 
-var (
-	// Static objects to prevent small allocs.
-	timeBytes = []byte("time")
-)
+// Static objects to prevent small allocs.
+var timeBytes = []byte("time")
 
 // A ShardError implements the error interface, and contains extra
 // context about the shard that generated the error.
@@ -1740,7 +1738,7 @@ func (fs *MeasurementFieldSet) saveNoLock() error {
 
 	// Write the new index to a temp file and rename when it's sync'd
 	path := fs.path + ".tmp"
-	fd, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_EXCL|os.O_SYNC, 0666)
+	fd, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR|os.O_EXCL|os.O_SYNC, 0o666)
 	if err != nil {
 		return err
 	}
@@ -1780,7 +1778,7 @@ func (fs *MeasurementFieldSet) saveNoLock() error {
 		return err
 	}
 
-	//close file handle before renaming to support Windows
+	// close file handle before renaming to support Windows
 	if err = fd.Close(); err != nil {
 		return err
 	}

@@ -334,7 +334,7 @@ func NewBrokenSeriesFile(content []byte) *SeriesFile {
 	if _, err := os.Stat(segPath); os.IsNotExist(err) {
 		panic(err)
 	}
-	err := ioutil.WriteFile(segPath, content, 0777)
+	err := ioutil.WriteFile(segPath, content, 0o777)
 	if err != nil {
 		panic(err)
 	}

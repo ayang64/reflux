@@ -16,8 +16,8 @@ import (
 // Ensure iterator can operate over an in-memory list of elements.
 func TestMeasurementIterator(t *testing.T) {
 	elems := []MeasurementElem{
-		MeasurementElem{name: []byte("cpu"), deleted: true},
-		MeasurementElem{name: []byte("mem")},
+		{name: []byte("cpu"), deleted: true},
+		{name: []byte("mem")},
 	}
 
 	itr := MeasurementIterator{Elems: elems}
@@ -269,7 +269,7 @@ func MustTempDir() string {
 func MustTempPartitionDir() string {
 	path := MustTempDir()
 	path = filepath.Join(path, "0")
-	if err := os.Mkdir(path, 0777); err != nil {
+	if err := os.Mkdir(path, 0o777); err != nil {
 		panic(err)
 	}
 	return path

@@ -27,7 +27,7 @@ func TimeArrayEncodeAll(src []int64, b []byte) ([]byte, error) {
 		return nil, nil // Nothing to do
 	}
 
-	var max, div = uint64(0), uint64(1e12)
+	max, div := uint64(0), uint64(1e12)
 
 	// To prevent an allocation of the entire block we're encoding reuse the
 	// src slice to store the encoded deltas.
@@ -41,7 +41,7 @@ func TimeArrayEncodeAll(src []int64, b []byte) ([]byte, error) {
 			}
 		}
 
-		var rle = true
+		rle := true
 		for i := 2; i < len(deltas); i++ {
 			if deltas[1] != deltas[i] {
 				rle = false
@@ -151,14 +151,12 @@ func TimeArrayEncodeAll(src []int64, b []byte) ([]byte, error) {
 	return b[:sz], nil
 }
 
-var (
-	timeBatchDecoderFunc = [...]func(b []byte, dst []int64) ([]int64, error){
-		timeBatchDecodeAllUncompressed,
-		timeBatchDecodeAllSimple,
-		timeBatchDecodeAllRLE,
-		timeBatchDecodeAllInvalid,
-	}
-)
+var timeBatchDecoderFunc = [...]func(b []byte, dst []int64) ([]int64, error){
+	timeBatchDecodeAllUncompressed,
+	timeBatchDecodeAllSimple,
+	timeBatchDecodeAllRLE,
+	timeBatchDecodeAllInvalid,
+}
 
 func TimeArrayDecodeAll(b []byte, dst []int64) ([]int64, error) {
 	if len(b) == 0 {

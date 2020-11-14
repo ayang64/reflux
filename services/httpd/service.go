@@ -136,7 +136,7 @@ func (s *Service) Open() error {
 		if runtime.GOOS == "windows" {
 			return fmt.Errorf("unable to use unix socket on windows")
 		}
-		if err := os.MkdirAll(path.Dir(s.bindSocket), 0777); err != nil {
+		if err := os.MkdirAll(path.Dir(s.bindSocket), 0o777); err != nil {
 			return err
 		}
 		if err := syscall.Unlink(s.bindSocket); err != nil && !os.IsNotExist(err) {

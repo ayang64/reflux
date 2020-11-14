@@ -21,20 +21,24 @@
 */
 package binary
 
-import proto "github.com/gogo/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import _ "github.com/gogo/protobuf/gogoproto"
+import (
+	proto "github.com/gogo/protobuf/proto"
+	fmt "fmt"
+	math "math"
+	_ "github.com/gogo/protobuf/gogoproto"
+)
 
 import time "time"
 
 import io "io"
 
 // Reference imports to suppress errors if they are not otherwise used.
-var _ = proto.Marshal
-var _ = fmt.Errorf
-var _ = math.Inf
-var _ = time.Kitchen
+var (
+	_ = proto.Marshal
+	_ = fmt.Errorf
+	_ = math.Inf
+	_ = time.Kitchen
+)
 
 // This is a compile-time assertion to ensure that this generated file
 // is compatible with the proto package it is being compiled against.
@@ -59,6 +63,7 @@ var FieldType_name = map[int32]string{
 	3: "BOOLEAN",
 	4: "STRING",
 }
+
 var FieldType_value = map[string]int32{
 	"FLOAT":    0,
 	"INTEGER":  1,
@@ -81,6 +86,7 @@ const (
 var Header_Version_name = map[int32]string{
 	0: "VERSION_0",
 }
+
 var Header_Version_value = map[string]int32{
 	"VERSION_0": 0,
 }
@@ -203,6 +209,7 @@ func init() {
 	proto.RegisterEnum("binary.FieldType", FieldType_name, FieldType_value)
 	proto.RegisterEnum("binary.Header_Version", Header_Version_name, Header_Version_value)
 }
+
 func (m *Header) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -645,6 +652,7 @@ func encodeFixed64Binary(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset+7] = uint8(v >> 56)
 	return offset + 8
 }
+
 func encodeFixed32Binary(dAtA []byte, offset int, v uint32) int {
 	dAtA[offset] = uint8(v)
 	dAtA[offset+1] = uint8(v >> 8)
@@ -652,6 +660,7 @@ func encodeFixed32Binary(dAtA []byte, offset int, v uint32) int {
 	dAtA[offset+3] = uint8(v >> 24)
 	return offset + 4
 }
+
 func encodeVarintBinary(dAtA []byte, offset int, v uint64) int {
 	for v >= 1<<7 {
 		dAtA[offset] = uint8(v&0x7f | 0x80)
@@ -661,6 +670,7 @@ func encodeVarintBinary(dAtA []byte, offset int, v uint64) int {
 	dAtA[offset] = uint8(v)
 	return offset + 1
 }
+
 func (m *Header) Size() (n int) {
 	var l int
 	_ = l
@@ -803,9 +813,11 @@ func sovBinary(x uint64) (n int) {
 	}
 	return n
 }
+
 func sozBinary(x uint64) (n int) {
 	return sovBinary(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
+
 func (m *Header) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -952,6 +964,7 @@ func (m *Header) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *BucketHeader) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1036,6 +1049,7 @@ func (m *BucketHeader) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *BucketFooter) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1086,6 +1100,7 @@ func (m *BucketFooter) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *FloatPoints) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1254,6 +1269,7 @@ func (m *FloatPoints) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *IntegerPoints) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1424,6 +1440,7 @@ func (m *IntegerPoints) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *UnsignedPoints) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1594,6 +1611,7 @@ func (m *UnsignedPoints) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *BooleanPoints) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1764,6 +1782,7 @@ func (m *BooleanPoints) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *StringPoints) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -1901,6 +1920,7 @@ func (m *StringPoints) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *SeriesHeader) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2032,6 +2052,7 @@ func (m *SeriesHeader) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func (m *SeriesFooter) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
@@ -2082,6 +2103,7 @@ func (m *SeriesFooter) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
+
 func skipBinary(dAtA []byte) (n int, err error) {
 	l := len(dAtA)
 	iNdEx := 0

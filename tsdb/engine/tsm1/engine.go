@@ -330,7 +330,7 @@ func (e *Engine) Digest() (io.ReadCloser, int64, error) {
 	// so generate a new digest.
 
 	// Make sure the directory exists, in case it was deleted for some reason.
-	if err := os.MkdirAll(e.path, 0777); err != nil {
+	if err := os.MkdirAll(e.path, 0o777); err != nil {
 		log.Info("Digest aborted, problem creating shard directory path", zap.Error(err))
 		return nil, 0, err
 	}
@@ -721,7 +721,7 @@ func (e *Engine) DiskSize() int64 {
 
 // Open opens and initializes the engine.
 func (e *Engine) Open() error {
-	if err := os.MkdirAll(e.path, 0777); err != nil {
+	if err := os.MkdirAll(e.path, 0o777); err != nil {
 		return err
 	}
 
@@ -1004,7 +1004,7 @@ func (e *Engine) Export(w io.Writer, basePath string, start time.Time, end time.
 
 func (e *Engine) filterFileToBackup(r *TSMReader, fi os.FileInfo, shardRelativePath, fullPath string, start, end int64, tw *tar.Writer) error {
 	path := fullPath + ".tmp"
-	out, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0666)
+	out, err := os.OpenFile(path, os.O_CREATE|os.O_RDWR, 0o666)
 	if err != nil {
 		return err
 	}
@@ -1096,7 +1096,6 @@ func (e *Engine) overlay(r io.Reader, basePath string, asNew bool) error {
 		}
 		return newFiles, nil
 	}()
-
 	if err != nil {
 		return err
 	}
@@ -1207,7 +1206,7 @@ func (e *Engine) readFileFromBackup(tr *tar.Reader, shardRelativePath string, as
 
 	tmp := fmt.Sprintf("%s.%s", filepath.Join(e.path, filename), TmpTSMFileExtension)
 	// Create new file on disk.
-	f, err := os.OpenFile(tmp, os.O_CREATE|os.O_RDWR, 0666)
+	f, err := os.OpenFile(tmp, os.O_CREATE|os.O_RDWR, 0o666)
 	if err != nil {
 		return "", err
 	}
@@ -1836,7 +1835,6 @@ func (e *Engine) cleanupMeasurement(name []byte) error {
 			}
 			return nil
 		})
-
 	}); err != nil && err != abortErr {
 		// Something else failed, return it
 		return err
@@ -1914,7 +1912,6 @@ func (e *Engine) WriteSnapshot() (err error) {
 
 		return
 	}()
-
 	if err != nil {
 		return err
 	}
@@ -3145,18 +3142,16 @@ func SeriesFieldKeyBytes(seriesKey, field string) []byte {
 	return b
 }
 
-var (
-	blockToFieldType = [8]influxql.DataType{
-		BlockFloat64:  influxql.Float,
-		BlockInteger:  influxql.Integer,
-		BlockBoolean:  influxql.Boolean,
-		BlockString:   influxql.String,
-		BlockUnsigned: influxql.Unsigned,
-		5:             influxql.Unknown,
-		6:             influxql.Unknown,
-		7:             influxql.Unknown,
-	}
-)
+var blockToFieldType = [8]influxql.DataType{
+	BlockFloat64:  influxql.Float,
+	BlockInteger:  influxql.Integer,
+	BlockBoolean:  influxql.Boolean,
+	BlockString:   influxql.String,
+	BlockUnsigned: influxql.Unsigned,
+	5:             influxql.Unknown,
+	6:             influxql.Unknown,
+	7:             influxql.Unknown,
+}
 
 func BlockTypeToInfluxQLDataType(typ byte) influxql.DataType { return blockToFieldType[typ&7] }
 

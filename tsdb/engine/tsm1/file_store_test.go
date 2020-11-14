@@ -23,9 +23,9 @@ func TestFileStore_Read(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -60,9 +60,9 @@ func TestFileStore_SeekToAsc_FromStart(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -99,10 +99,10 @@ func TestFileStore_SeekToAsc_Duplicate(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 4.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 4.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -172,9 +172,9 @@ func TestFileStore_SeekToAsc_BeforeStart(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -213,10 +213,10 @@ func TestFileStore_SeekToAsc_BeforeStart_OverlapFloat(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 4.0), tsm1.NewValue(2, 7.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 4.0), tsm1.NewValue(2, 7.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -280,10 +280,10 @@ func TestFileStore_SeekToAsc_BeforeStart_OverlapInteger(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(0)), tsm1.NewValue(1, int64(1))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, int64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(4)), tsm1.NewValue(2, int64(7))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(0)), tsm1.NewValue(1, int64(1))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, int64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(4)), tsm1.NewValue(2, int64(7))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -346,10 +346,10 @@ func TestFileStore_SeekToAsc_BeforeStart_OverlapUnsigned(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(0)), tsm1.NewValue(1, uint64(1))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, uint64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(4)), tsm1.NewValue(2, uint64(7))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(0)), tsm1.NewValue(1, uint64(1))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, uint64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(4)), tsm1.NewValue(2, uint64(7))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -412,10 +412,10 @@ func TestFileStore_SeekToAsc_BeforeStart_OverlapBoolean(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, true), tsm1.NewValue(1, false)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, false), tsm1.NewValue(2, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, true), tsm1.NewValue(1, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, false), tsm1.NewValue(2, true)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -478,10 +478,10 @@ func TestFileStore_SeekToAsc_BeforeStart_OverlapString(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, "zero"), tsm1.NewValue(1, "one")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, "two")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, "three")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, "four"), tsm1.NewValue(2, "seven")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, "zero"), tsm1.NewValue(1, "one")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, "two")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, "three")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, "four"), tsm1.NewValue(2, "seven")}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -544,10 +544,10 @@ func TestFileStore_SeekToAsc_OverlapMinFloat(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0), tsm1.NewValue(3, 3.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0), tsm1.NewValue(4, 4.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.1)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.2)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0), tsm1.NewValue(3, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0), tsm1.NewValue(4, 4.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.1)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.2)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -624,10 +624,10 @@ func TestFileStore_SeekToAsc_OverlapMinInteger(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, int64(1)), tsm1.NewValue(3, int64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2)), tsm1.NewValue(4, int64(4))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(0)), tsm1.NewValue(1, int64(10))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(5))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, int64(1)), tsm1.NewValue(3, int64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2)), tsm1.NewValue(4, int64(4))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(0)), tsm1.NewValue(1, int64(10))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(5))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -703,10 +703,10 @@ func TestFileStore_SeekToAsc_OverlapMinUnsigned(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, uint64(1)), tsm1.NewValue(3, uint64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2)), tsm1.NewValue(4, uint64(4))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(0)), tsm1.NewValue(1, uint64(10))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(5))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, uint64(1)), tsm1.NewValue(3, uint64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2)), tsm1.NewValue(4, uint64(4))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(0)), tsm1.NewValue(1, uint64(10))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(5))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -782,10 +782,10 @@ func TestFileStore_SeekToAsc_OverlapMinBoolean(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, true), tsm1.NewValue(3, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, true), tsm1.NewValue(4, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, true), tsm1.NewValue(1, false)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, true), tsm1.NewValue(3, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, true), tsm1.NewValue(4, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, true), tsm1.NewValue(1, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, false)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -861,10 +861,10 @@ func TestFileStore_SeekToAsc_OverlapMinString(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, "1.0"), tsm1.NewValue(3, "3.0")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.0"), tsm1.NewValue(4, "4.0")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, "0.0"), tsm1.NewValue(1, "1.1")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.2")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, "1.0"), tsm1.NewValue(3, "3.0")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.0"), tsm1.NewValue(4, "4.0")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, "0.0"), tsm1.NewValue(1, "1.1")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.2")}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -938,10 +938,12 @@ func TestFileStore_SeekToAsc_Middle(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0),
+		{"cpu", []tsm1.Value{
+			tsm1.NewValue(1, 1.0),
 			tsm1.NewValue(2, 2.0),
-			tsm1.NewValue(3, 3.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(4, 4.0)}},
+			tsm1.NewValue(3, 3.0),
+		}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(4, 4.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -986,7 +988,6 @@ func TestFileStore_SeekToAsc_Middle(t *testing.T) {
 			t.Fatalf("read value mismatch(%d): got %v, exp %v", i, got, exp)
 		}
 	}
-
 }
 
 func TestFileStore_SeekToAsc_End(t *testing.T) {
@@ -996,9 +997,9 @@ func TestFileStore_SeekToAsc_End(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1034,9 +1035,9 @@ func TestFileStore_SeekToDesc_FromStart(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1072,10 +1073,10 @@ func TestFileStore_SeekToDesc_Duplicate(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 4.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 4.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1131,10 +1132,10 @@ func TestFileStore_SeekToDesc_OverlapMaxFloat(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0), tsm1.NewValue(3, 3.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0), tsm1.NewValue(4, 4.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.1)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.2)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0), tsm1.NewValue(3, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0), tsm1.NewValue(4, 4.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.1)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.2)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1196,10 +1197,10 @@ func TestFileStore_SeekToDesc_OverlapMaxInteger(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, int64(1)), tsm1.NewValue(3, int64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2)), tsm1.NewValue(4, int64(4))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(0)), tsm1.NewValue(1, int64(10))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(5))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, int64(1)), tsm1.NewValue(3, int64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2)), tsm1.NewValue(4, int64(4))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, int64(0)), tsm1.NewValue(1, int64(10))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(5))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1251,6 +1252,7 @@ func TestFileStore_SeekToDesc_OverlapMaxInteger(t *testing.T) {
 		}
 	}
 }
+
 func TestFileStore_SeekToDesc_OverlapMaxUnsigned(t *testing.T) {
 	dir := MustTempDir()
 	defer os.RemoveAll(dir)
@@ -1258,10 +1260,10 @@ func TestFileStore_SeekToDesc_OverlapMaxUnsigned(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, uint64(1)), tsm1.NewValue(3, uint64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2)), tsm1.NewValue(4, uint64(4))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(0)), tsm1.NewValue(1, uint64(10))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(5))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, uint64(1)), tsm1.NewValue(3, uint64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2)), tsm1.NewValue(4, uint64(4))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, uint64(0)), tsm1.NewValue(1, uint64(10))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(5))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1321,10 +1323,10 @@ func TestFileStore_SeekToDesc_OverlapMaxBoolean(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, true), tsm1.NewValue(3, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, true), tsm1.NewValue(4, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, true), tsm1.NewValue(1, false)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, true), tsm1.NewValue(3, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, true), tsm1.NewValue(4, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, true), tsm1.NewValue(1, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, false)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1384,10 +1386,10 @@ func TestFileStore_SeekToDesc_OverlapMaxString(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, "1.0"), tsm1.NewValue(3, "3.0")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.0"), tsm1.NewValue(4, "4.0")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, "0.0"), tsm1.NewValue(1, "1.1")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.2")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, "1.0"), tsm1.NewValue(3, "3.0")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.0"), tsm1.NewValue(4, "4.0")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, "0.0"), tsm1.NewValue(1, "1.1")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, "2.2")}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1447,9 +1449,9 @@ func TestFileStore_SeekToDesc_AfterEnd(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1485,10 +1487,10 @@ func TestFileStore_SeekToDesc_AfterEnd_OverlapFloat(t *testing.T) {
 
 	// Setup 4 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(8, 0.0), tsm1.NewValue(9, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, 4.0), tsm1.NewValue(7, 7.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(8, 0.0), tsm1.NewValue(9, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, 4.0), tsm1.NewValue(7, 7.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1582,10 +1584,10 @@ func TestFileStore_SeekToDesc_AfterEnd_OverlapInteger(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(8, int64(0)), tsm1.NewValue(9, int64(1))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, int64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, int64(4)), tsm1.NewValue(10, int64(7))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(8, int64(0)), tsm1.NewValue(9, int64(1))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, int64(2))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, int64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, int64(4)), tsm1.NewValue(10, int64(7))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1659,10 +1661,10 @@ func TestFileStore_SeekToDesc_AfterEnd_OverlapUnsigned(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(8, uint64(0)), tsm1.NewValue(9, uint64(1))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, uint64(3))}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, uint64(4)), tsm1.NewValue(10, uint64(7))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(8, uint64(0)), tsm1.NewValue(9, uint64(1))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, uint64(2))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, uint64(3))}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, uint64(4)), tsm1.NewValue(10, uint64(7))}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1736,10 +1738,10 @@ func TestFileStore_SeekToDesc_AfterEnd_OverlapBoolean(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(8, true), tsm1.NewValue(9, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, true)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, false)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, true), tsm1.NewValue(7, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(8, true), tsm1.NewValue(9, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, true)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, false)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, true), tsm1.NewValue(7, false)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1833,10 +1835,10 @@ func TestFileStore_SeekToDesc_AfterEnd_OverlapString(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(8, "eight"), tsm1.NewValue(9, "nine")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, "two")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, "three")}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(3, "four"), tsm1.NewValue(7, "seven")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(8, "eight"), tsm1.NewValue(9, "nine")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, "two")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, "three")}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(3, "four"), tsm1.NewValue(7, "seven")}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -1930,11 +1932,13 @@ func TestFileStore_SeekToDesc_Middle(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{
-			tsm1.NewValue(2, 2.0),
-			tsm1.NewValue(3, 3.0),
-			tsm1.NewValue(4, 4.0)},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 1.0)}},
+		{
+			"cpu", []tsm1.Value{
+				tsm1.NewValue(2, 2.0),
+				tsm1.NewValue(3, 3.0),
+				tsm1.NewValue(4, 4.0),
+			},
 		},
 	}
 
@@ -2007,9 +2011,9 @@ func TestFileStore_SeekToDesc_End(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2045,9 +2049,9 @@ func TestKeyCursor_TombstoneRange(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2089,8 +2093,8 @@ func TestKeyCursor_TombstoneRange_PartialFirst(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 0.0), tsm1.NewValue(1, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 2.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2132,10 +2136,11 @@ func TestKeyCursor_TombstoneRange_PartialFloat(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{
+		{"cpu", []tsm1.Value{
 			tsm1.NewValue(0, 1.0),
 			tsm1.NewValue(1, 2.0),
-			tsm1.NewValue(2, 3.0)}},
+			tsm1.NewValue(2, 3.0),
+		}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2176,10 +2181,11 @@ func TestKeyCursor_TombstoneRange_PartialInteger(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{
+		{"cpu", []tsm1.Value{
 			tsm1.NewValue(0, int64(1)),
 			tsm1.NewValue(1, int64(2)),
-			tsm1.NewValue(2, int64(3))}},
+			tsm1.NewValue(2, int64(3)),
+		}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2220,10 +2226,11 @@ func TestKeyCursor_TombstoneRange_PartialUnsigned(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{
+		{"cpu", []tsm1.Value{
 			tsm1.NewValue(0, uint64(1)),
 			tsm1.NewValue(1, uint64(2)),
-			tsm1.NewValue(2, uint64(3))}},
+			tsm1.NewValue(2, uint64(3)),
+		}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2264,10 +2271,11 @@ func TestKeyCursor_TombstoneRange_PartialString(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{
+		{"cpu", []tsm1.Value{
 			tsm1.NewValue(0, "1"),
 			tsm1.NewValue(1, "2"),
-			tsm1.NewValue(2, "3")}},
+			tsm1.NewValue(2, "3"),
+		}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2308,10 +2316,11 @@ func TestKeyCursor_TombstoneRange_PartialBoolean(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{
+		{"cpu", []tsm1.Value{
 			tsm1.NewValue(0, true),
 			tsm1.NewValue(1, false),
-			tsm1.NewValue(2, true)}},
+			tsm1.NewValue(2, true),
+		}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2351,9 +2360,9 @@ func TestFileStore_Open(t *testing.T) {
 
 	// Create 3 TSM files...
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	_, err := newFileDir(dir, data...)
@@ -2382,9 +2391,9 @@ func TestFileStore_Remove(t *testing.T) {
 
 	// Create 3 TSM files...
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	files, err := newFileDir(dir, data...)
@@ -2423,9 +2432,9 @@ func TestFileStore_Replace(t *testing.T) {
 
 	// Create 3 TSM files...
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFileDir(dir, data...)
@@ -2505,7 +2514,6 @@ func TestFileStore_Replace(t *testing.T) {
 	if _, err := os.Stat(files[2]); err != nil {
 		t.Fatalf("stat file: %v", err)
 	}
-
 }
 
 func TestFileStore_Open_Deleted(t *testing.T) {
@@ -2514,9 +2522,9 @@ func TestFileStore_Open_Deleted(t *testing.T) {
 
 	// Create 3 TSM files...
 	data := []keyValues{
-		keyValues{"cpu,host=server2!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu,host=server2!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	_, err := newFileDir(dir, data...)
@@ -2556,9 +2564,9 @@ func TestFileStore_Delete(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu,host=server2!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu,host=server2!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem,host=server1!~#!value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2590,9 +2598,9 @@ func TestFileStore_Apply(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu,host=server2#!~#value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu,host=server1#!~#value", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem,host=server1#!~#value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu,host=server2#!~#value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu,host=server1#!~#value", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem,host=server1#!~#value", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2626,9 +2634,9 @@ func TestFileStore_Stats(t *testing.T) {
 
 	// Create 3 TSM files...
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"mem", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
 	}
 
 	files, err := newFileDir(dir, data...)
@@ -2660,7 +2668,7 @@ func TestFileStore_Stats(t *testing.T) {
 
 	// Write a new TSM file that that is not open
 	newFile := MustWriteTSM(dir, 4, map[string][]tsm1.Value{
-		"mem": []tsm1.Value{tsm1.NewValue(0, 1.0)},
+		"mem": {tsm1.NewValue(0, 1.0)},
 	})
 
 	replacement := fmt.Sprintf("%s.%s.%s", files[2], tsm1.TmpTSMFileExtension, tsm1.TSMFileExtension) // Assumes new files have a .tmp extension
@@ -2685,7 +2693,7 @@ func TestFileStore_Stats(t *testing.T) {
 	}
 
 	newFile = MustWriteTSM(dir, 5, map[string][]tsm1.Value{
-		"mem": []tsm1.Value{tsm1.NewValue(0, 1.0)},
+		"mem": {tsm1.NewValue(0, 1.0)},
 	})
 
 	// Adding some files should invalidate the cache.
@@ -2702,9 +2710,9 @@ func TestFileStore_CreateSnapshot(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(2, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2794,9 +2802,9 @@ func TestFileStore_Observer(t *testing.T) {
 
 	// Setup 3 files
 	data := []keyValues{
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0), tsm1.NewValue(1, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(10, 2.0)}},
-		keyValues{"cpu", []tsm1.Value{tsm1.NewValue(20, 3.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(0, 1.0), tsm1.NewValue(1, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(10, 2.0)}},
+		{"cpu", []tsm1.Value{tsm1.NewValue(20, 3.0)}},
 	}
 
 	files, err := newFiles(dir, data...)
@@ -2884,7 +2892,6 @@ func newFileDir(dir string, values ...keyValues) ([]string, error) {
 		files = append(files, newName)
 	}
 	return files, nil
-
 }
 
 func newFiles(dir string, values ...keyValues) ([]string, error) {

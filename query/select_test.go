@@ -2931,11 +2931,14 @@ func TestSelect_Raw(t *testing.T) {
 					}
 					return &FloatIterator{Points: []query.FloatPoint{
 						{Name: "cpu", Time: 0 * Second, Aux: []interface{}{
-							true, float64(20), int64(20), "a", uint64(20)}},
+							true, float64(20), int64(20), "a", uint64(20),
+						}},
 						{Name: "cpu", Time: 5 * Second, Aux: []interface{}{
-							false, float64(10), int64(10), "b", uint64(10)}},
+							false, float64(10), int64(10), "b", uint64(10),
+						}},
 						{Name: "cpu", Time: 9 * Second, Aux: []interface{}{
-							true, float64(19), int64(19), "c", uint64(19)}},
+							true, float64(19), int64(19), "c", uint64(19),
+						}},
 					}}, nil
 				},
 			}

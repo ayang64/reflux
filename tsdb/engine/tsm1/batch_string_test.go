@@ -358,7 +358,6 @@ func BenchmarkEncodeStrings(b *testing.B) {
 					}
 				}
 			})
-
 		})
 	}
 }

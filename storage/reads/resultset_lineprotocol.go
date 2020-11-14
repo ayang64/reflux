@@ -42,7 +42,7 @@ func ResultSetToLineProtocol(wr io.Writer, rs ResultSet) (err error) {
 }
 
 func cursorToLineProtocol(wr io.Writer, line []byte, cur cursors.Cursor) error {
-	var newLine = []byte{'\n'}
+	newLine := []byte{'\n'}
 
 	switch ccur := cur.(type) {
 	case cursors.IntegerArrayCursor:

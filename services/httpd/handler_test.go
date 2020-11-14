@@ -447,7 +447,6 @@ func TestHandler_Query_ErrAuthorize(t *testing.T) {
 	}
 	h.MetaClient.AdminUserExistsFn = func() bool { return true }
 	h.MetaClient.AuthenticateFn = func(u, p string) (meta.User, error) {
-
 		users := []meta.UserInfo{
 			{
 				Name:  "admin",
@@ -789,9 +788,9 @@ func TestHandler_PromWrite(t *testing.T) {
 		}
 
 		expFields := []models.Fields{
-			models.Fields{"value": req.Timeseries[0].Samples[0].Value},
-			models.Fields{"value": req.Timeseries[0].Samples[1].Value},
-			models.Fields{"value": req.Timeseries[0].Samples[2].Value},
+			{"value": req.Timeseries[0].Samples[0].Value},
+			{"value": req.Timeseries[0].Samples[1].Value},
+			{"value": req.Timeseries[0].Samples[2].Value},
 		}
 
 		expTS := []int64{
@@ -878,9 +877,9 @@ func TestHandler_PromWrite_Dropped(t *testing.T) {
 		}
 
 		expFields := []models.Fields{
-			models.Fields{"value": req.Timeseries[0].Samples[0].Value},
-			models.Fields{"value": req.Timeseries[0].Samples[2].Value},
-			models.Fields{"value": req.Timeseries[0].Samples[5].Value},
+			{"value": req.Timeseries[0].Samples[0].Value},
+			{"value": req.Timeseries[0].Samples[2].Value},
+			{"value": req.Timeseries[0].Samples[5].Value},
 		}
 
 		expTS := []int64{
@@ -1082,7 +1081,7 @@ func TestHandler_PromRead(t *testing.T) {
 }
 
 func TestHandler_PromRead_NoResults(t *testing.T) {
-	req := &prompb.ReadRequest{Queries: []*prompb.Query{&prompb.Query{
+	req := &prompb.ReadRequest{Queries: []*prompb.Query{{
 		Matchers: []*prompb.LabelMatcher{
 			{
 				Type:  prompb.LabelMatcher_EQ,
@@ -1118,7 +1117,7 @@ func TestHandler_PromRead_NoResults(t *testing.T) {
 }
 
 func TestHandler_PromRead_UnsupportedCursors(t *testing.T) {
-	req := &prompb.ReadRequest{Queries: []*prompb.Query{&prompb.Query{
+	req := &prompb.ReadRequest{Queries: []*prompb.Query{{
 		Matchers: []*prompb.LabelMatcher{
 			{
 				Type:  prompb.LabelMatcher_EQ,
@@ -1361,7 +1360,6 @@ func TestHandler_Flux_QueryText(t *testing.T) {
 }
 
 func TestHandler_Flux(t *testing.T) {
-
 	queryBytes := func(qs string) io.Reader {
 		var b bytes.Buffer
 		q := &client.QueryRequest{Query: qs}
@@ -1786,7 +1784,7 @@ func TestHandler_XRequestId(t *testing.T) {
 			req.RemoteAddr = "127.0.0.1"
 
 			// Set the relevant request ID headers
-			var allEmpty = true
+			allEmpty := true
 			for k, v := range c {
 				req.Header.Set(k, v)
 				if v != "" {
@@ -1965,7 +1963,7 @@ func TestHandlerDebugVars(t *testing.T) {
 		return res
 	}
 
-	var Ignored = []string{"memstats", "cmdline"}
+	Ignored := []string{"memstats", "cmdline"}
 	read := func(t *testing.T, b *bytes.Buffer, del ...string) map[string]interface{} {
 		t.Helper()
 		res := make(map[string]interface{})
@@ -2242,7 +2240,6 @@ func MustJWTToken(username, secret string, expired bool) (*jwt.Token, string) {
 
 // Ensure that user supplied headers are applied to responses.
 func TestHandler_UserSuppliedHeaders(t *testing.T) {
-
 	endpoints := []struct {
 		method string
 		path   string

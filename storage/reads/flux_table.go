@@ -135,6 +135,7 @@ type colReader struct {
 func (cr *colReader) Retain() {
 	atomic.AddInt64(&cr.refCount, 1)
 }
+
 func (cr *colReader) Release() {
 	if atomic.AddInt64(&cr.refCount, -1) == 0 {
 		for _, col := range cr.cols {
@@ -219,30 +220,39 @@ func (t *table) closeDone() {
 func (t *floatTable) toArrowBuffer(vs []float64) *array.Float64 {
 	return arrow.NewFloat(vs, t.alloc)
 }
+
 func (t *floatGroupTable) toArrowBuffer(vs []float64) *array.Float64 {
 	return arrow.NewFloat(vs, t.alloc)
 }
+
 func (t *integerTable) toArrowBuffer(vs []int64) *array.Int64 {
 	return arrow.NewInt(vs, t.alloc)
 }
+
 func (t *integerGroupTable) toArrowBuffer(vs []int64) *array.Int64 {
 	return arrow.NewInt(vs, t.alloc)
 }
+
 func (t *unsignedTable) toArrowBuffer(vs []uint64) *array.Uint64 {
 	return arrow.NewUint(vs, t.alloc)
 }
+
 func (t *unsignedGroupTable) toArrowBuffer(vs []uint64) *array.Uint64 {
 	return arrow.NewUint(vs, t.alloc)
 }
+
 func (t *stringTable) toArrowBuffer(vs []string) *array.Binary {
 	return arrow.NewString(vs, t.alloc)
 }
+
 func (t *stringGroupTable) toArrowBuffer(vs []string) *array.Binary {
 	return arrow.NewString(vs, t.alloc)
 }
+
 func (t *booleanTable) toArrowBuffer(vs []bool) *array.Boolean {
 	return arrow.NewBool(vs, t.alloc)
 }
+
 func (t *booleanGroupTable) toArrowBuffer(vs []bool) *array.Boolean {
 	return arrow.NewBool(vs, t.alloc)
 }

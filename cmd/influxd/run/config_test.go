@@ -292,7 +292,6 @@ max-select-point = 100
 	// Validate configuration.
 	if c.Coordinator.MaxSelectPointN != 100 {
 		t.Fatalf("unexpected coordinator max select points: %d", c.Coordinator.MaxSelectPointN)
-
 	}
 }
 

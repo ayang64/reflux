@@ -406,7 +406,7 @@ func (s *Service) writePoints() {
 func (s *Service) UnmarshalValueListPacked(vl *api.ValueList) []models.Point {
 	timestamp := vl.Time.UTC()
 
-	var name = vl.Identifier.Plugin
+	name := vl.Identifier.Plugin
 	tags := make(map[string]string, 4)
 	fields := make(map[string]interface{}, len(vl.Values))
 

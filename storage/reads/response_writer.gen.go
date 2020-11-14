@@ -57,7 +57,7 @@ func (w *ResponseWriter) streamFloatArrayPoints(cur cursors.FloatArrayCursor) {
 	frame := p.FloatPoints
 	w.res.Frames = append(w.res.Frames, datatypes.ReadResponse_Frame{Data: p})
 
-	var seriesValueCount = 0
+	seriesValueCount := 0
 	for {
 		// If the number of values produced by cur > 1000,
 		// cur.Next() will produce batches of values that are of
@@ -160,7 +160,7 @@ func (w *ResponseWriter) streamIntegerArrayPoints(cur cursors.IntegerArrayCursor
 	frame := p.IntegerPoints
 	w.res.Frames = append(w.res.Frames, datatypes.ReadResponse_Frame{Data: p})
 
-	var seriesValueCount = 0
+	seriesValueCount := 0
 	for {
 		// If the number of values produced by cur > 1000,
 		// cur.Next() will produce batches of values that are of
@@ -263,7 +263,7 @@ func (w *ResponseWriter) streamUnsignedArrayPoints(cur cursors.UnsignedArrayCurs
 	frame := p.UnsignedPoints
 	w.res.Frames = append(w.res.Frames, datatypes.ReadResponse_Frame{Data: p})
 
-	var seriesValueCount = 0
+	seriesValueCount := 0
 	for {
 		// If the number of values produced by cur > 1000,
 		// cur.Next() will produce batches of values that are of
@@ -366,7 +366,7 @@ func (w *ResponseWriter) streamStringArrayPoints(cur cursors.StringArrayCursor) 
 	frame := p.StringPoints
 	w.res.Frames = append(w.res.Frames, datatypes.ReadResponse_Frame{Data: p})
 
-	var seriesValueCount = 0
+	seriesValueCount := 0
 	for {
 		// If the number of values produced by cur > 1000,
 		// cur.Next() will produce batches of values that are of
@@ -469,7 +469,7 @@ func (w *ResponseWriter) streamBooleanArrayPoints(cur cursors.BooleanArrayCursor
 	frame := p.BooleanPoints
 	w.res.Frames = append(w.res.Frames, datatypes.ReadResponse_Frame{Data: p})
 
-	var seriesValueCount = 0
+	seriesValueCount := 0
 	for {
 		// If the number of values produced by cur > 1000,
 		// cur.Next() will produce batches of values that are of

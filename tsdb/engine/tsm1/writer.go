@@ -104,7 +104,7 @@ const (
 )
 
 var (
-	//ErrNoValues is returned when TSMWriter.WriteIndex is called and there are no values to write.
+	// ErrNoValues is returned when TSMWriter.WriteIndex is called and there are no values to write.
 	ErrNoValues = fmt.Errorf("no values written")
 
 	// ErrTSMClosed is returned when performing an operation against a closed TSM file.
@@ -495,7 +495,6 @@ func (d *directIndex) flush(w io.Writer) (int64, error) {
 	}
 
 	return N, nil
-
 }
 
 func (d *directIndex) MarshalBinary() ([]byte, error) {
@@ -562,7 +561,7 @@ func NewTSMWriterWithDiskBuffer(w io.Writer) (TSMWriter, error) {
 	var index IndexWriter
 	// Make sure is a File so we can write the temp index alongside it.
 	if fw, ok := w.(syncer); ok {
-		f, err := os.OpenFile(strings.TrimSuffix(fw.Name(), ".tsm.tmp")+".idx.tmp", os.O_CREATE|os.O_RDWR|os.O_EXCL, 0666)
+		f, err := os.OpenFile(strings.TrimSuffix(fw.Name(), ".tsm.tmp")+".idx.tmp", os.O_CREATE|os.O_RDWR|os.O_EXCL, 0o666)
 		if err != nil {
 			return nil, err
 		}

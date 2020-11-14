@@ -228,7 +228,8 @@ func BenchmarkMeasurement_SeriesIDForExp_NERegex(b *testing.B) {
 	for i := 0; i < 100000; i++ {
 		s := newSeries(uint64(i), m, "cpu", models.Tags{models.Tag{
 			Key:   []byte("host"),
-			Value: []byte(fmt.Sprintf("host%d", i))}})
+			Value: []byte(fmt.Sprintf("host%d", i)),
+		}})
 		m.AddSeries(s)
 	}
 
@@ -251,7 +252,6 @@ func BenchmarkMeasurement_SeriesIDForExp_NERegex(b *testing.B) {
 		}
 
 	}
-
 }
 
 func benchmarkTagSets(b *testing.B, n int, opt query.IteratorOptions) {

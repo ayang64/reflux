@@ -286,9 +286,9 @@ func TestIntegerArray_Merge(t *testing.T) {
 		},
 		{
 			name: "b merges a interleaved",
-			a:    makeIntegerArray(0, 00, 2, 20, 4, 40),
+			a:    makeIntegerArray(0, 0o0, 2, 20, 4, 40),
 			b:    makeIntegerArray(1, 11, 3, 31, 5, 51),
-			exp:  makeIntegerArray(0, 00, 1, 11, 2, 20, 3, 31, 4, 40, 5, 51),
+			exp:  makeIntegerArray(0, 0o0, 1, 11, 2, 20, 3, 31, 4, 40, 5, 51),
 		},
 	}
 
@@ -364,9 +364,9 @@ func TestUnsignedArray_Merge(t *testing.T) {
 		},
 		{
 			name: "b merges a interleaved",
-			a:    makeUnsignedArray(0, 00, 2, 20, 4, 40),
+			a:    makeUnsignedArray(0, 0o0, 2, 20, 4, 40),
 			b:    makeUnsignedArray(1, 11, 3, 31, 5, 51),
-			exp:  makeUnsignedArray(0, 00, 1, 11, 2, 20, 3, 31, 4, 40, 5, 51),
+			exp:  makeUnsignedArray(0, 0o0, 1, 11, 2, 20, 3, 31, 4, 40, 5, 51),
 		},
 	}
 
@@ -442,9 +442,9 @@ func TestStringArray_Merge(t *testing.T) {
 		},
 		{
 			name: "b merges a interleaved",
-			a:    makeStringArray(0, 00, 2, 20, 4, 40),
+			a:    makeStringArray(0, 0o0, 2, 20, 4, 40),
 			b:    makeStringArray(1, 11, 3, 31, 5, 51),
-			exp:  makeStringArray(0, 00, 1, 11, 2, 20, 3, 31, 4, 40, 5, 51),
+			exp:  makeStringArray(0, 0o0, 1, 11, 2, 20, 3, 31, 4, 40, 5, 51),
 		},
 	}
 

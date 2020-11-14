@@ -997,7 +997,6 @@ func BenchmarkEncodeIntegers(b *testing.B) {
 					copy(input, src) // Reset input that gets modified in IntegerArrayEncodeAll
 				}
 			})
-
 		})
 
 		b.Run(fmt.Sprintf("%d_ran", n), func(b *testing.B) {

@@ -54,7 +54,7 @@ func TestReadMeasurementBlockTrailer(t *testing.T) {
 }
 
 func TestMeasurementBlockTrailer_WriteTo(t *testing.T) {
-	var trailer = tsi1.MeasurementBlockTrailer{
+	trailer := tsi1.MeasurementBlockTrailer{
 		Version: 1,
 		Data: struct {
 			Offset int64

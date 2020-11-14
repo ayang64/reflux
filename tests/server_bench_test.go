@@ -45,12 +45,15 @@ func benchmarkServerQueryCount(b *testing.B, pointN int) {
 func BenchmarkServer_Query_Count_Where_500(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, false, 500)
 }
+
 func BenchmarkServer_Query_Count_Where_1K(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, false, 1000)
 }
+
 func BenchmarkServer_Query_Count_Where_10K(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, false, 10000)
 }
+
 func BenchmarkServer_Query_Count_Where_100K(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, false, 100000)
 }
@@ -58,12 +61,15 @@ func BenchmarkServer_Query_Count_Where_100K(b *testing.B) {
 func BenchmarkServer_Query_Count_Where_Regex_500(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, true, 500)
 }
+
 func BenchmarkServer_Query_Count_Where_Regex_1K(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, true, 1000)
 }
+
 func BenchmarkServer_Query_Count_Where_Regex_10K(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, true, 10000)
 }
+
 func BenchmarkServer_Query_Count_Where_Regex_100K(b *testing.B) {
 	benchmarkServerQueryCountWhere(b, true, 100000)
 }

@@ -397,7 +397,6 @@ func IndexShard(sfile *tsdb.SeriesFile, dataDir, walDir string, maxLogFileSize i
 		if !os.IsNotExist(err) {
 			return err
 		}
-
 	} else {
 		log.Info("Building cache from wal files")
 		cache := tsm1.NewCache(maxCacheSize)

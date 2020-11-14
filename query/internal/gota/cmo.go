@@ -50,7 +50,7 @@ func (cmo *CMO) Add(v float64) float64 {
 	}
 
 	oldest := cmo.points[idxOldest]
-	//NOTE: because we're just adding and subtracting the difference, and not recalculating sumUp/sumDown using cmo.points[].price, it's possible for imprecision to creep in over time. Not sure how significant this is going to be, but if we want to fix it, we could recalculate it from scratch every N points.
+	// NOTE: because we're just adding and subtracting the difference, and not recalculating sumUp/sumDown using cmo.points[].price, it's possible for imprecision to creep in over time. Not sure how significant this is going to be, but if we want to fix it, we could recalculate it from scratch every N points.
 	if oldest.diff > 0 {
 		cmo.sumUp -= oldest.diff
 	} else if oldest.diff < 0 {

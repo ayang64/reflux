@@ -84,7 +84,7 @@ func (m *Main) Run(args ...string) error {
 			return fmt.Errorf("gen-exec failed: %s", err)
 		}
 	default:
-		return fmt.Errorf(`unknown command "%s"`+"\n"+`Run 'influx-tools help' for usage`+"\n\n", name)
+		return fmt.Errorf("unknown command %q", name)
 	}
 
 	return nil

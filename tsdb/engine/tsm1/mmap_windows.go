@@ -15,12 +15,13 @@ import (
 // Ref: https://groups.google.com/forum/#!topic/golang-nuts/g0nLwQI9www
 
 // We keep this map so that we can get back the original handle from the memory address.
-var handleLock sync.Mutex
-var handleMap = map[uintptr]syscall.Handle{}
-var fileMap = map[uintptr]*os.File{}
+var (
+	handleLock sync.Mutex
+	handleMap  = map[uintptr]syscall.Handle{}
+	fileMap    = map[uintptr]*os.File{}
+)
 
 func openSharedFile(f *os.File) (file *os.File, err error) {
-
 	var access, createmode, sharemode uint32
 	var sa *syscall.SecurityAttributes
 
@@ -39,7 +40,7 @@ func openSharedFile(f *os.File) (file *os.File, err error) {
 	if e != nil {
 		return nil, e
 	}
-	//NewFile does not add finalizer, need to close this manually
+	// NewFile does not add finalizer, need to close this manually
 	return os.NewFile(uintptr(h), fileName), nil
 }
 

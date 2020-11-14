@@ -322,6 +322,7 @@ func TestHoltWinters_USPopulation_Missing(t *testing.T) {
 		}
 	}
 }
+
 func TestHoltWinters_RoundTime(t *testing.T) {
 	maxTime := time.Unix(0, influxql.MaxTime).Round(time.Second).UnixNano()
 	data := []query.FloatPoint{

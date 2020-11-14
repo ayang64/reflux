@@ -205,7 +205,6 @@ func TestTombstoner_Add_Multiple(t *testing.T) {
 	if got, exp := string(entries[1].Key), "bar"; got != exp {
 		t.Fatalf("value mismatch: got %v, exp %v", got, exp)
 	}
-
 }
 
 func TestTombstoner_Add_Empty(t *testing.T) {
@@ -237,7 +236,6 @@ func TestTombstoner_Add_Empty(t *testing.T) {
 	if got, exp := len(stats), 0; got != exp {
 		t.Fatalf("stat length mismatch: got %v, exp %v", got, exp)
 	}
-
 }
 
 func TestTombstoner_Delete(t *testing.T) {

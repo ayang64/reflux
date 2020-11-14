@@ -158,7 +158,6 @@ func TestTagKeysSet_IsSuperset(t *testing.T) {
 var commaB = []byte(",")
 
 func TestTagKeysSet_UnionBytes(t *testing.T) {
-
 	tests := []struct {
 		name string
 		keys [][][]byte

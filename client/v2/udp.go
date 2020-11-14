@@ -61,12 +61,12 @@ type udpclient struct {
 }
 
 func (uc *udpclient) Write(bp BatchPoints) error {
-	var b = make([]byte, 0, uc.payloadSize) // initial buffer size, it will grow as needed
-	var d, _ = time.ParseDuration("1" + bp.Precision())
+	b := make([]byte, 0, uc.payloadSize) // initial buffer size, it will grow as needed
+	d, _ := time.ParseDuration("1" + bp.Precision())
 
 	var delayedError error
 
-	var checkBuffer = func(n int) {
+	checkBuffer := func(n int) {
 		if len(b) > 0 && len(b)+n > uc.payloadSize {
 			if _, err := uc.conn.Write(b); err != nil {
 				delayedError = err
@@ -78,7 +78,7 @@ func (uc *udpclient) Write(bp BatchPoints) error {
 	for _, p := range bp.Points() {
 		p.pt.Round(d)
 		pointSize := p.pt.StringSize() + 1 // include newline in size
-		//point := p.pt.RoundedString(d) + "\n"
+		// point := p.pt.RoundedString(d) + "\n"
 
 		checkBuffer(pointSize)
 

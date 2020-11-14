@@ -264,7 +264,6 @@ func BenchmarkEncodeBooleans(b *testing.B) {
 					}
 				}
 			})
-
 		})
 	}
 }

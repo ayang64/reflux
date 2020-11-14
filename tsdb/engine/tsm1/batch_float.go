@@ -108,7 +108,7 @@ func FloatArrayEncodeAll(src []float64, b []byte) ([]byte, error) {
 				// Full value to write.
 				v := (vDelta >> prevTrailing) << (64 - l) // l least signifciant bits of v.
 
-				var m = n & 7 // Current bit in current byte.
+				m := n & 7 // Current bit in current byte.
 				var written uint64
 				if m > 0 { // In this case the current byte is not full.
 					written = 8 - m
@@ -146,7 +146,7 @@ func FloatArrayEncodeAll(src []float64, b []byte) ([]byte, error) {
 				}
 
 				// Enough room to write the 5 bits in the current byte?
-				var m = n & 7
+				m := n & 7
 				l := uint64(5)
 				v := leading << 59 // 5 LSB of leading.
 				mask = v >> 56     // Move 5 MSB to 8 LSB

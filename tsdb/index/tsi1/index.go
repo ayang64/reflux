@@ -251,7 +251,7 @@ func (i *Index) Open() error {
 	}
 
 	// Ensure root exists.
-	if err := os.MkdirAll(i.path, 0777); err != nil {
+	if err := os.MkdirAll(i.path, 0o777); err != nil {
 		return err
 	}
 

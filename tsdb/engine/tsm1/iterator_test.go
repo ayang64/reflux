@@ -157,5 +157,4 @@ func TestBufCursor_DoubleClose(t *testing.T) {
 	if err := c.close(); err != nil {
 		t.Fatalf("error closing: %v", err)
 	}
-
 }

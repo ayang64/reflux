@@ -12,8 +12,14 @@ func TestRing_newRing(t *testing.T) {
 		n         int
 		returnErr bool
 	}{
-		{n: 1}, {n: 2}, {n: 4}, {n: 8}, {n: 16}, {n: 32, returnErr: true},
-		{n: 0, returnErr: true}, {n: 3, returnErr: true},
+		{n: 1},
+		{n: 2},
+		{n: 4},
+		{n: 8},
+		{n: 16},
+		{n: 32, returnErr: true},
+		{n: 0, returnErr: true},
+		{n: 3, returnErr: true},
 	}
 
 	for i, example := range examples {
@@ -79,7 +85,9 @@ func benchmarkRingGetPartition(b *testing.B, r *ring, keys int) {
 	}
 }
 
-func BenchmarkRing_getPartition_100(b *testing.B) { benchmarkRingGetPartition(b, MustNewRing(256), 100) }
+func BenchmarkRing_getPartition_100(b *testing.B) {
+	benchmarkRingGetPartition(b, MustNewRing(256), 100)
+}
 func BenchmarkRing_getPartition_1000(b *testing.B) {
 	benchmarkRingGetPartition(b, MustNewRing(256), 1000)
 }

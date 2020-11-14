@@ -69,7 +69,7 @@ func (p *SeriesPartition) Open() error {
 	}
 
 	// Create path if it doesn't exist.
-	if err := os.MkdirAll(filepath.Join(p.path), 0777); err != nil {
+	if err := os.MkdirAll(filepath.Join(p.path), 0o777); err != nil {
 		return err
 	}
 
@@ -580,7 +580,6 @@ func (c *SeriesPartitionCompactor) compactIndexTo(index *SeriesIndex, seriesN ui
 		errDone := errors.New("done")
 
 		if err := segment.ForEachEntry(func(flag uint8, id uint64, offset int64, key []byte) error {
-
 			// Make sure we don't go past the offset where the compaction began.
 			if offset > index.maxOffset {
 				return errDone

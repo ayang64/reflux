@@ -210,7 +210,7 @@ func shardFormat(path string) (EngineFormat, int64, error) {
 	}
 
 	// It must be a BoltDB-based engine.
-	db, err := bolt.Open(path, 0666, &bolt.Options{Timeout: 1 * time.Second})
+	db, err := bolt.Open(path, 0o666, &bolt.Options{Timeout: 1 * time.Second})
 	if err != nil {
 		return 0, 0, err
 	}

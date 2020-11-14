@@ -261,7 +261,6 @@ func NewTestService(database string, bind string) *TestService {
 		Database:         database,
 		ConsistencyLevel: "one",
 	})
-
 	if err != nil {
 		panic(err)
 	}

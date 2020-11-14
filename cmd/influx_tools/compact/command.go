@@ -55,7 +55,7 @@ func (cmd *Command) Run(args []string) (err error) {
 		return err
 	}
 
-	var log = zap.NewNop()
+	log := zap.NewNop()
 	if cmd.verbose {
 		cfg := logger.Config{Format: "logfmt"}
 		log, err = cfg.New(os.Stdout)
@@ -172,7 +172,7 @@ func (sc *shardCompactor) openFiles() error {
 
 	readerC := make(chan *res)
 	for i, fn := range sc.tsm {
-		file, err := os.OpenFile(fn, os.O_RDONLY, 0666)
+		file, err := os.OpenFile(fn, os.O_RDONLY, 0o666)
 		if err != nil {
 			return fmt.Errorf("newFileStore: failed to open file %q: %v", fn, err)
 		}
@@ -241,7 +241,7 @@ func (sc *shardCompactor) replace(tsmFiles []string) ([]string, error) {
 	// rename .tsm.tmp → .tsm
 	var newNames []string
 	for _, file := range tsmFiles {
-		var newName = file[:len(file)-4] // remove extension
+		newName := file[:len(file)-4] // remove extension
 		if err := os.Rename(file, newName); err != nil {
 			return nil, err
 		}

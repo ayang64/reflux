@@ -111,10 +111,11 @@ func TestEngine_DeleteSeriesAfterCacheSnapshot(t *testing.T) {
 			}
 
 			// Delete the series
-			itr := &seriesIterator{keys: [][]byte{
-				[]byte("cpu,host=A"),
-				[]byte("cpu,host=B"),
-			},
+			itr := &seriesIterator{
+				keys: [][]byte{
+					[]byte("cpu,host=A"),
+					[]byte("cpu,host=B"),
+				},
 			}
 			if err := e.DeleteSeriesRange(itr, math.MinInt64, math.MaxInt64); err != nil {
 				t.Fatalf("failed to delete series: %s", err.Error())
@@ -238,11 +239,11 @@ func TestEngine_Digest(t *testing.T) {
 	}
 
 	exp := []span{
-		span{
+		{
 			key: "cpu,host=A#!~#value",
 			tspan: &tsm1.DigestTimeSpan{
 				Ranges: []tsm1.DigestTimeRange{
-					tsm1.DigestTimeRange{
+					{
 						Min: 1000000000,
 						Max: 1000000000,
 						N:   1,
@@ -251,11 +252,11 @@ func TestEngine_Digest(t *testing.T) {
 				},
 			},
 		},
-		span{
+		{
 			key: "cpu,host=B#!~#value",
 			tspan: &tsm1.DigestTimeSpan{
 				Ranges: []tsm1.DigestTimeRange{
-					tsm1.DigestTimeRange{
+					{
 						Min: 2000000000,
 						Max: 2000000000,
 						N:   1,
@@ -300,7 +301,7 @@ func TestEngine_Digest(t *testing.T) {
 		key: "cpu,host=C#!~#value",
 		tspan: &tsm1.DigestTimeSpan{
 			Ranges: []tsm1.DigestTimeRange{
-				tsm1.DigestTimeRange{
+				{
 					Min: 3000000000,
 					Max: 3000000000,
 					N:   1,
@@ -381,7 +382,7 @@ func TestEngine_Backup(t *testing.T) {
 	f.Close()
 	os.Remove(f.Name())
 	walPath := filepath.Join(f.Name(), "wal")
-	os.MkdirAll(walPath, 0777)
+	os.MkdirAll(walPath, 0o777)
 	defer os.RemoveAll(f.Name())
 
 	// Create a few points.
@@ -485,7 +486,7 @@ func TestEngine_Export(t *testing.T) {
 	f.Close()
 	os.Remove(f.Name())
 	walPath := filepath.Join(f.Name(), "wal")
-	os.MkdirAll(walPath, 0777)
+	os.MkdirAll(walPath, 0o777)
 	defer os.RemoveAll(f.Name())
 
 	// Create a few points.
@@ -718,7 +719,6 @@ func equalBuffers(bufA, bufB *bytes.Buffer) bool {
 }
 
 func getExportData(exBuf *bytes.Buffer) (map[string]*bytes.Buffer, error) {
-
 	tr := tar.NewReader(exBuf)
 
 	fileData := make(map[string]*bytes.Buffer)
@@ -806,7 +806,6 @@ func TestEngine_CreateIterator_Cache_Descending(t *testing.T) {
 
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
-
 			e := MustOpenEngine(index)
 			defer e.Close()
 
@@ -1565,6 +1564,7 @@ func TestEngine_DeleteSeriesRangeWithPredicate_Nil(t *testing.T) {
 		})
 	}
 }
+
 func TestEngine_DeleteSeriesRangeWithPredicate_FlushBatch(t *testing.T) {
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
@@ -1836,7 +1836,7 @@ func TestEngine_SnapshotsDisabled(t *testing.T) {
 	// Generate temporary file.
 	dir, _ := ioutil.TempDir("", "tsm")
 	walPath := filepath.Join(dir, "wal")
-	os.MkdirAll(walPath, 0777)
+	os.MkdirAll(walPath, 0o777)
 	defer os.RemoveAll(dir)
 
 	// Create a tsm1 engine.
@@ -1914,7 +1914,6 @@ func TestEngine_CreateCursor_Ascending(t *testing.T) {
 
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
-
 			e := MustOpenEngine(index)
 			defer e.Close()
 
@@ -1974,7 +1973,6 @@ func TestEngine_CreateCursor_Descending(t *testing.T) {
 
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
-
 			e := MustOpenEngine(index)
 			defer e.Close()
 
@@ -2056,7 +2054,6 @@ func TestEngine_DisableEnableCompactions_Concurrent(t *testing.T) {
 
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
-
 			e := MustOpenEngine(index)
 			defer e.Close()
 
@@ -2093,7 +2090,6 @@ func TestEngine_DisableEnableCompactions_Concurrent(t *testing.T) {
 			}
 		})
 	}
-
 }
 
 func TestEngine_WritePointsWithContext(t *testing.T) {
@@ -2135,7 +2131,6 @@ func TestEngine_WritePoints_TypeConflict(t *testing.T) {
 
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
-
 			e := MustOpenEngine(index)
 			defer e.Close()
 
@@ -2171,7 +2166,6 @@ func TestEngine_WritePoints_Reload(t *testing.T) {
 
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {
-
 			e := MustOpenEngine(index)
 			defer e.Close()
 
@@ -2242,6 +2236,7 @@ func TestEngine_Invalid_UTF8(t *testing.T) {
 		})
 	}
 }
+
 func BenchmarkEngine_WritePoints(b *testing.B) {
 	batchSizes := []int{10, 100, 1000, 5000, 10000}
 	for _, sz := range batchSizes {

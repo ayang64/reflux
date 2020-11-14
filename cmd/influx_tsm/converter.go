@@ -39,7 +39,7 @@ func NewConverter(path string, sz uint32, stats *stats.Stats) *Converter {
 // Process writes the data provided by iter to a tsm1 shard.
 func (c *Converter) Process(iter KeyIterator) error {
 	// Ensure the tsm1 directory exists.
-	if err := os.MkdirAll(c.path, 0777); err != nil {
+	if err := os.MkdirAll(c.path, 0o777); err != nil {
 		return err
 	}
 
@@ -102,7 +102,7 @@ func (c *Converter) nextTSMWriter() (tsm1.TSMWriter, error) {
 	c.sequence++
 	fileName := filepath.Join(c.path, fmt.Sprintf("%09d-%09d.%s", 1, c.sequence, tsm1.TSMFileExtension))
 
-	fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0666)
+	fd, err := os.OpenFile(fileName, os.O_CREATE|os.O_RDWR, 0o666)
 	if err != nil {
 		return nil, err
 	}

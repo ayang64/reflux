@@ -24,10 +24,12 @@ import (
 	"github.com/influxdata/influxdb/toml"
 )
 
-var verboseServerLogs bool
-var indexType string
-var cleanupData bool
-var seed int64
+var (
+	verboseServerLogs bool
+	indexType         string
+	cleanupData       bool
+	seed              int64
+)
 
 // Server represents a test wrapper for run.Server.
 type Server interface {
@@ -149,7 +151,6 @@ func (s *RemoteServer) Reset() error {
 		}
 	}
 	return nil
-
 }
 
 func (s *RemoteServer) WritePoints(database, retentionPolicy string, consistencyLevel models.ConsistencyLevel, user meta.User, points []models.Point) error {
@@ -726,7 +727,7 @@ func writeTestData(s Server, t *Test) error {
 		if res, err := s.Write(w.db, w.rp, w.data, t.params); err != nil {
 			return fmt.Errorf("write #%d: %s", i, err)
 		} else if t.exp != res {
-			return fmt.Errorf("unexpected results\nexp: %s\ngot: %s\n", t.exp, res)
+			return fmt.Errorf("unexpected results: exp: %s, got: %s", t.exp, res)
 		}
 	}
 
