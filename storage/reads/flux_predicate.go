@@ -1,13 +1,13 @@
 package reads
 
 import (
+	"errors"
 	"fmt"
 
-	"github.com/influxdata/flux/ast"
-	"github.com/influxdata/flux/semantic"
 	"github.com/ayang64/reflux/models"
 	"github.com/ayang64/reflux/storage/reads/datatypes"
-	"github.com/pkg/errors"
+	"github.com/influxdata/flux/ast"
+	"github.com/influxdata/flux/semantic"
 )
 
 const (
@@ -36,11 +36,11 @@ func toStoragePredicateHelper(n semantic.Expression, objectName string) (*dataty
 	case *semantic.LogicalExpression:
 		left, err := toStoragePredicateHelper(n.Left, objectName)
 		if err != nil {
-			return nil, errors.Wrap(err, "left hand side")
+			return nil, fmt.Errorf("%w: left hand side", err)
 		}
 		right, err := toStoragePredicateHelper(n.Right, objectName)
 		if err != nil {
-			return nil, errors.Wrap(err, "right hand side")
+			return nil, fmt.Errorf("%w: right hand side", err)
 		}
 		children := []*datatypes.Node{left, right}
 		switch n.Operator {
@@ -62,11 +62,11 @@ func toStoragePredicateHelper(n semantic.Expression, objectName string) (*dataty
 	case *semantic.BinaryExpression:
 		left, err := toStoragePredicateHelper(n.Left, objectName)
 		if err != nil {
-			return nil, errors.Wrap(err, "left hand side")
+			return nil, fmt.Errorf("%w: left hand side", err)
 		}
 		right, err := toStoragePredicateHelper(n.Right, objectName)
 		if err != nil {
-			return nil, errors.Wrap(err, "right hand side")
+			return nil, fmt.Errorf("%w: right hand side", err)
 		}
 		children := []*datatypes.Node{left, right}
 		op, err := toComparisonOperator(n.Operator)

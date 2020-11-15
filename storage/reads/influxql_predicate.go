@@ -1,11 +1,11 @@
 package reads
 
 import (
+	"errors"
 	"regexp"
 
-	"github.com/ayang64/reflux/storage/reads/datatypes"
 	"github.com/ayang64/reflux/influxql"
-	"github.com/pkg/errors"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
 )
 
 const (

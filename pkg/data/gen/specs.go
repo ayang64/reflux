@@ -2,6 +2,7 @@ package gen
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"math/rand"
 	"os"
@@ -12,7 +13,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/ayang64/reflux/models"
-	"github.com/pkg/errors"
 )
 
 type Spec struct {

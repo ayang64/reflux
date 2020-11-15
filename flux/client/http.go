@@ -15,7 +15,6 @@ import (
 	"github.com/influxdata/flux/csv"
 	"github.com/influxdata/flux/lang"
 	"github.com/influxdata/flux/repl"
-	"github.com/pkg/errors"
 )
 
 // Shared transports for all clients to prevent leaking connections
@@ -98,19 +97,17 @@ func checkError(resp *http.Response) error {
 	switch resp.StatusCode / 100 {
 	case 4:
 		// We will attempt to parse this error outside of this block.
-		msg := "client error"
 		data, _ := ioutil.ReadAll(resp.Body)
 		mt, _, err := mime.ParseMediaType(resp.Header.Get("content-type"))
-		if err == nil && mt == "text/plain" && len(msg) > 0 {
-			msg = string(data)
+		if err == nil && mt == "text/plain" {
+			return fmt.Errorf("client error %d, %q: %w", resp.StatusCode, string(data), err)
 		}
-		return errors.Wrap(errors.New(resp.Status), msg)
+		return fmt.Errorf("client error %d: %w", resp.StatusCode, err)
 	case 1, 2:
 		return nil
 
 	default:
-		msg := "unknown server error"
-		return errors.Wrap(errors.New(resp.Status), msg)
+		return fmt.Errorf("unknown server error %d", resp.StatusCode)
 	}
 }
 

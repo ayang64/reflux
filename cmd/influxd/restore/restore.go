@@ -5,6 +5,7 @@ package restore
 import (
 	"archive/tar"
 	"bytes"
+	"compress/gzip"
 	"encoding/binary"
 	"flag"
 	"fmt"
@@ -15,8 +16,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-
-	gzip "github.com/klauspost/pgzip"
 
 	"github.com/ayang64/reflux/cmd/influxd/backup_util"
 	tarstream "github.com/ayang64/reflux/pkg/tar"

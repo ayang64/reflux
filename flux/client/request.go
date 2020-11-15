@@ -9,7 +9,7 @@ import (
 	"github.com/influxdata/flux/csv"
 	"github.com/influxdata/flux/lang"
 	"github.com/influxdata/flux/repl"
-	"github.com/pkg/errors"
+	"errors"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

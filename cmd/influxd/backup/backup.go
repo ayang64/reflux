@@ -2,6 +2,7 @@
 package backup
 
 import (
+	"compress/gzip"
 	"encoding/binary"
 	"encoding/json"
 	"errors"
@@ -19,7 +20,6 @@ import (
 	"github.com/ayang64/reflux/cmd/influxd/backup_util"
 	"github.com/ayang64/reflux/services/snapshotter"
 	"github.com/ayang64/reflux/tcp"
-	gzip "github.com/klauspost/pgzip"
 )
 
 const (
