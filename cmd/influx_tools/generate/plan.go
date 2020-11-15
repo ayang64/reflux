@@ -1,6 +1,7 @@
 package generate
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -13,7 +14,6 @@ import (
 	"github.com/ayang64/reflux/cmd/influx_tools/internal/errlist"
 	"github.com/ayang64/reflux/cmd/influx_tools/server"
 	"github.com/ayang64/reflux/services/meta"
-	"github.com/pkg/errors"
 )
 
 type StoragePlan struct {

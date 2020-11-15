@@ -2,6 +2,7 @@
 package tsm
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"hash/crc32"
@@ -13,7 +14,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/ayang64/reflux/tsdb/engine/tsm1"
-	"github.com/pkg/errors"
 )
 
 // Command represents the program execution for "influx_inspect verify".
@@ -96,7 +96,7 @@ func (v *verifyTSM) loadFiles(dataPath string) error {
 		return nil
 	})
 	if err != nil {
-		return errors.Wrap(err, "could not load storage files (use -dir for custom storage root)")
+		return fmt.Errorf("%w: could not load storage files (use -dir for custom storage root)", err)
 	}
 
 	return nil

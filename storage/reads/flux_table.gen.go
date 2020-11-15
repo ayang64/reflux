@@ -7,15 +7,15 @@
 package reads
 
 import (
+	"fmt"
 	"sync"
 
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/tsdb/cursors"
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/arrow"
 	"github.com/influxdata/flux/execute"
 	"github.com/influxdata/flux/memory"
-	"github.com/ayang64/reflux/models"
-	"github.com/ayang64/reflux/tsdb/cursors"
-	"github.com/pkg/errors"
 )
 
 //
@@ -181,7 +181,7 @@ func (t *floatGroupTable) advanceCursor() bool {
 		if typedCur, ok := cur.(cursors.FloatArrayCursor); !ok {
 			// TODO(sgc): error or skip?
 			cur.Close()
-			t.err = errors.Errorf("expected float cursor type, got %T", cur)
+			t.err = fmt.Errorf("expected float cursor type, got %T", cur)
 			return false
 		} else {
 			t.readTags(t.gc.Tags())
@@ -366,7 +366,7 @@ func (t *integerGroupTable) advanceCursor() bool {
 		if typedCur, ok := cur.(cursors.IntegerArrayCursor); !ok {
 			// TODO(sgc): error or skip?
 			cur.Close()
-			t.err = errors.Errorf("expected integer cursor type, got %T", cur)
+			t.err = fmt.Errorf("expected integer cursor type, got %T", cur)
 			return false
 		} else {
 			t.readTags(t.gc.Tags())
@@ -551,7 +551,7 @@ func (t *unsignedGroupTable) advanceCursor() bool {
 		if typedCur, ok := cur.(cursors.UnsignedArrayCursor); !ok {
 			// TODO(sgc): error or skip?
 			cur.Close()
-			t.err = errors.Errorf("expected unsigned cursor type, got %T", cur)
+			t.err = fmt.Errorf("expected unsigned cursor type, got %T", cur)
 			return false
 		} else {
 			t.readTags(t.gc.Tags())
@@ -736,7 +736,7 @@ func (t *stringGroupTable) advanceCursor() bool {
 		if typedCur, ok := cur.(cursors.StringArrayCursor); !ok {
 			// TODO(sgc): error or skip?
 			cur.Close()
-			t.err = errors.Errorf("expected string cursor type, got %T", cur)
+			t.err = fmt.Errorf("expected string cursor type, got %T", cur)
 			return false
 		} else {
 			t.readTags(t.gc.Tags())
@@ -921,7 +921,7 @@ func (t *booleanGroupTable) advanceCursor() bool {
 		if typedCur, ok := cur.(cursors.BooleanArrayCursor); !ok {
 			// TODO(sgc): error or skip?
 			cur.Close()
-			t.err = errors.Errorf("expected boolean cursor type, got %T", cur)
+			t.err = fmt.Errorf("expected boolean cursor type, got %T", cur)
 			return false
 		} else {
 			t.readTags(t.gc.Tags())
