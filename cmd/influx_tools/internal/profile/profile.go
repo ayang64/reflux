@@ -23,7 +23,7 @@ func (c *Config) noProfiles() bool {
 // function that should be called to terminate the profiles.
 func (c *Config) Start() func() {
 	if c.noProfiles() {
-		return func() { return }
+		return func() {}
 	}
 
 	var prof struct {

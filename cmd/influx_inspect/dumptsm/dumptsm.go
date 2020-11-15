@@ -77,7 +77,7 @@ func (cmd *Command) dump() error {
 
 	r, err := tsm1.NewTSMReader(f)
 	if err != nil {
-		return fmt.Errorf("Error opening TSM files: %s", err.Error())
+		return fmt.Errorf("error opening tsm files: %s", err.Error())
 	}
 	defer r.Close()
 
@@ -266,7 +266,7 @@ Usage: influx_inspect dumptsm [flags] <path
             Only display index and block data match this key substring
 `
 
-	fmt.Fprintf(cmd.Stdout, usage)
+	fmt.Fprint(cmd.Stdout, usage)
 }
 
 var (

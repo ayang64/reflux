@@ -416,7 +416,7 @@ func (cmd *Command) backupMetastore() error {
 		}
 
 		if n < 8 {
-			return errors.New("Not enough bytes data to verify")
+			return errors.New("not enough bytes data to verify")
 		}
 
 		magic := binary.BigEndian.Uint64(magicByte[:])

@@ -930,6 +930,9 @@ func TestClient_QueryAsChunk(t *testing.T) {
 
 	query := Query{Chunked: true}
 	resp, err := c.QueryAsChunk(query)
+	if err != nil {
+		t.Fatal(err)
+	}
 	defer resp.Close()
 	if err != nil {
 		t.Fatalf("unexpected error.  expected %v, actual %v", nil, err)

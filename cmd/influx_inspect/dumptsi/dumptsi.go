@@ -175,7 +175,7 @@ func (cmd *Command) readFileSet(sfile *tsdb.SeriesFile) (*tsi1.Index, *tsi1.File
 			if ok, err := tsi1.IsIndexDir(cmd.paths[0]); err != nil {
 				return nil, nil, err
 			} else if !ok {
-				return nil, nil, fmt.Errorf("Not an index directory: %q", cmd.paths[0])
+				return nil, nil, fmt.Errorf("not an index directory: %q", cmd.paths[0])
 			}
 
 			idx := tsi1.NewIndex(sfile,
@@ -504,7 +504,7 @@ or it should specify one or more .tsi/.tsl files. If no flags are specified
 then summary stats are provided for each file.
 `
 
-	fmt.Fprintf(cmd.Stdout, usage)
+	fmt.Fprint(cmd.Stdout, usage)
 }
 
 // deletedString returns "(deleted)" if v is true.

@@ -99,7 +99,7 @@ func WriteRequestToPoints(req *prompb.WriteRequest) ([]models.Point, error) {
 // new storage API that IFQL uses.
 func ReadRequestToInfluxStorageRequest(req *prompb.ReadRequest, db, rp string) (*datatypes.ReadFilterRequest, error) {
 	if len(req.Queries) != 1 {
-		return nil, errors.New("Prometheus read endpoint currently only supports one query at a time")
+		return nil, errors.New("prometheus read endpoint currently only supports one query at a time")
 	}
 	q := req.Queries[0]
 

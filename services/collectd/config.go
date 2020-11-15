@@ -132,13 +132,13 @@ func (c *Config) Validate() error {
 	switch c.SecurityLevel {
 	case "none", "sign", "encrypt":
 	default:
-		return errors.New("Invalid security level")
+		return errors.New("invalid security level")
 	}
 
 	switch c.ParseMultiValuePlugin {
 	case "split", "join":
 	default:
-		return errors.New(`Invalid value for parse-multivalue-plugin. Valid options are "split" and "join"`)
+		return errors.New(`invalid value for parse-multivalue-plugin. valid options are "split" and "join"`)
 	}
 
 	return nil

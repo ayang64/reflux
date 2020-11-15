@@ -81,7 +81,7 @@ func (cmd *Command) Run(args ...string) error {
 	}
 
 	if cmd.byTagKey {
-		return errors.New("Segmenting cardinality by tag key is not yet implemented")
+		return errors.New("segmenting cardinality by tag key is not yet implemented")
 	}
 
 	if cmd.dbPath == "" {

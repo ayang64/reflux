@@ -1599,18 +1599,13 @@ func (h *Handler) serveDebugRequests(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var closing <-chan bool
-	if notifier, ok := w.(http.CloseNotifier); ok {
-		closing = notifier.CloseNotify()
-	}
-
 	profile := h.requestTracker.TrackRequests()
 
 	timer := time.NewTimer(d)
 	select {
 	case <-timer.C:
 		profile.Stop()
-	case <-closing:
+	case <-r.Context().Done():
 		// Connection was closed early.
 		profile.Stop()
 		timer.Stop()

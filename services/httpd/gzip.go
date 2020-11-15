@@ -12,7 +12,6 @@ type lazyGzipResponseWriter struct {
 	io.Writer
 	http.ResponseWriter
 	http.Flusher
-	http.CloseNotifier
 	wroteHeader bool
 }
 
@@ -28,10 +27,6 @@ func gzipFilter(inner http.Handler) http.Handler {
 
 		if f, ok := w.(http.Flusher); ok {
 			gw.Flusher = f
-		}
-
-		if cn, ok := w.(http.CloseNotifier); ok {
-			gw.CloseNotifier = cn
 		}
 
 		defer gw.Close()

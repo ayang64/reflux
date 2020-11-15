@@ -405,7 +405,7 @@ func (s *Store) loadShards() error {
 					err = shard.Open()
 					if err != nil {
 						log.Info("Failed to open shard", logger.Shard(shardID), zap.Error(err))
-						resC <- &res{err: fmt.Errorf("Failed to open shard: %d: %s", shardID, err)}
+						resC <- &res{err: fmt.Errorf("failed to open shard: %d: %s", shardID, err)}
 						return
 					}
 

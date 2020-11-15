@@ -702,7 +702,7 @@ func newIteratorOptionsSubstatement(ctx context.Context, stmt *influxql.SelectSt
 		subOpt.EndTime = opt.EndTime
 	}
 	if !subOpt.Interval.IsZero() && subOpt.EndTime == influxql.MaxTime {
-		if now := ctx.Value("now"); now != nil {
+		if now := ctx.Value(QueryNow("now")); now != nil {
 			subOpt.EndTime = now.(time.Time).UnixNano()
 		}
 	}
@@ -1326,12 +1326,6 @@ type fastDedupeKey struct {
 	name   string
 	values [2]interface{}
 }
-
-type reverseStringSlice []string
-
-func (p reverseStringSlice) Len() int           { return len(p) }
-func (p reverseStringSlice) Less(i, j int) bool { return p[i] > p[j] }
-func (p reverseStringSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 func abs(v int64) int64 {
 	sign := v >> 63

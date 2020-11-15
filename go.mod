@@ -1,4 +1,4 @@
-module github.com/influxdata/influxdb
+module github.com/ayang64/reflux
 
 go 1.13
 

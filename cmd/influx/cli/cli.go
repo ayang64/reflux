@@ -109,7 +109,7 @@ func (c *CommandLine) Run() error {
 			return l.PasswordPrompt("password: ")
 		}()
 		if e != nil {
-			return errors.New("Unable to parse password")
+			return errors.New("unable to parse password")
 		}
 		c.ClientConfig.Password = p
 	} else if c.ClientConfig.Password == "" {
@@ -144,7 +144,7 @@ func (c *CommandLine) Run() error {
 			}
 			c.ClientConfig.UnsafeSsl = false
 		}
-		return fmt.Errorf("Failed to connect to %s: %s\n%s", c.Client.Addr(), err.Error(), msg)
+		return fmt.Errorf("failed to connect to %s: %s\n%s", c.Client.Addr(), err.Error(), msg)
 	}
 
 	// Modify precision.
@@ -363,7 +363,7 @@ func (c *CommandLine) Connect(cmd string) error {
 
 	client, err := client.NewClient(ClientConfig)
 	if err != nil {
-		return fmt.Errorf("Could not create client %s", err)
+		return fmt.Errorf("could not create client %s", err)
 	}
 	c.Client = client
 
@@ -1167,22 +1167,6 @@ func (c *CommandLine) exit() {
 }
 
 func (c *CommandLine) ExecuteFluxQuery(query string) error {
-	ctx := context.Background()
-	if !c.IgnoreSignals {
-		done := make(chan struct{})
-		defer close(done)
-
-		var cancel func()
-		ctx, cancel = context.WithCancel(ctx)
-		go func() {
-			select {
-			case <-done:
-			case <-c.osSignals:
-				cancel()
-			}
-		}()
-	}
-
 	repl, err := getFluxREPL(c.URL, c.ClientConfig.Username, c.ClientConfig.Password)
 	if err != nil {
 		return err

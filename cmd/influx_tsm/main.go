@@ -345,31 +345,31 @@ func convertShard(si *tsdb.ShardInfo, tr *tracker) error {
 	case tsdb.B1:
 		reader = b1.NewReader(src, &tr.Stats, 0)
 	default:
-		return fmt.Errorf("Unsupported shard format: %v", si.FormatAsString())
+		return fmt.Errorf("unsupported shard format: %v", si.FormatAsString())
 	}
 
 	// Open the shard, and create a converter.
 	if err := reader.Open(); err != nil {
-		return fmt.Errorf("Failed to open %v for conversion: %v", src, err)
+		return fmt.Errorf("failed to open %v for conversion: %v", src, err)
 	}
 	defer reader.Close()
 	converter := NewConverter(dst, uint32(opts.TSMSize), &tr.Stats)
 
 	// Perform the conversion.
 	if err := converter.Process(reader); err != nil {
-		return fmt.Errorf("Conversion of %v failed: %v", src, err)
+		return fmt.Errorf("conversion of %v failed: %v", src, err)
 	}
 
 	// Delete source shard, and rename new tsm1 shard.
 	if err := reader.Close(); err != nil {
-		return fmt.Errorf("Conversion of %v failed due to close: %v", src, err)
+		return fmt.Errorf("conversion of %v failed due to close: %v", src, err)
 	}
 
 	if err := os.RemoveAll(si.FullPath(opts.DataPath)); err != nil {
-		return fmt.Errorf("Deletion of %v failed: %v", src, err)
+		return fmt.Errorf("deletion of %v failed: %v", src, err)
 	}
 	if err := os.Rename(dst, src); err != nil {
-		return fmt.Errorf("Rename of %v to %v failed: %v", dst, src, err)
+		return fmt.Errorf("rename of %v to %v failed: %v", dst, src, err)
 	}
 
 	return nil

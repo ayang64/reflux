@@ -114,7 +114,7 @@ func (p *preparedStatement) Select(ctx context.Context) (Cursor, error) {
 	// TODO(jsternberg): Remove this hacky method of propagating now.
 	// Each level of the query should use a time range discovered during
 	// compilation, but that requires too large of a refactor at the moment.
-	ctx = context.WithValue(ctx, "now", p.now)
+	ctx = context.WithValue(ctx, QueryNow("now"), p.now)
 
 	opt := p.opt
 	opt.InterruptCh = ctx.Done()
@@ -246,7 +246,7 @@ func (b *exprIteratorBuilder) buildCallIterator(ctx context.Context, expr *influ
 		h := expr.Args[1].(*influxql.IntegerLiteral)
 		m := expr.Args[2].(*influxql.IntegerLiteral)
 
-		includeFitData := "holt_winters_with_fit" == expr.Name
+		includeFitData := expr.Name == "holt_winters_with_fit"
 
 		interval := opt.Interval.Duration
 		// Redefine interval to be unbounded to capture all aggregate results
@@ -618,6 +618,8 @@ func (b *exprIteratorBuilder) callIterator(ctx context.Context, expr *influxql.C
 	}
 	return itr, nil
 }
+
+type QueryNow string
 
 func buildCursor(ctx context.Context, stmt *influxql.SelectStatement, ic IteratorCreator, opt IteratorOptions) (Cursor, error) {
 	span := tracing.SpanFromContext(ctx)
