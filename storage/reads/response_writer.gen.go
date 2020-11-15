@@ -7,8 +7,8 @@
 package reads
 
 import (
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
+	"github.com/ayang64/reflux/tsdb/cursors"
 )
 
 func (w *ResponseWriter) getFloatPointsFrame() *datatypes.ReadResponse_Frame_FloatPoints {

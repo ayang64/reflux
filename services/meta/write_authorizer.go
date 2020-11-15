@@ -3,7 +3,7 @@ package meta
 import (
 	"fmt"
 
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // WriteAuthorizer determines whether a user is authorized to write to a given database.

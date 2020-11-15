@@ -14,8 +14,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/influxdata/influxdb/pkg/file"
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/pkg/file"
+	"github.com/ayang64/reflux/tsdb"
 )
 
 const TombstoneFileExtension = "tombstone"

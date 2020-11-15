@@ -7,9 +7,9 @@ import (
 	"math"
 	"sort"
 
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
+	"github.com/ayang64/reflux/tsdb/cursors"
 )
 
 type groupResultSet struct {

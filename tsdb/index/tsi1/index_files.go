@@ -7,9 +7,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/influxdata/influxdb/pkg/bytesutil"
-	"github.com/influxdata/influxdb/pkg/estimator/hll"
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/pkg/bytesutil"
+	"github.com/ayang64/reflux/pkg/estimator/hll"
+	"github.com/ayang64/reflux/tsdb"
 )
 
 // IndexFiles represents a layered set of index files.

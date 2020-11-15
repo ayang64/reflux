@@ -15,12 +15,12 @@ import (
 	"strings"
 	"sync/atomic"
 
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/file"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
-	"github.com/influxdata/influxdb/tsdb/index/tsi1"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/file"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/engine/tsm1"
+	"github.com/ayang64/reflux/tsdb/index/tsi1"
 	"go.uber.org/zap"
 	"golang.org/x/sync/errgroup"
 )

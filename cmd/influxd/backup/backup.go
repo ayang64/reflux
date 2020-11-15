@@ -16,9 +16,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/influxdata/influxdb/cmd/influxd/backup_util"
-	"github.com/influxdata/influxdb/services/snapshotter"
-	"github.com/influxdata/influxdb/tcp"
+	"github.com/ayang64/reflux/cmd/influxd/backup_util"
+	"github.com/ayang64/reflux/services/snapshotter"
+	"github.com/ayang64/reflux/tcp"
 	gzip "github.com/klauspost/pgzip"
 )
 

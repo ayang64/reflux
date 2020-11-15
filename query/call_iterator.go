@@ -6,8 +6,8 @@ import (
 	"sort"
 	"time"
 
-	"github.com/influxdata/influxdb/query/internal/gota"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/query/internal/gota"
+	"github.com/ayang64/reflux/influxql"
 )
 
 /*

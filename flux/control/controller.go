@@ -6,9 +6,9 @@ import (
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/lang"
 	"github.com/influxdata/flux/memory"
-	"github.com/influxdata/influxdb/coordinator"
-	"github.com/influxdata/influxdb/flux/builtin"
-	"github.com/influxdata/influxdb/flux/stdlib/influxdata/influxdb"
+	"github.com/ayang64/reflux/coordinator"
+	"github.com/ayang64/reflux/flux/builtin"
+	"github.com/ayang64/reflux/flux/stdlib/influxdata/influxdb"
 	"github.com/prometheus/client_golang/prometheus"
 	"go.uber.org/zap"
 )

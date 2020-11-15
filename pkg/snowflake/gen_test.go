@@ -7,7 +7,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/influxdata/influxdb/pkg/testing/assert"
+	"github.com/ayang64/reflux/pkg/testing/assert"
 )
 
 func TestEncode(t *testing.T) {

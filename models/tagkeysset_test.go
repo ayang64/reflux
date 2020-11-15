@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/models"
+	"github.com/ayang64/reflux/models"
 )
 
 func TestTagKeysSet_UnionKeys(t *testing.T) {

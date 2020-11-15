@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/internal"
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/toml"
+	"github.com/ayang64/reflux/internal"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/toml"
 )
 
 func Test_Service_OpenClose(t *testing.T) {

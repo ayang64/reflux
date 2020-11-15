@@ -4,7 +4,7 @@ import (
 	"errors"
 	"regexp"
 
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/influxql"
 )
 
 var matchAllRegex = regexp.MustCompile(`.+`)

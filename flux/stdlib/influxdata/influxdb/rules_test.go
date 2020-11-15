@@ -12,7 +12,7 @@ import (
 	"github.com/influxdata/flux/plan/plantest"
 	"github.com/influxdata/flux/semantic"
 	"github.com/influxdata/flux/stdlib/universe"
-	"github.com/influxdata/influxdb/flux/stdlib/influxdata/influxdb"
+	"github.com/ayang64/reflux/flux/stdlib/influxdata/influxdb"
 )
 
 func fluxTime(t int64) flux.Time {

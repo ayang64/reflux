@@ -12,13 +12,13 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/influxdata/influxdb/internal"
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/services/snapshotter"
-	"github.com/influxdata/influxdb/tcp"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/internal"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/services/snapshotter"
+	"github.com/ayang64/reflux/tcp"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/influxql"
 )
 
 var data = meta.Data{

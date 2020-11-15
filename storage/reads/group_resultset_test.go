@@ -7,10 +7,10 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/data/gen"
-	"github.com/influxdata/influxdb/storage/reads"
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/data/gen"
+	"github.com/ayang64/reflux/storage/reads"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
 )
 
 func TestNewGroupResultSet_Sorting(t *testing.T) {

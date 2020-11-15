@@ -1,11 +1,11 @@
 package internal
 
 import (
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/bloom"
-	"github.com/influxdata/influxdb/pkg/estimator"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/index/tsi1"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/bloom"
+	"github.com/ayang64/reflux/pkg/estimator"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/index/tsi1"
 )
 
 // File is a mock implementation of a tsi1.File.

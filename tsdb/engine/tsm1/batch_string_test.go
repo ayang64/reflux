@@ -10,8 +10,8 @@ import (
 	"testing/quick"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/internal/testutil"
-	"github.com/influxdata/influxdb/uuid"
+	"github.com/ayang64/reflux/internal/testutil"
+	"github.com/ayang64/reflux/uuid"
 )
 
 func equalError(a, b error) bool {

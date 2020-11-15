@@ -8,9 +8,9 @@ import (
 	"github.com/influxdata/flux/execute"
 	"github.com/influxdata/flux/memory"
 	"github.com/influxdata/flux/semantic"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/tsdb/cursors"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/tsdb/cursors"
+	"github.com/ayang64/reflux/influxql"
 	"github.com/pkg/errors"
 )
 

@@ -5,11 +5,11 @@ import (
 	"io"
 	"strconv"
 
-	"github.com/influxdata/influxdb/cmd/influx_tools/internal/format"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/escape"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/cmd/influx_tools/internal/format"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/escape"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/influxql"
 )
 
 type Writer struct {

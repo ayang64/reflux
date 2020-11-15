@@ -7,8 +7,8 @@
 package gen
 
 import (
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/engine/tsm1"
 )
 
 type floatArray struct {

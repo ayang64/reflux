@@ -3,7 +3,7 @@ package subscriber
 import (
 	"net"
 
-	"github.com/influxdata/influxdb/coordinator"
+	"github.com/ayang64/reflux/coordinator"
 )
 
 // UDP supports writing points over UDP using the line protocol.

@@ -6,12 +6,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/coordinator"
-	"github.com/influxdata/influxdb/internal"
-	"github.com/influxdata/influxdb/query"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/coordinator"
+	"github.com/ayang64/reflux/internal"
+	"github.com/ayang64/reflux/query"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/influxql"
 )
 
 func TestLocalShardMapper(t *testing.T) {

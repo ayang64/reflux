@@ -1,7 +1,7 @@
 package reads
 
 import (
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // TODO(sgc): build expression evaluator that does not use influxql AST

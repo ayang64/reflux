@@ -1,4 +1,4 @@
-package query // import "github.com/influxdata/influxdb/query"
+package query // import "github.com/ayang64/reflux/query"
 
 //go:generate tmpl -data=@tmpldata iterator.gen.go.tmpl
 //go:generate tmpl -data=@tmpldata point.gen.go.tmpl

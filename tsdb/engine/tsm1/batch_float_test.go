@@ -10,7 +10,7 @@ import (
 	"testing/quick"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
+	"github.com/ayang64/reflux/tsdb/engine/tsm1"
 )
 
 var fullBlockFloat64Ones []float64

@@ -3,11 +3,11 @@ package storage_test
 import (
 	"testing"
 
-	"github.com/influxdata/influxdb/pkg/testing/assert"
-	"github.com/influxdata/influxdb/services/storage"
-	"github.com/influxdata/influxdb/storage/reads"
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/pkg/testing/assert"
+	"github.com/ayang64/reflux/services/storage"
+	"github.com/ayang64/reflux/storage/reads"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
+	"github.com/ayang64/reflux/influxql"
 )
 
 func TestHasSingleMeasurementNoOR(t *testing.T) {

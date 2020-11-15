@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/influxdata/influxdb/monitor"
+	"github.com/ayang64/reflux/monitor"
 )
 
 func TestDiagnostics_GoRuntime(t *testing.T) {

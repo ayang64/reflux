@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // ConflictWriter is a Writer that redirects conflicting data to an alternate output.

@@ -3,7 +3,7 @@ package query
 import (
 	"testing"
 
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // a simple FloatIterator for testing

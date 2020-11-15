@@ -8,11 +8,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/influxdata/influxdb/cmd"
-	"github.com/influxdata/influxdb/cmd/store/help"
-	"github.com/influxdata/influxdb/cmd/store/query"
-	"github.com/influxdata/influxdb/logger"
-	_ "github.com/influxdata/influxdb/tsdb/engine"
+	"github.com/ayang64/reflux/cmd"
+	"github.com/ayang64/reflux/cmd/store/help"
+	"github.com/ayang64/reflux/cmd/store/query"
+	"github.com/ayang64/reflux/logger"
+	_ "github.com/ayang64/reflux/tsdb/engine"
 	"go.uber.org/zap"
 )
 

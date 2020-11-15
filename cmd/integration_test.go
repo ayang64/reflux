@@ -5,9 +5,9 @@ import (
 	"os"
 	"path/filepath"
 
-	client "github.com/influxdata/influxdb/client/v2"
-	"github.com/influxdata/influxdb/cmd/influxd/run"
-	"github.com/influxdata/influxdb/services/httpd"
+	client "github.com/ayang64/reflux/client/v2"
+	"github.com/ayang64/reflux/cmd/influxd/run"
+	"github.com/ayang64/reflux/services/httpd"
 )
 
 type TestRunCommand struct {

@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/index/inmem"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/index/inmem"
 )
 
 func TestEngine_ConcurrentShardSnapshots(t *testing.T) {

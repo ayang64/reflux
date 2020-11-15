@@ -3,7 +3,7 @@ package cursors
 import (
 	"context"
 
-	"github.com/influxdata/influxdb/models"
+	"github.com/ayang64/reflux/models"
 )
 
 const DefaultMaxPointsPerBlock = 1000

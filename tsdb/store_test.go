@@ -19,15 +19,15 @@ import (
 	"time"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/influxdata/influxdb/internal"
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/deep"
-	"github.com/influxdata/influxdb/pkg/slices"
-	"github.com/influxdata/influxdb/query"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/index/inmem"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/internal"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/deep"
+	"github.com/ayang64/reflux/pkg/slices"
+	"github.com/ayang64/reflux/query"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/index/inmem"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // Ensure the store can delete a retention policy and all shards under

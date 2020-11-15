@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/tsdb"
 )
 
 // LoadFactor is the fill percent for RHH indexes.

@@ -6,9 +6,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/influxdata/influxdb/query/internal/gota"
-	"github.com/influxdata/influxdb/query/neldermead"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/query/internal/gota"
+	"github.com/ayang64/reflux/query/neldermead"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // FieldMapper is a FieldMapper that wraps another FieldMapper and exposes

@@ -9,8 +9,8 @@ import (
 	"time"
 
 	"github.com/BurntSushi/toml"
-	"github.com/influxdata/influxdb/cmd/influxd/run"
-	influxtoml "github.com/influxdata/influxdb/toml"
+	"github.com/ayang64/reflux/cmd/influxd/run"
+	influxtoml "github.com/ayang64/reflux/toml"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"

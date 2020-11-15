@@ -10,8 +10,8 @@ import (
 	"github.com/influxdata/flux/plan"
 	"github.com/influxdata/flux/semantic"
 	"github.com/influxdata/flux/values"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/influxql"
 )
 
 const (

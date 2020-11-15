@@ -8,7 +8,7 @@ import (
 	"testing/quick"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/internal/testutil"
+	"github.com/ayang64/reflux/internal/testutil"
 )
 
 func Test_StringEncoder_NoValues(t *testing.T) {

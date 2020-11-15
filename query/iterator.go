@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/influxdata/influxdb/pkg/tracing"
-	internal "github.com/influxdata/influxdb/query/internal"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/pkg/tracing"
+	internal "github.com/ayang64/reflux/query/internal"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // ErrUnknownCall is returned when operating on an unknown function call.

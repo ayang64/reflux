@@ -11,23 +11,23 @@ import (
 	"strings"
 
 	"github.com/BurntSushi/toml"
-	"github.com/influxdata/influxdb/coordinator"
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/monitor"
-	"github.com/influxdata/influxdb/monitor/diagnostics"
-	"github.com/influxdata/influxdb/pkg/tlsconfig"
-	"github.com/influxdata/influxdb/services/collectd"
-	"github.com/influxdata/influxdb/services/continuous_querier"
-	"github.com/influxdata/influxdb/services/graphite"
-	"github.com/influxdata/influxdb/services/httpd"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/services/opentsdb"
-	"github.com/influxdata/influxdb/services/precreator"
-	"github.com/influxdata/influxdb/services/retention"
-	"github.com/influxdata/influxdb/services/subscriber"
-	"github.com/influxdata/influxdb/services/udp"
-	itoml "github.com/influxdata/influxdb/toml"
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/coordinator"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/monitor"
+	"github.com/ayang64/reflux/monitor/diagnostics"
+	"github.com/ayang64/reflux/pkg/tlsconfig"
+	"github.com/ayang64/reflux/services/collectd"
+	"github.com/ayang64/reflux/services/continuous_querier"
+	"github.com/ayang64/reflux/services/graphite"
+	"github.com/ayang64/reflux/services/httpd"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/services/opentsdb"
+	"github.com/ayang64/reflux/services/precreator"
+	"github.com/ayang64/reflux/services/retention"
+	"github.com/ayang64/reflux/services/subscriber"
+	"github.com/ayang64/reflux/services/udp"
+	itoml "github.com/ayang64/reflux/toml"
+	"github.com/ayang64/reflux/tsdb"
 	"golang.org/x/text/encoding/unicode"
 	"golang.org/x/text/transform"
 )
@@ -123,7 +123,7 @@ func (c *Config) FromTomlFile(fpath string) error {
 	// Handle any potential Byte-Order-Marks that may be in the config file.
 	// This is for Windows compatibility only.
 	// See https://github.com/influxdata/telegraf/issues/1378 and
-	// https://github.com/influxdata/influxdb/issues/8965.
+	// https://github.com/ayang64/reflux/issues/8965.
 	bom := unicode.BOMOverride(transform.Nop)
 	bs, _, err = transform.Bytes(bom, bs)
 	if err != nil {

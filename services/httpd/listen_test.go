@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/services/httpd"
+	"github.com/ayang64/reflux/services/httpd"
 )
 
 type fakeListener struct {

@@ -1,6 +1,6 @@
 // Package monitor provides a service and associated functionality
 // for InfluxDB to self-monitor internal statistics and diagnostics.
-package monitor // import "github.com/influxdata/influxdb/monitor"
+package monitor // import "github.com/ayang64/reflux/monitor"
 
 import (
 	"errors"
@@ -13,10 +13,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/monitor/diagnostics"
-	"github.com/influxdata/influxdb/services/meta"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/monitor/diagnostics"
+	"github.com/ayang64/reflux/services/meta"
 	"go.uber.org/zap"
 )
 

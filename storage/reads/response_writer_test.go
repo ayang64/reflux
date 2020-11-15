@@ -5,9 +5,9 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/influxdata/influxdb/mock"
-	"github.com/influxdata/influxdb/storage/reads"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/mock"
+	"github.com/ayang64/reflux/storage/reads"
+	"github.com/ayang64/reflux/tsdb/cursors"
 	"google.golang.org/grpc/metadata"
 )
 

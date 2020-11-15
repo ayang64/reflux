@@ -11,7 +11,7 @@ import (
 	"unicode/utf8"
 
 	"github.com/BurntSushi/toml"
-	"github.com/influxdata/influxdb/models"
+	"github.com/ayang64/reflux/models"
 	"github.com/pkg/errors"
 )
 

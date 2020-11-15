@@ -12,7 +12,7 @@ import (
 	"io"
 
 	"github.com/gogo/protobuf/proto"
-	internal "github.com/influxdata/influxdb/query/internal"
+	internal "github.com/ayang64/reflux/query/internal"
 )
 
 // FloatPoint represents a point with a float64 value.

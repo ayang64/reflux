@@ -1,6 +1,6 @@
 package query
 
-import "github.com/influxdata/influxql"
+import "github.com/ayang64/reflux/influxql"
 
 // castToType will coerce the underlying interface type to another
 // interface depending on the type.

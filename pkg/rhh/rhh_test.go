@@ -7,7 +7,7 @@ import (
 	"testing"
 	"testing/quick"
 
-	"github.com/influxdata/influxdb/pkg/rhh"
+	"github.com/ayang64/reflux/pkg/rhh"
 )
 
 // Ensure hash map can perform basic get/put operations.

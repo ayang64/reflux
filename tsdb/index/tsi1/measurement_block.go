@@ -8,10 +8,10 @@ import (
 	"sort"
 	"unsafe"
 
-	"github.com/influxdata/influxdb/pkg/estimator"
-	"github.com/influxdata/influxdb/pkg/estimator/hll"
-	"github.com/influxdata/influxdb/pkg/rhh"
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/pkg/estimator"
+	"github.com/ayang64/reflux/pkg/estimator/hll"
+	"github.com/ayang64/reflux/pkg/rhh"
+	"github.com/ayang64/reflux/tsdb"
 )
 
 // MeasurementBlockVersion is the version of the measurement block.

@@ -10,11 +10,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/influxdata/influxdb/cmd"
-	"github.com/influxdata/influxdb/cmd/influxd/backup"
-	"github.com/influxdata/influxdb/cmd/influxd/help"
-	"github.com/influxdata/influxdb/cmd/influxd/restore"
-	"github.com/influxdata/influxdb/cmd/influxd/run"
+	"github.com/ayang64/reflux/cmd"
+	"github.com/ayang64/reflux/cmd/influxd/backup"
+	"github.com/ayang64/reflux/cmd/influxd/help"
+	"github.com/ayang64/reflux/cmd/influxd/restore"
+	"github.com/ayang64/reflux/cmd/influxd/run"
 )
 
 // These variables are populated via the Go linker.

@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/tsdb"
 )
 
 type MetaClient interface {

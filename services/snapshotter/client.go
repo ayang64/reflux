@@ -13,8 +13,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/tcp"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/tcp"
 )
 
 // Client provides an API for the snapshotter service.

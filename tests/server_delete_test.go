@@ -14,7 +14,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/models"
+	"github.com/ayang64/reflux/models"
 )
 
 var (
@@ -283,7 +283,7 @@ func TestServer_Insert_Delete_1515777603585914810(t *testing.T) {
 	}
 }
 
-// This test reproduces the issue identified in https://github.com/influxdata/influxdb/issues/10052
+// This test reproduces the issue identified in https://github.com/ayang64/reflux/issues/10052
 func TestServer_Insert_Delete_10052(t *testing.T) {
 	t.Parallel()
 

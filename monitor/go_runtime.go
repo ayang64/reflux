@@ -3,7 +3,7 @@ package monitor
 import (
 	"runtime"
 
-	"github.com/influxdata/influxdb/monitor/diagnostics"
+	"github.com/ayang64/reflux/monitor/diagnostics"
 )
 
 // goRuntime captures Go runtime diagnostics.

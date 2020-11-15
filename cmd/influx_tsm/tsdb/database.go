@@ -1,5 +1,5 @@
 // Package tsdb abstracts the various shard types supported by the influx_tsm command.
-package tsdb // import "github.com/influxdata/influxdb/cmd/influx_tsm/tsdb"
+package tsdb // import "github.com/ayang64/reflux/cmd/influx_tsm/tsdb"
 
 import (
 	"fmt"
@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
-	"github.com/influxdata/influxdb/pkg/slices"
+	"github.com/ayang64/reflux/pkg/slices"
 )
 
 // Flags for differentiating between engines

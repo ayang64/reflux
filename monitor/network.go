@@ -3,7 +3,7 @@ package monitor
 import (
 	"os"
 
-	"github.com/influxdata/influxdb/monitor/diagnostics"
+	"github.com/ayang64/reflux/monitor/diagnostics"
 )
 
 // network captures network diagnostics.

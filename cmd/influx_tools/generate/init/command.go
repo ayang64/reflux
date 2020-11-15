@@ -6,8 +6,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/influxdata/influxdb/cmd/influx_tools/generate"
-	"github.com/influxdata/influxdb/cmd/influx_tools/server"
+	"github.com/ayang64/reflux/cmd/influx_tools/generate"
+	"github.com/ayang64/reflux/cmd/influx_tools/server"
 )
 
 // Command represents the program execution for "store query".

@@ -11,11 +11,11 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/influxdata/influxdb/cmd/influx_tools/generate"
-	"github.com/influxdata/influxdb/cmd/influx_tools/internal/profile"
-	"github.com/influxdata/influxdb/cmd/influx_tools/server"
-	"github.com/influxdata/influxdb/pkg/data/gen"
-	"github.com/influxdata/influxdb/services/meta"
+	"github.com/ayang64/reflux/cmd/influx_tools/generate"
+	"github.com/ayang64/reflux/cmd/influx_tools/internal/profile"
+	"github.com/ayang64/reflux/cmd/influx_tools/server"
+	"github.com/ayang64/reflux/pkg/data/gen"
+	"github.com/ayang64/reflux/services/meta"
 )
 
 // Command represents the program execution for "store query".

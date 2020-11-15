@@ -3,8 +3,8 @@ package reads_test
 import (
 	"testing"
 
-	"github.com/influxdata/influxdb/storage/reads"
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
+	"github.com/ayang64/reflux/storage/reads"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
 )
 
 func TestHasFieldValueKey(t *testing.T) {

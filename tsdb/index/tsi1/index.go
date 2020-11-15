@@ -14,12 +14,12 @@ import (
 	"unsafe"
 
 	"github.com/cespare/xxhash"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/estimator"
-	"github.com/influxdata/influxdb/pkg/estimator/hll"
-	"github.com/influxdata/influxdb/pkg/slices"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/estimator"
+	"github.com/ayang64/reflux/pkg/estimator/hll"
+	"github.com/ayang64/reflux/pkg/slices"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/influxql"
 	"go.uber.org/zap"
 )
 

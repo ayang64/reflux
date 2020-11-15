@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/influxdata/influxdb/monitor"
+	"github.com/ayang64/reflux/monitor"
 )
 
 func TestDiagnostics_BuildInfo(t *testing.T) {

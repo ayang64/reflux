@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/influxdata/influxdb/cmd/influx_tools/internal/tlv"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
+	"github.com/ayang64/reflux/cmd/influx_tools/internal/tlv"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/engine/tsm1"
 )
 
 type Reader struct {

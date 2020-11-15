@@ -14,12 +14,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/pkg/slices"
+	"github.com/ayang64/reflux/pkg/slices"
 
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/bloom"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/index/tsi1"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/bloom"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/index/tsi1"
 )
 
 // Ensure log file can append series.

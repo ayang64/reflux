@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/tsdb/cursors"
 )
 
 func makeBooleanArray(v ...interface{}) *cursors.BooleanArray {

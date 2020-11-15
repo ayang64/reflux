@@ -1,7 +1,7 @@
 package reads
 
 import (
-	"github.com/influxdata/influxdb/models"
+	"github.com/ayang64/reflux/models"
 )
 
 type tagsBuffer struct {

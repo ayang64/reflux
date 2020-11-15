@@ -16,10 +16,10 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/types"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/services/storage"
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/services/storage"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
+	"github.com/ayang64/reflux/influxql"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )

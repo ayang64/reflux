@@ -13,8 +13,8 @@ import (
 	"strings"
 
 	"github.com/gogo/protobuf/proto"
-	internal "github.com/influxdata/influxdb/cmd/influxd/backup_util/internal"
-	"github.com/influxdata/influxdb/services/snapshotter"
+	internal "github.com/ayang64/reflux/cmd/influxd/backup_util/internal"
+	"github.com/ayang64/reflux/services/snapshotter"
 )
 
 //go:generate protoc --gogo_out=. internal/data.proto

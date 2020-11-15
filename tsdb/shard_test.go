@@ -17,19 +17,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/internal"
+	"github.com/ayang64/reflux/internal"
 
 	"github.com/davecgh/go-spew/spew"
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/deep"
-	"github.com/influxdata/influxdb/query"
-	"github.com/influxdata/influxdb/tsdb"
-	_ "github.com/influxdata/influxdb/tsdb/engine"
-	_ "github.com/influxdata/influxdb/tsdb/index"
-	"github.com/influxdata/influxdb/tsdb/index/inmem"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/deep"
+	"github.com/ayang64/reflux/query"
+	"github.com/ayang64/reflux/tsdb"
+	_ "github.com/ayang64/reflux/tsdb/engine"
+	_ "github.com/ayang64/reflux/tsdb/index"
+	"github.com/ayang64/reflux/tsdb/index/inmem"
+	"github.com/ayang64/reflux/influxql"
 )
 
 func TestShardWriteAndIndex(t *testing.T) {
@@ -491,7 +491,7 @@ func TestShard_WritePoints_FieldConflictConcurrent(t *testing.T) {
 }
 
 func TestShard_WritePoints_FieldConflictConcurrentQuery(t *testing.T) {
-	t.Skip("https://github.com/influxdata/influxdb/issues/14267")
+	t.Skip("https://github.com/ayang64/reflux/issues/14267")
 	if testing.Short() {
 		t.Skip()
 	}

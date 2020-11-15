@@ -10,10 +10,10 @@ import (
 	"github.com/influxdata/flux/execute"
 	"github.com/influxdata/flux/memory"
 	"github.com/influxdata/flux/values"
-	"github.com/influxdata/influxdb/flux/stdlib/influxdata/influxdb"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/flux/stdlib/influxdata/influxdb"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
+	"github.com/ayang64/reflux/tsdb/cursors"
 )
 
 type storageTable interface {

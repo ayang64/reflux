@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/services/meta"
+	"github.com/ayang64/reflux/services/meta"
 )
 
 func ts(s int64) time.Time { return time.Unix(s, 0).UTC() }

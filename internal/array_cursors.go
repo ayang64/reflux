@@ -1,6 +1,6 @@
 package internal
 
-import "github.com/influxdata/influxdb/tsdb"
+import "github.com/ayang64/reflux/tsdb"
 
 var (
 	_ tsdb.IntegerArrayCursor  = NewIntegerArrayCursorMock()

@@ -17,12 +17,12 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/file"
-	"github.com/influxdata/influxdb/pkg/limiter"
-	"github.com/influxdata/influxdb/pkg/metrics"
-	"github.com/influxdata/influxdb/query"
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/file"
+	"github.com/ayang64/reflux/pkg/limiter"
+	"github.com/ayang64/reflux/pkg/metrics"
+	"github.com/ayang64/reflux/query"
+	"github.com/ayang64/reflux/tsdb"
 	"go.uber.org/zap"
 )
 

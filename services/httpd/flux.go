@@ -8,7 +8,7 @@ import (
 	"net/http"
 
 	"github.com/influxdata/flux"
-	"github.com/influxdata/influxdb/flux/client"
+	"github.com/ayang64/reflux/flux/client"
 	"github.com/prometheus/client_golang/prometheus"
 )
 

@@ -20,14 +20,14 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/influxdb/logger"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/pkg/deep"
-	"github.com/influxdata/influxdb/query"
-	"github.com/influxdata/influxdb/tsdb"
-	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
-	"github.com/influxdata/influxdb/tsdb/index/inmem"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/logger"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/pkg/deep"
+	"github.com/ayang64/reflux/query"
+	"github.com/ayang64/reflux/tsdb"
+	"github.com/ayang64/reflux/tsdb/engine/tsm1"
+	"github.com/ayang64/reflux/tsdb/index/inmem"
+	"github.com/ayang64/reflux/influxql"
 )
 
 // Ensure that deletes only sent to the WAL will clear out the data from the cache on restart
@@ -66,7 +66,7 @@ func TestEngine_DeleteWALLoadMetadata(t *testing.T) {
 	}
 }
 
-// See https://github.com/influxdata/influxdb/issues/14229
+// See https://github.com/ayang64/reflux/issues/14229
 func TestEngine_DeleteSeriesAfterCacheSnapshot(t *testing.T) {
 	for _, index := range tsdb.RegisteredIndexes() {
 		t.Run(index, func(t *testing.T) {

@@ -22,9 +22,9 @@ import (
 
 	_ "net/http/pprof"
 
-	"github.com/influxdata/influxdb/cmd/influx_tsm/b1"
-	"github.com/influxdata/influxdb/cmd/influx_tsm/bz1"
-	"github.com/influxdata/influxdb/cmd/influx_tsm/tsdb"
+	"github.com/ayang64/reflux/cmd/influx_tsm/b1"
+	"github.com/ayang64/reflux/cmd/influx_tsm/bz1"
+	"github.com/ayang64/reflux/cmd/influx_tsm/tsdb"
 )
 
 // ShardReader reads b* shards and converts to tsm shards

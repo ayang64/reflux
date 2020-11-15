@@ -1,5 +1,5 @@
 // Package b1 reads data from b1 shards.
-package b1 // import "github.com/influxdata/influxdb/cmd/influx_tsm/b1"
+package b1 // import "github.com/ayang64/reflux/cmd/influx_tsm/b1"
 
 import (
 	"encoding/binary"
@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
-	"github.com/influxdata/influxdb/cmd/influx_tsm/stats"
-	"github.com/influxdata/influxdb/cmd/influx_tsm/tsdb"
-	"github.com/influxdata/influxdb/tsdb/engine/tsm1"
+	"github.com/ayang64/reflux/cmd/influx_tsm/stats"
+	"github.com/ayang64/reflux/cmd/influx_tsm/tsdb"
+	"github.com/ayang64/reflux/tsdb/engine/tsm1"
 )
 
 // DefaultChunkSize is the size of chunks read from the b1 shard

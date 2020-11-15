@@ -17,11 +17,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/influxdb/cmd/influxd/run"
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/services/httpd"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxdb/toml"
+	"github.com/ayang64/reflux/cmd/influxd/run"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/services/httpd"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/toml"
 )
 
 var (

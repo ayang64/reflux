@@ -1,6 +1,6 @@
 // Package client implements a now-deprecated client for InfluxDB;
-// use github.com/influxdata/influxdb/client/v2 instead.
-package client // import "github.com/influxdata/influxdb/client"
+// use github.com/ayang64/reflux/client/v2 instead.
+package client // import "github.com/ayang64/reflux/client"
 
 import (
 	"bytes"
@@ -19,7 +19,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/influxdata/influxdb/models"
+	"github.com/ayang64/reflux/models"
 )
 
 const (

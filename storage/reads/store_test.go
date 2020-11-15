@@ -6,9 +6,9 @@ import (
 	"io"
 	"strings"
 
-	"github.com/influxdata/influxdb/models"
-	"github.com/influxdata/influxdb/storage/reads"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/storage/reads"
+	"github.com/ayang64/reflux/tsdb/cursors"
 )
 
 func cursorToString(wr io.Writer, cur cursors.Cursor) {

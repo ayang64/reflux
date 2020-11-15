@@ -1,6 +1,6 @@
 // Package diagnostics provides the diagnostics type so that
 // other packages can provide diagnostics without depending on the monitor package.
-package diagnostics // import "github.com/influxdata/influxdb/monitor/diagnostics"
+package diagnostics // import "github.com/ayang64/reflux/monitor/diagnostics"
 
 import "sort"
 

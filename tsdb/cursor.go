@@ -3,8 +3,8 @@ package tsdb
 import (
 	"context"
 
-	"github.com/influxdata/influxdb/query"
-	"github.com/influxdata/influxdb/tsdb/cursors"
+	"github.com/ayang64/reflux/query"
+	"github.com/ayang64/reflux/tsdb/cursors"
 )
 
 type (

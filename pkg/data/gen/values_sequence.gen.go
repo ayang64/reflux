@@ -7,7 +7,7 @@
 package gen
 
 import (
-	"github.com/influxdata/influxdb/tsdb"
+	"github.com/ayang64/reflux/tsdb"
 )
 
 type FloatValuesSequence interface {

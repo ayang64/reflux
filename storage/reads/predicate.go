@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"strconv"
 
-	"github.com/influxdata/influxdb/storage/reads/datatypes"
+	"github.com/ayang64/reflux/storage/reads/datatypes"
 )
 
 // NodeVisitor can be called by Walk to traverse the Node hierarchy.

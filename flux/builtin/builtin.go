@@ -8,7 +8,7 @@ import (
 
 	"github.com/influxdata/flux"
 	_ "github.com/influxdata/flux/stdlib"
-	_ "github.com/influxdata/influxdb/flux/stdlib"
+	_ "github.com/ayang64/reflux/flux/stdlib"
 )
 
 var once sync.Once

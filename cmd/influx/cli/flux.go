@@ -7,8 +7,8 @@ import (
 	"github.com/influxdata/flux"
 	"github.com/influxdata/flux/csv"
 	"github.com/influxdata/flux/repl"
-	"github.com/influxdata/influxdb/flux/builtin"
-	"github.com/influxdata/influxdb/flux/client"
+	"github.com/ayang64/reflux/flux/builtin"
+	"github.com/ayang64/reflux/flux/client"
 )
 
 // QueryService represents a type capable of performing queries.

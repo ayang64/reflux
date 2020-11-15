@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb/cmd/influxd/backup"
-	"github.com/influxdata/influxdb/cmd/influxd/restore"
-	"github.com/influxdata/influxdb/toml"
+	"github.com/ayang64/reflux/cmd/influxd/backup"
+	"github.com/ayang64/reflux/cmd/influxd/restore"
+	"github.com/ayang64/reflux/toml"
 )
 
 func TestServer_BackupAndRestore(t *testing.T) {

@@ -4,8 +4,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/influxdata/influxdb/pkg/tracing/fields"
-	"github.com/influxdata/influxdb/pkg/tracing/labels"
+	"github.com/ayang64/reflux/pkg/tracing/fields"
+	"github.com/ayang64/reflux/pkg/tracing/labels"
 )
 
 // The Span type denotes a specific operation for a Trace.

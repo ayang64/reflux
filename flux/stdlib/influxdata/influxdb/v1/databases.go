@@ -11,9 +11,9 @@ import (
 	"github.com/influxdata/flux/plan"
 	"github.com/influxdata/flux/stdlib/influxdata/influxdb/v1"
 	"github.com/influxdata/flux/values"
-	"github.com/influxdata/influxdb/flux/stdlib/influxdata/influxdb"
-	"github.com/influxdata/influxdb/services/meta"
-	"github.com/influxdata/influxql"
+	"github.com/ayang64/reflux/flux/stdlib/influxdata/influxdb"
+	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/influxql"
 )
 
 const DatabasesKind = v1.DatabasesKind

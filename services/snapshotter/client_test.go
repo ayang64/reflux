@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/influxdata/influxdb"
-	"github.com/influxdata/influxdb/services/snapshotter"
+	"github.com/ayang64/reflux"
+	"github.com/ayang64/reflux/services/snapshotter"
 )
 
 func TestClient_MetastoreBackup_InvalidMetadata(t *testing.T) {
