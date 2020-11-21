@@ -3,6 +3,7 @@ package graphite // import "github.com/ayang64/reflux/services/graphite"
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	"math"
 	"net"
@@ -69,11 +70,7 @@ type Service struct {
 	addr    net.Addr
 	udpConn *net.UDPConn
 
-	wg sync.WaitGroup
-
-	mu    sync.RWMutex
-	ready bool          // Has the required database been created?
-	done  chan struct{} // Is the service closing or closed?
+	ready bool // Has the required database been created?
 
 	Monitor interface {
 		RegisterDiagnosticsClient(name string, client diagnostics.Client)
@@ -125,15 +122,7 @@ func NewService(c Config) (*Service, error) {
 }
 
 // Open starts the Graphite input processing data.
-func (s *Service) Open() error {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-
-	if s.done != nil {
-		return nil // Already open.
-	}
-	s.done = make(chan struct{})
-
+func (s *Service) Start(ctx context.Context) error {
 	s.logger.Info("Starting graphite service",
 		zap.Int("batch_size", s.batchSize),
 		logger.DurationLiteral("batch_timeout", s.batchTimeout))
@@ -147,8 +136,7 @@ func (s *Service) Open() error {
 	s.batcher.Start()
 
 	// Start processing batches.
-	s.wg.Add(1)
-	go s.processBatches(s.batcher)
+	go s.processBatches(ctx, s.batcher)
 
 	var err error
 	if strings.EqualFold(s.protocol, "tcp") {
@@ -165,6 +153,23 @@ func (s *Service) Open() error {
 	s.logger.Info("Listening",
 		zap.String("protocol", s.protocol),
 		zap.Stringer("addr", s.addr))
+
+	<-ctx.Done()
+
+	s.closeAllConnections()
+	if s.ln != nil {
+		s.ln.Close()
+	}
+	if s.udpConn != nil {
+		s.udpConn.Close()
+	}
+	if s.batcher != nil {
+		s.batcher.Stop()
+	}
+	if s.Monitor != nil {
+		s.Monitor.DeregisterDiagnosticsClient(s.diagsKey)
+	}
+
 	return nil
 }
 
@@ -176,70 +181,11 @@ func (s *Service) closeAllConnections() {
 	}
 }
 
-// Close stops all data processing on the Graphite input.
-func (s *Service) Close() error {
-	if wait := func() bool {
-		s.mu.Lock()
-		defer s.mu.Unlock()
-
-		if s.closed() {
-			return false
-		}
-		close(s.done)
-
-		s.closeAllConnections()
-
-		if s.ln != nil {
-			s.ln.Close()
-		}
-		if s.udpConn != nil {
-			s.udpConn.Close()
-		}
-
-		if s.batcher != nil {
-			s.batcher.Stop()
-		}
-
-		if s.Monitor != nil {
-			s.Monitor.DeregisterDiagnosticsClient(s.diagsKey)
-		}
-		return true
-	}(); !wait {
-		return nil // Already closed.
-	}
-
-	s.wg.Wait()
-
-	s.mu.Lock()
-	s.done = nil
-	s.mu.Unlock()
-
-	return nil
-}
-
-// Closed returns true if the service is currently closed.
-func (s *Service) Closed() bool {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	return s.closed()
-}
-
-func (s *Service) closed() bool {
-	select {
-	case <-s.done:
-		// Service is closing.
-		return true
-	default:
-	}
-	return s.done == nil
-}
-
 // createInternalStorage ensures that the required database has been created.
 func (s *Service) createInternalStorage() error {
-	s.mu.RLock()
-	ready := s.ready
-	s.mu.RUnlock()
-	if ready {
+	// FIXME BUG TODO there is a race conditon here.  we should probably lock
+	// ready or figure out a lock-free way of doing the following.
+	if s.ready {
 		return nil
 	}
 
@@ -257,10 +203,6 @@ func (s *Service) createInternalStorage() error {
 		}
 	}
 
-	// The service is now ready.
-	s.mu.Lock()
-	s.ready = true
-	s.mu.Unlock()
 	return nil
 }
 
@@ -317,9 +259,7 @@ func (s *Service) openTCPServer() (net.Addr, error) {
 	}
 	s.ln = ln
 
-	s.wg.Add(1)
 	go func() {
-		defer s.wg.Done()
 		for {
 			conn, err := s.ln.Accept()
 			if opErr, ok := err.(*net.OpError); ok && !opErr.Temporary() {
@@ -331,7 +271,6 @@ func (s *Service) openTCPServer() (net.Addr, error) {
 				continue
 			}
 
-			s.wg.Add(1)
 			go s.handleTCPConnection(conn)
 		}
 	}()
@@ -340,7 +279,6 @@ func (s *Service) openTCPServer() (net.Addr, error) {
 
 // handleTCPConnection services an individual TCP connection for the Graphite input.
 func (s *Service) handleTCPConnection(conn net.Conn) {
-	defer s.wg.Done()
 	defer conn.Close()
 	defer atomic.AddInt64(&s.stats.ActiveConnections, -1)
 	defer s.untrackConnection(conn)
@@ -402,9 +340,7 @@ func (s *Service) openUDPServer() (net.Addr, error) {
 	}
 
 	buf := make([]byte, udpBufferSize)
-	s.wg.Add(1)
 	go func() {
-		defer s.wg.Done()
 		for {
 			n, _, err := s.udpConn.ReadFromUDP(buf)
 			if err != nil {
@@ -448,8 +384,7 @@ func (s *Service) handleLine(line string) {
 }
 
 // processBatches continually drains the given batcher and writes the batches to the database.
-func (s *Service) processBatches(batcher *tsdb.PointBatcher) {
-	defer s.wg.Done()
+func (s *Service) processBatches(ctx context.Context, batcher *tsdb.PointBatcher) error {
 	for {
 		select {
 		case batch := <-batcher.Out():
@@ -468,8 +403,8 @@ func (s *Service) processBatches(batcher *tsdb.PointBatcher) {
 				atomic.AddInt64(&s.stats.BatchesTransmitFail, 1)
 			}
 
-		case <-s.done:
-			return
+		case <-ctx.Done():
+			return ctx.Err()
 		}
 	}
 }

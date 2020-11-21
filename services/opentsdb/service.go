@@ -4,6 +4,7 @@ package opentsdb // import "github.com/ayang64/reflux/services/opentsdb"
 import (
 	"bufio"
 	"bytes"
+	"context"
 	"crypto/tls"
 	"io"
 	"net"
@@ -47,14 +48,12 @@ type Service struct {
 	ln     net.Listener  // main listener
 	httpln *chanListener // http channel-based listener
 
-	wg        sync.WaitGroup
 	tls       bool
 	tlsConfig *tls.Config
 	cert      string
 
 	mu    sync.RWMutex
-	ready bool          // Has the required database been created?
-	done  chan struct{} // Is the service closing or closed?
+	ready bool // Has the required database been created?
 
 	BindAddress     string
 	Database        string
@@ -108,14 +107,9 @@ func NewService(c Config) (*Service, error) {
 }
 
 // Open starts the service.
-func (s *Service) Open() error {
+func (s *Service) Start(ctx context.Context) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-
-	if s.done != nil {
-		return nil // Already open.
-	}
-	s.done = make(chan struct{})
 
 	s.Logger.Info("Starting OpenTSDB service")
 
@@ -123,8 +117,7 @@ func (s *Service) Open() error {
 	s.batcher.Start()
 
 	// Start processing batches.
-	s.wg.Add(1)
-	go func() { defer s.wg.Done(); s.processBatches(s.batcher) }()
+	go s.processBatches(ctx, s.batcher)
 
 	// Open listener.
 	if s.tls {
@@ -156,65 +149,24 @@ func (s *Service) Open() error {
 	s.httpln = newChanListener(s.ln.Addr())
 
 	// Begin listening for connections.
-	s.wg.Add(2)
-	go func() { defer s.wg.Done(); s.serve() }()
-	go func() { defer s.wg.Done(); s.serveHTTP() }()
+	go s.serve(ctx)
+	go s.serveHTTP(ctx)
 
-	return nil
-}
+	<-ctx.Done()
 
-// Close closes the openTSDB service.
-func (s *Service) Close() error {
-	if wait, err := func() (bool, error) {
-		s.mu.Lock()
-		defer s.mu.Unlock()
-
-		if s.closed() {
-			return false, nil // Already closed.
-		}
-		close(s.done)
-
-		// Close the listeners.
-		if err := s.ln.Close(); err != nil {
-			return false, err
-		}
-		if err := s.httpln.Close(); err != nil {
-			return false, err
-		}
-
-		if s.batcher != nil {
-			s.batcher.Stop()
-		}
-		return true, nil
-	}(); err != nil {
+	// Close the listeners.
+	if err := s.ln.Close(); err != nil {
 		return err
-	} else if !wait {
-		return nil
 	}
-	s.wg.Wait()
+	if err := s.httpln.Close(); err != nil {
+		return err
+	}
 
-	s.mu.Lock()
-	s.done = nil
-	s.mu.Unlock()
+	if s.batcher != nil {
+		s.batcher.Stop()
+	}
 
 	return nil
-}
-
-// Closed returns true if the service is currently closed.
-func (s *Service) Closed() bool {
-	s.mu.Lock()
-	defer s.mu.Unlock()
-	return s.closed()
-}
-
-func (s *Service) closed() bool {
-	select {
-	case <-s.done:
-		// Service is closing.
-		return true
-	default:
-		return s.done == nil
-	}
 }
 
 // createInternalStorage ensures that the required database has been created.
@@ -297,7 +249,9 @@ func (s *Service) Addr() net.Addr {
 }
 
 // serve serves the handler from the listener.
-func (s *Service) serve() {
+func (s *Service) serve(ctx context.Context) {
+
+	// TODO FIXME BUG needs cancellation
 	for {
 		// Wait for next connection.
 		conn, err := s.ln.Accept()
@@ -339,9 +293,7 @@ func (s *Service) handleConn(conn net.Conn) {
 	}
 
 	// Otherwise handle in telnet format.
-	s.wg.Add(1)
 	s.handleTelnetConn(conn)
-	s.wg.Done()
 }
 
 // handleTelnetConn accepts OpenTSDB's telnet protocol.
@@ -451,7 +403,7 @@ func (s *Service) handleTelnetConn(conn net.Conn) {
 }
 
 // serveHTTP handles connections in HTTP format.
-func (s *Service) serveHTTP() {
+func (s *Service) serveHTTP(ctx context.Context) {
 	handler := &Handler{
 		Database:        s.Database,
 		RetentionPolicy: s.RetentionPolicy,
@@ -460,14 +412,21 @@ func (s *Service) serveHTTP() {
 		stats:           s.stats,
 	}
 	srv := &http.Server{Handler: handler}
-	srv.Serve(s.httpln)
+	go srv.Serve(s.httpln)
+
+	<-ctx.Done()
+
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	srv.Shutdown(shutdownCtx)
 }
 
 // processBatches continually drains the given batcher and writes the batches to the database.
-func (s *Service) processBatches(batcher *tsdb.PointBatcher) {
+func (s *Service) processBatches(ctx context.Context, batcher *tsdb.PointBatcher) {
 	for {
 		select {
-		case <-s.done:
+		case <-ctx.Done():
 			return
 		case batch := <-batcher.Out():
 			// Will attempt to create database if not yet created.

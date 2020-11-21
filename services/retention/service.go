@@ -2,6 +2,7 @@
 package retention // import "github.com/ayang64/reflux/services/retention"
 
 import (
+	"context"
 	"sync"
 	"time"
 
@@ -38,32 +39,15 @@ func NewService(c Config) *Service {
 }
 
 // Open starts retention policy enforcement.
-func (s *Service) Open() error {
+func (s *Service) Start(ctx context.Context) error {
 	if !s.config.Enabled || s.done != nil {
 		return nil
 	}
 
 	s.logger.Info("Starting retention policy enforcement service",
 		logger.DurationLiteral("check_interval", time.Duration(s.config.CheckInterval)))
-	s.done = make(chan struct{})
 
-	s.wg.Add(1)
-	go func() { defer s.wg.Done(); s.run() }()
-	return nil
-}
-
-// Close stops retention policy enforcement.
-func (s *Service) Close() error {
-	if !s.config.Enabled || s.done == nil {
-		return nil
-	}
-
-	s.logger.Info("Closing retention policy enforcement service")
-	close(s.done)
-
-	s.wg.Wait()
-	s.done = nil
-	return nil
+	return s.run(ctx)
 }
 
 // WithLogger sets the logger on the service.
@@ -71,13 +55,14 @@ func (s *Service) WithLogger(log *zap.Logger) {
 	s.logger = log.With(zap.String("service", "retention"))
 }
 
-func (s *Service) run() {
+func (s *Service) run(ctx context.Context) error {
 	ticker := time.NewTicker(time.Duration(s.config.CheckInterval))
 	defer ticker.Stop()
+
 	for {
 		select {
-		case <-s.done:
-			return
+		case <-ctx.Done():
+			return ctx.Err()
 
 		case <-ticker.C:
 			log, logEnd := logger.NewOperation(s.logger, "Retention policy deletion check", "retention_delete_check")
@@ -159,4 +144,6 @@ func (s *Service) run() {
 			logEnd()
 		}
 	}
+
+	return nil
 }

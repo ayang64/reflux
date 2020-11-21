@@ -3,6 +3,7 @@
 package subscriber // import "github.com/ayang64/reflux/services/subscriber"
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"net/url"
@@ -52,9 +53,7 @@ type Service struct {
 	update          chan struct{}
 	stats           *Statistics
 	points          chan *coordinator.WritePointsRequest
-	wg              sync.WaitGroup
 	closed          bool
-	closing         chan struct{}
 	mu              sync.Mutex
 	conf            Config
 
@@ -75,7 +74,7 @@ func NewService(c Config) *Service {
 }
 
 // Open starts the subscription service.
-func (s *Service) Open() error {
+func (s *Service) Start(ctx context.Context) error {
 	if !s.conf.Enabled {
 		return nil // Service disabled.
 	}
@@ -88,22 +87,12 @@ func (s *Service) Open() error {
 
 	s.closed = false
 
-	s.closing = make(chan struct{})
 	s.update = make(chan struct{})
 	s.points = make(chan *coordinator.WritePointsRequest, 100)
 
-	s.wg.Add(2)
-	go func() {
-		defer s.wg.Done()
-		s.run()
-	}()
-	go func() {
-		defer s.wg.Done()
-		s.waitForMetaUpdates()
-	}()
+	go s.waitForMetaUpdates(ctx)
 
-	s.Logger.Info("Opened service")
-	return nil
+	return s.run(ctx)
 }
 
 // Close terminates the subscription service.
@@ -119,9 +108,7 @@ func (s *Service) Close() error {
 	s.closed = true
 
 	close(s.points)
-	close(s.closing)
 
-	s.wg.Wait()
 	s.Logger.Info("Closed service")
 	return nil
 }
@@ -159,28 +146,29 @@ func (s *Service) Statistics(tags map[string]string) []models.Statistic {
 	return statistics
 }
 
-func (s *Service) waitForMetaUpdates() {
+func (s *Service) waitForMetaUpdates(ctx context.Context) error {
 	for {
 		ch := s.MetaClient.WaitForDataChanged()
 		select {
 		case <-ch:
-			err := s.Update()
+			err := s.Update(ctx)
 			if err != nil {
 				s.Logger.Info("Error updating subscriptions", zap.Error(err))
 			}
-		case <-s.closing:
-			return
+		case <-ctx.Done():
+			return ctx.Err()
 		}
 	}
+	return nil
 }
 
 // Update will start new and stop deleted subscriptions.
-func (s *Service) Update() error {
+func (s *Service) Update(ctx context.Context) error {
 	// signal update
 	select {
 	case s.update <- struct{}{}:
 		return nil
-	case <-s.closing:
+	case <-ctx.Done():
 		return errors.New("service closed cannot update")
 	}
 }
@@ -230,20 +218,23 @@ func (s *Service) Points() chan<- *coordinator.WritePointsRequest {
 }
 
 // run read points from the points channel and writes them to the subscriptions.
-func (s *Service) run() {
+func (s *Service) run(ctx context.Context) error {
 	var wg sync.WaitGroup
 	s.subs = make(map[subEntry]chanWriter)
 	// Perform initial update
 	s.updateSubs(&wg)
 	for {
 		select {
+		case <-ctx.Done():
+			return ctx.Err()
+
 		case <-s.update:
 			s.updateSubs(&wg)
 		case p, ok := <-s.points:
 			if !ok {
 				// Close out all chanWriters
 				s.close(&wg)
-				return
+				return fmt.Errorf("not sure why we returned")
 			}
 			for se, cw := range s.subs {
 				if p.Database == se.db && p.RetentionPolicy == se.rp {

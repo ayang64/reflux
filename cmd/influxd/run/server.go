@@ -1,6 +1,7 @@
 package run
 
 import (
+	"context"
 	"crypto/tls"
 	"fmt"
 	"io"
@@ -12,7 +13,7 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/ayang64/reflux"
+	influxdb "github.com/ayang64/reflux"
 	"github.com/ayang64/reflux/coordinator"
 	"github.com/ayang64/reflux/flux/control"
 	"github.com/ayang64/reflux/logger"
@@ -31,6 +32,7 @@ import (
 	"github.com/ayang64/reflux/services/storage"
 	"github.com/ayang64/reflux/services/subscriber"
 	"github.com/ayang64/reflux/services/udp"
+	"github.com/ayang64/reflux/services/wire"
 	"github.com/ayang64/reflux/storage/reads"
 	"github.com/ayang64/reflux/tcp"
 	"github.com/ayang64/reflux/tsdb"
@@ -221,6 +223,7 @@ func NewServer(c *Config, buildInfo *BuildInfo) (*Server, error) {
 		MaxSelectSeriesN:  c.Coordinator.MaxSelectSeriesN,
 		MaxSelectBucketsN: c.Coordinator.MaxSelectBucketsN,
 	}
+
 	s.QueryExecutor.TaskManager.QueryTimeout = time.Duration(c.Coordinator.QueryTimeout)
 	s.QueryExecutor.TaskManager.LogQueriesAfter = time.Duration(c.Coordinator.LogQueriesAfter)
 	s.QueryExecutor.TaskManager.MaxConcurrentQueries = c.Coordinator.MaxConcurrentQueries
@@ -249,12 +252,14 @@ func (s *Server) Statistics(tags map[string]string) []models.Statistic {
 	return statistics
 }
 
-func (s *Server) appendSnapshotterService() {
+func (s *Server) NewSnapshotterService() (*snapshotter.Service, error) {
 	srv := snapshotter.NewService()
 	srv.TSDBStore = s.TSDBStore
 	srv.MetaClient = s.MetaClient
 	s.Services = append(s.Services, srv)
 	s.SnapshotterService = srv
+
+	return srv, nil
 }
 
 // SetLogOutput sets the logger used for all messages. It must not be called
@@ -267,20 +272,14 @@ func (s *Server) appendMonitorService() {
 	s.Services = append(s.Services, s.Monitor)
 }
 
-func (s *Server) appendRetentionPolicyService(c retention.Config) {
-	if !c.Enabled {
-		return
-	}
-	srv := retention.NewService(c)
+func (s *Server) NewRetentionPolicyService() *retention.Service {
+	srv := retention.NewService(s.config.Retention)
 	srv.MetaClient = s.MetaClient
 	srv.TSDBStore = s.TSDBStore
-	s.Services = append(s.Services, srv)
+	return srv
 }
 
-func (s *Server) appendHTTPDService(c httpd.Config) {
-	if !c.Enabled {
-		return
-	}
+func (s *Server) NewHTTPDService() *httpd.Service {
 	srv := httpd.NewService(c)
 	srv.Handler.MetaClient = s.MetaClient
 	authorizer := meta.NewQueryAuthorizer(s.MetaClient)
@@ -294,10 +293,9 @@ func (s *Server) appendHTTPDService(c httpd.Config) {
 	ss := storage.NewStore(s.TSDBStore, s.MetaClient)
 	srv.Handler.Store = ss
 	if s.config.HTTPD.FluxEnabled {
-		srv.Handler.Controller = control.NewController(s.MetaClient, reads.NewReader(ss), authorizer, c.AuthEnabled, s.Logger)
+		srv.Handler.Controller = control.NewController(s.MetaClient, reads.NewReader(ss), authorizer, s.config.HTTPD.AuthEnabled, s.Logger)
 	}
-
-	s.Services = append(s.Services, srv)
+	return srv
 }
 
 func (s *Server) appendCollectdService(c collectd.Config) {
@@ -324,10 +322,7 @@ func (s *Server) appendOpenTSDBService(c opentsdb.Config) error {
 	return nil
 }
 
-func (s *Server) appendGraphiteService(c graphite.Config) error {
-	if !c.Enabled {
-		return nil
-	}
+func (s *Server) NewGraphiteService(c graphite.Config) *graphite.Service {
 	srv, err := graphite.NewService(c)
 	if err != nil {
 		return err
@@ -340,14 +335,10 @@ func (s *Server) appendGraphiteService(c graphite.Config) error {
 	return nil
 }
 
-func (s *Server) appendPrecreatorService(c precreator.Config) error {
-	if !c.Enabled {
-		return nil
-	}
-	srv := precreator.NewService(c)
+func (s *Server) NewPrecreatorService() (*precreator.Service, error) {
+	srv := precreator.NewService(s.config.Precreator)
 	srv.MetaClient = s.MetaClient
-	s.Services = append(s.Services, srv)
-	return nil
+	return srv, nil
 }
 
 func (s *Server) appendUDPService(c udp.Config) {
@@ -360,15 +351,12 @@ func (s *Server) appendUDPService(c udp.Config) {
 	s.Services = append(s.Services, srv)
 }
 
-func (s *Server) appendContinuousQueryService(c continuous_querier.Config) {
-	if !c.Enabled {
-		return
-	}
+func (s *Server) NewContinuousQueryService() *continuous_querier.Service {
 	srv := continuous_querier.NewService(c)
 	srv.MetaClient = s.MetaClient
 	srv.QueryExecutor = s.QueryExecutor
 	srv.Monitor = s.Monitor
-	s.Services = append(s.Services, srv)
+	return srv
 }
 
 // Err returns an error channel that multiplexes all out of band errors received from all services.
@@ -376,6 +364,37 @@ func (s *Server) Err() <-chan error { return s.err }
 
 // Open opens the meta and data store and all services.
 func (s *Server) Open() error {
+
+	wireServer := wire.Server{
+		Network: "tcp",
+		Addr:    ":9999",
+		E:       query.NewExecutor(),
+		T:       s.TSDBStore,
+	}
+
+	wireServer.E.StatementExecutor = &coordinator.StatementExecutor{
+		MetaClient:  s.MetaClient,
+		TaskManager: s.QueryExecutor.TaskManager,
+		TSDBStore:   s.TSDBStore,
+		ShardMapper: &coordinator.LocalShardMapper{
+			MetaClient: s.MetaClient,
+			TSDBStore:  coordinator.LocalTSDBStore{Store: s.TSDBStore},
+		},
+		Monitor:           s.Monitor,
+		PointsWriter:      s.PointsWriter,
+		MaxSelectPointN:   s.config.Coordinator.MaxSelectPointN,
+		MaxSelectSeriesN:  s.config.Coordinator.MaxSelectSeriesN,
+		MaxSelectBucketsN: s.config.Coordinator.MaxSelectBucketsN,
+	}
+
+	go func() {
+		log.Printf("starting wire server!")
+		err := wireServer.Serve(context.TODO())
+		if err != nil {
+			log.Printf("err: %v", err)
+		}
+	}()
+
 	// Start profiling if requested.
 	if err := s.startProfile(); err != nil {
 		return err
@@ -392,13 +411,54 @@ func (s *Server) Open() error {
 	mux := tcp.NewMux()
 	go mux.Serve(ln)
 
-	// Append services.
-	s.appendMonitorService()
-	s.appendPrecreatorService(s.config.Precreator)
-	s.appendSnapshotterService()
-	s.appendContinuousQueryService(s.config.ContinuousQuery)
-	s.appendHTTPDService(s.config.HTTPD)
-	s.appendRetentionPolicyService(s.config.Retention)
+	type service interface{ Start(context.Context) error }
+
+	services := []service{}
+
+	// start with monitor service
+	services = append(services, s.Monitor)
+
+	// append pre creator service
+	if s.config.Precreator.Enabled {
+		svc, err := s.NewPrecreatorService()
+		if err != nil {
+			log.Fatal(err)
+		}
+		services = append(services, svc)
+	}
+
+	// append snapshotter service
+	{
+		svc, err := s.NewSnapshotterService()
+		if err != nil {
+			log.Fatal(err)
+		}
+		services = append(services, svc)
+	}
+
+	// append continuous query service
+	if s.config.ContinuousQuery.Enabled {
+		services = append(services, s.NewContinuousQueryService())
+	}
+
+	// append httpd service
+	if s.config.HTTPD.Enabled {
+		services = append(services, s.NewHTTPDService())
+	}
+
+	// append retention policy service
+	if s.config.Retention.Enabled {
+		services = append(services, s.NewRetentionPolicyService())
+	}
+
+	// append graphite services
+	for _, c := range s.config.GraphiteInputs {
+		if !c.Enabled {
+			continue
+		}
+
+	}
+
 	for _, i := range s.config.GraphiteInputs {
 		if err := s.appendGraphiteService(i); err != nil {
 			return err
