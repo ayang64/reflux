@@ -2,7 +2,6 @@
 package httpd // import "github.com/ayang64/reflux/services/httpd"
 
 import (
-	"context"
 	"crypto/tls"
 	"fmt"
 	"net"
@@ -49,21 +48,24 @@ const (
 
 // Service manages the listener and handler for an HTTP endpoint.
 type Service struct {
-	ln                 net.Listener
-	addr               string
-	https              bool
-	cert               string
-	key                string
-	limit              int
-	tlsConfig          *tls.Config
-	err                chan error
+	ln        net.Listener
+	addr      string
+	https     bool
+	cert      string
+	key       string
+	limit     int
+	tlsConfig *tls.Config
+	err       chan error
+
 	unixSocket         bool
 	unixSocketPerm     uint32
 	unixSocketGroup    int
 	bindSocket         string
 	unixSocketListener net.Listener
-	Handler            *Handler
-	Logger             *zap.Logger
+
+	Handler *Handler
+
+	Logger *zap.Logger
 }
 
 // NewService returns a new instance of Service.
@@ -95,7 +97,8 @@ func NewService(c Config) *Service {
 	return s
 }
 
-func (s *Service) Start(ctx context.Context) error {
+// Open starts the service.
+func (s *Service) Open() error {
 	s.Logger.Info("Starting HTTP service", zap.Bool("authentication", s.Handler.Config.AuthEnabled))
 
 	s.Handler.Open()
@@ -121,9 +124,9 @@ func (s *Service) Start(ctx context.Context) error {
 		if err != nil {
 			return err
 		}
+
 		s.ln = listener
 	}
-
 	s.Logger.Info("Listening on HTTP",
 		zap.Stringer("addr", s.ln.Addr()),
 		zap.Bool("https", s.https))
@@ -182,9 +185,23 @@ func (s *Service) Start(ctx context.Context) error {
 
 	// Begin listening for requests in a separate goroutine.
 	go s.serveTCP()
+	return nil
+}
 
-	<-ctx.Done()
+// Close closes the underlying listener.
+func (s *Service) Close() error {
+	s.Handler.Close()
 
+	if s.ln != nil {
+		if err := s.ln.Close(); err != nil {
+			return err
+		}
+	}
+	if s.unixSocketListener != nil {
+		if err := s.unixSocketListener.Close(); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 

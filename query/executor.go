@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"os"
 	"runtime/debug"
 	"strconv"
@@ -12,8 +11,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ayang64/reflux/influxql"
 	"github.com/ayang64/reflux/models"
+	"github.com/ayang64/reflux/influxql"
 	"go.uber.org/zap"
 )
 
@@ -234,35 +233,24 @@ func (e *Executor) WithLogger(log *zap.Logger) {
 
 // ExecuteQuery executes each statement within a query.
 func (e *Executor) ExecuteQuery(query *influxql.Query, opt ExecutionOptions, closing chan struct{}) <-chan *Result {
-	return e.ExecuteQueryWithContext(context.Background(), query, opt, closing)
-}
-
-func (e *Executor) ExecuteQueryWithContext(ctx context.Context, query *influxql.Query, opt ExecutionOptions, closing chan struct{}) <-chan *Result {
 	results := make(chan *Result)
-	go func() {
-		e.executeQuery(ctx, query, opt, closing, results)
-		close(results)
-	}()
-
+	go e.executeQuery(query, opt, closing, results)
 	return results
 }
 
-func (e *Executor) executeQuery(ctx context.Context, query *influxql.Query, opt ExecutionOptions, closing <-chan struct{}, results chan *Result) {
-	//	defer e.recover(query, results)
+func (e *Executor) executeQuery(query *influxql.Query, opt ExecutionOptions, closing <-chan struct{}, results chan *Result) {
+	defer close(results)
+	defer e.recover(query, results)
 
-	if e.stats != nil {
-		atomic.AddInt64(&e.stats.ActiveQueries, 1)
-		atomic.AddInt64(&e.stats.ExecutedQueries, 1)
-	}
+	atomic.AddInt64(&e.stats.ActiveQueries, 1)
+	atomic.AddInt64(&e.stats.ExecutedQueries, 1)
 	defer func(start time.Time) {
-		if e.stats != nil {
-			atomic.AddInt64(&e.stats.ActiveQueries, -1)
-			atomic.AddInt64(&e.stats.FinishedQueries, 1)
-			atomic.AddInt64(&e.stats.QueryExecutionDuration, time.Since(start).Nanoseconds())
-		}
+		atomic.AddInt64(&e.stats.ActiveQueries, -1)
+		atomic.AddInt64(&e.stats.FinishedQueries, 1)
+		atomic.AddInt64(&e.stats.QueryExecutionDuration, time.Since(start).Nanoseconds())
 	}(time.Now())
 
-	ectx, detach, err := e.TaskManager.AttachQuery(query, opt, closing)
+	ctx, detach, err := e.TaskManager.AttachQuery(query, opt, closing)
 	if err != nil {
 		select {
 		case results <- &Result{Err: err}:
@@ -273,12 +261,12 @@ func (e *Executor) executeQuery(ctx context.Context, query *influxql.Query, opt 
 	defer detach()
 
 	// Setup the execution context that will be used when executing statements.
-	ectx.Results = results
+	ctx.Results = results
 
 	var i int
 LOOP:
 	for ; i < len(query.Statements); i++ {
-		ectx.statementID = i
+		ctx.statementID = i
 		stmt := query.Statements[i]
 
 		// If a default database wasn't passed in by the caller, check the statement.
@@ -331,7 +319,7 @@ LOOP:
 		// Normalize each statement if possible.
 		if normalizer, ok := e.StatementExecutor.(StatementNormalizer); ok {
 			if err := normalizer.NormalizeStatement(stmt, defaultDB, opt.RetentionPolicy); err != nil {
-				if err := ectx.send(&Result{Err: err}); err == ErrQueryAborted {
+				if err := ctx.send(&Result{Err: err}); err == ErrQueryAborted {
 					return
 				}
 				break
@@ -339,25 +327,23 @@ LOOP:
 		}
 
 		// Log each normalized statement.
-		if !ectx.Quiet {
+		if !ctx.Quiet {
 			e.Logger.Info("Executing query", zap.Stringer("query", stmt))
 		}
 
-		log.Printf("stmt = %v, ectx = %v", stmt, ectx)
-
 		// Send any other statements to the underlying statement executor.
-		err = e.StatementExecutor.ExecuteStatement(stmt, ectx)
+		err = e.StatementExecutor.ExecuteStatement(stmt, ctx)
 		if err == ErrQueryInterrupted {
 			// Query was interrupted so retrieve the real interrupt error from
 			// the query task if there is one.
-			if qerr := ectx.Err(); qerr != nil {
+			if qerr := ctx.Err(); qerr != nil {
 				err = qerr
 			}
 		}
 
 		// Send an error for this result if it failed for some reason.
 		if err != nil {
-			if err := ectx.send(&Result{
+			if err := ctx.send(&Result{
 				StatementID: i,
 				Err:         err,
 			}); err == ErrQueryAborted {
@@ -370,7 +356,7 @@ LOOP:
 		// Check if the query was interrupted during an uninterruptible statement.
 		interrupted := false
 		select {
-		case <-ectx.Done():
+		case <-ctx.Done():
 			interrupted = true
 		default:
 			// Query has not been interrupted.
@@ -383,7 +369,7 @@ LOOP:
 
 	// Send error results for any statements which were not executed.
 	for ; i < len(query.Statements)-1; i++ {
-		if err := ectx.send(&Result{
+		if err := ctx.send(&Result{
 			StatementID: i,
 			Err:         ErrNotExecuted,
 		}); err == ErrQueryAborted {

@@ -2,7 +2,6 @@
 package udp // import "github.com/ayang64/reflux/services/udp"
 
 import (
-	"context"
 	"errors"
 	"net"
 	"sync"
@@ -39,9 +38,11 @@ const (
 type Service struct {
 	conn *net.UDPConn
 	addr *net.UDPAddr
+	wg   sync.WaitGroup
 
 	mu    sync.RWMutex
-	ready bool // Has the required database been created?
+	ready bool          // Has the required database been created?
+	done  chan struct{} // Is the service closing or closed?
 
 	parserChan chan []byte
 	batcher    *tsdb.PointBatcher
@@ -73,9 +74,14 @@ func NewService(c Config) *Service {
 }
 
 // Open starts the service.
-func (s *Service) Start(ctx context.Context) (err error) {
+func (s *Service) Open() (err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	if !s.closed() {
+		return nil // Already open.
+	}
+	s.done = make(chan struct{})
 
 	if s.config.BindAddress == "" {
 		return errors.New("bind address has to be specified in config")
@@ -111,15 +117,10 @@ func (s *Service) Start(ctx context.Context) (err error) {
 
 	s.Logger.Info("Started listening on UDP", zap.String("addr", s.config.BindAddress))
 
-	go s.serve(ctx)
-	go s.parser(ctx)
-	go s.writer(ctx)
-
-	<-ctx.Done()
-
-	if s.batcher != nil {
-		s.batcher.Stop()
-	}
+	s.wg.Add(3)
+	go s.serve()
+	go s.parser()
+	go s.writer()
 
 	return nil
 }
@@ -152,7 +153,9 @@ func (s *Service) Statistics(tags map[string]string) []models.Statistic {
 	}}
 }
 
-func (s *Service) writer(ctx context.Context) {
+func (s *Service) writer() {
+	defer s.wg.Done()
+
 	for {
 		select {
 		case batch := <-s.batcher.Out():
@@ -172,17 +175,19 @@ func (s *Service) writer(ctx context.Context) {
 				atomic.AddInt64(&s.stats.BatchesTransmitFail, 1)
 			}
 
-		case <-ctx.Done():
+		case <-s.done:
 			return
 		}
 	}
 }
 
-func (s *Service) serve(ctx context.Context) {
+func (s *Service) serve() {
+	defer s.wg.Done()
+
 	buf := make([]byte, MaxUDPPayload)
 	for {
 		select {
-		case <-ctx.Done():
+		case <-s.done:
 			// We closed the connection, time to go.
 			return
 		default:
@@ -202,10 +207,12 @@ func (s *Service) serve(ctx context.Context) {
 	}
 }
 
-func (s *Service) parser(ctx context.Context) {
+func (s *Service) parser() {
+	defer s.wg.Done()
+
 	for {
 		select {
-		case <-ctx.Done():
+		case <-s.done:
 			return
 		case buf := <-s.parserChan:
 			points, err := models.ParsePointsWithPrecision(buf, time.Now().UTC(), s.config.Precision)
@@ -221,6 +228,59 @@ func (s *Service) parser(ctx context.Context) {
 			atomic.AddInt64(&s.stats.PointsReceived, int64(len(points)))
 		}
 	}
+}
+
+// Close closes the service and the underlying listener.
+func (s *Service) Close() error {
+	if wait := func() bool {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+
+		if s.closed() {
+			return false // Already closed.
+		}
+		close(s.done)
+
+		if s.conn != nil {
+			s.conn.Close()
+		}
+
+		if s.batcher != nil {
+			s.batcher.Stop()
+		}
+		return true
+	}(); !wait {
+		return nil
+	}
+	s.wg.Wait()
+
+	// Release all remaining resources.
+	s.mu.Lock()
+	s.done = nil
+	s.conn = nil
+	s.batcher = nil
+	s.mu.Unlock()
+
+	s.Logger.Info("Service closed")
+
+	return nil
+}
+
+// Closed returns true if the service is currently closed.
+func (s *Service) Closed() bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.closed()
+}
+
+func (s *Service) closed() bool {
+	select {
+	case <-s.done:
+		// Service is closing.
+		return true
+	default:
+	}
+	return s.done == nil
 }
 
 // createInternalStorage ensures that the required database has been created.

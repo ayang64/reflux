@@ -3,7 +3,6 @@ package collectd // import "github.com/ayang64/reflux/services/collectd"
 
 import (
 	"bytes"
-	"context"
 	"fmt"
 	"net"
 	"os"
@@ -62,6 +61,7 @@ type Service struct {
 	PointsWriter pointsWriter
 	Logger       *zap.Logger
 
+	wg      sync.WaitGroup
 	conn    *net.UDPConn
 	batcher *tsdb.PointBatcher
 	popts   network.ParseOpts
@@ -90,9 +90,8 @@ func NewService(c Config) *Service {
 	return &s
 }
 
-func (s *Service) Start(ctx context.Context) error {
-
-	// Open starts the service.
+// Open starts the service.
+func (s *Service) Open() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -105,13 +104,9 @@ func (s *Service) Start(ctx context.Context) error {
 
 	if s.Config.BindAddress == "" {
 		return fmt.Errorf("bind address is blank")
-	}
-
-	if s.Config.Database == "" {
+	} else if s.Config.Database == "" {
 		return fmt.Errorf("database name is blank")
-	}
-
-	if s.PointsWriter == nil {
+	} else if s.PointsWriter == nil {
 		return fmt.Errorf("PointsWriter is nil")
 	}
 
@@ -195,21 +190,58 @@ func (s *Service) Start(ctx context.Context) error {
 
 	// Create waitgroup for signalling goroutines to stop and start goroutines
 	// that process collectd packets.
-	go s.serve(ctx)
-	go s.writePoints(ctx)
-
-	<-ctx.Done()
-
-	if s.conn != nil {
-		s.conn.Close()
-	}
-
-	if s.batcher != nil {
-		s.batcher.Stop()
-	}
-	s.Logger.Info("Closed collectd service")
+	s.wg.Add(2)
+	go func() { defer s.wg.Done(); s.serve() }()
+	go func() { defer s.wg.Done(); s.writePoints() }()
 
 	return nil
+}
+
+// Close stops the service.
+func (s *Service) Close() error {
+	if wait := func() bool {
+		s.mu.Lock()
+		defer s.mu.Unlock()
+
+		if s.closed() {
+			return false
+		}
+		close(s.done)
+
+		// Close the connection, and wait for the goroutine to exit.
+		if s.conn != nil {
+			s.conn.Close()
+		}
+		if s.batcher != nil {
+			s.batcher.Stop()
+		}
+		return true
+	}(); !wait {
+		return nil // Already closed.
+	}
+
+	// Wait with the lock unlocked.
+	s.wg.Wait()
+
+	// Release all remaining resources.
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	s.conn = nil
+	s.batcher = nil
+	s.Logger.Info("Closed collectd service")
+	s.done = nil
+	return nil
+}
+
+func (s *Service) closed() bool {
+	select {
+	case <-s.done:
+		// Service is closing.
+		return true
+	default:
+	}
+	return s.done == nil
 }
 
 // createInternalStorage ensures that the required database has been created.
@@ -279,7 +311,7 @@ func (s *Service) Addr() net.Addr {
 	return s.conn.LocalAddr()
 }
 
-func (s *Service) serve(ctx context.Context) error {
+func (s *Service) serve() {
 	// From https://collectd.org/wiki/index.php/Binary_protocol
 	//   1024 bytes (payload only, not including UDP / IP headers)
 	//   In versions 4.0 through 4.7, the receive buffer has a fixed size
@@ -288,52 +320,36 @@ func (s *Service) serve(ctx context.Context) error {
 	//   configured. Version 5.0 will increase the default buffer size to
 	//   1452 bytes (the maximum payload size when using UDP/IPv6 over
 	//   Ethernet).
+	buffer := make([]byte, 1452)
 
-	type message struct {
-		n   int
-		buf []byte
-	}
-
-	bufCh := make(chan message)
-
-	go func() {
-		for {
-			if ctx.Err() != nil {
-				return
-			}
-			buf := make([]byte, 1452)
-			n, _, err := s.conn.ReadFromUDP(buf)
-
-			if err != nil {
-				atomic.AddInt64(&s.stats.ReadFail, 1)
-				s.Logger.Info("ReadFromUDP error", zap.Error(err))
-				continue
-			}
-			bufCh <- message{n: n, buf: buf}
-		}
-	}()
-
-	for done := false; !done; {
+	for {
 		select {
-		case <-ctx.Done():
+		case <-s.done:
 			// We closed the connection, time to go.
-			done = true
+			return
+		default:
+			// Keep processing.
+		}
 
-		case message := <-bufCh:
-			buffer := message.buf
-			n := message.n
-
-			// if the buffer size is 0, just continue
-			if n == 0 {
-				continue
+		n, _, err := s.conn.ReadFromUDP(buffer)
+		if err != nil {
+			if strings.Contains(err.Error(), "use of closed network connection") {
+				select {
+				case <-s.done:
+					return
+				default:
+					// The socket wasn't closed by us so consider it an error.
+				}
 			}
-
+			atomic.AddInt64(&s.stats.ReadFail, 1)
+			s.Logger.Info("ReadFromUDP error", zap.Error(err))
+			continue
+		}
+		if n > 0 {
 			atomic.AddInt64(&s.stats.BytesReceived, int64(n))
 			s.handleMessage(buffer[:n])
 		}
 	}
-
-	return nil
 }
 
 func (s *Service) handleMessage(buffer []byte) {
@@ -357,17 +373,16 @@ func (s *Service) handleMessage(buffer []byte) {
 	}
 }
 
-func (s *Service) writePoints(ctx context.Context) error {
+func (s *Service) writePoints() {
 	for {
 		select {
-
-		case <-ctx.Done():
-			return ctx.Err()
-
+		case <-s.done:
+			return
 		case batch := <-s.batcher.Out():
 			// Will attempt to create database if not yet created.
 			if err := s.createInternalStorage(); err != nil {
-				s.Logger.Info("Required database not yet created", logger.Database(s.Config.Database), zap.Error(err))
+				s.Logger.Info("Required database not yet created",
+					logger.Database(s.Config.Database), zap.Error(err))
 				continue
 			}
 

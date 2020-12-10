@@ -3,7 +3,6 @@ package snapshotter // import "github.com/ayang64/reflux/services/snapshotter"
 
 import (
 	"bytes"
-	"context"
 	"encoding"
 	"encoding/binary"
 	"encoding/json"
@@ -11,9 +10,10 @@ import (
 	"io"
 	"net"
 	"strings"
+	"sync"
 	"time"
 
-	influxdb "github.com/ayang64/reflux"
+	"github.com/ayang64/reflux"
 	"github.com/ayang64/reflux/services/meta"
 	"github.com/ayang64/reflux/tsdb"
 	"go.uber.org/zap"
@@ -30,6 +30,8 @@ const (
 
 // Service manages the listener for the snapshot endpoint.
 type Service struct {
+	wg sync.WaitGroup
+
 	Node *influxdb.Node
 
 	MetaClient interface {
@@ -59,10 +61,12 @@ func NewService() *Service {
 }
 
 // Open starts the service.
-func (s *Service) Start(ctx context.Context) error {
+func (s *Service) Open() error {
 	s.Logger.Info("Starting snapshot service")
 
-	return s.serve(ctx)
+	s.wg.Add(1)
+	go s.serve()
+	return nil
 }
 
 // Close implements the Service interface.
@@ -72,6 +76,7 @@ func (s *Service) Close() error {
 			return err
 		}
 	}
+	s.wg.Wait()
 	return nil
 }
 
@@ -81,29 +86,30 @@ func (s *Service) WithLogger(log *zap.Logger) {
 }
 
 // serve serves snapshot requests from the listener.
-func (s *Service) serve(ctx context.Context) error {
-	// FIXME TODO BUG -- cancellation -- we need to respect ctx here
+func (s *Service) serve() {
+	defer s.wg.Done()
+
 	for {
 		// Wait for next connection.
 		conn, err := s.Listener.Accept()
 		if err != nil && strings.Contains(err.Error(), "connection closed") {
 			s.Logger.Info("Listener closed")
-			return err
+			return
 		} else if err != nil {
 			s.Logger.Info("Error accepting snapshot request", zap.Error(err))
 			continue
 		}
 
 		// Handle connection in separate goroutine.
+		s.wg.Add(1)
 		go func(conn net.Conn) {
+			defer s.wg.Done()
 			defer conn.Close()
 			if err := s.handleConn(conn); err != nil {
 				s.Logger.Info(err.Error())
 			}
 		}(conn)
 	}
-
-	return nil
 }
 
 // handleConn processes conn. This is run in a separate goroutine.

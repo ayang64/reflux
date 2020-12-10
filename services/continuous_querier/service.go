@@ -2,7 +2,6 @@
 package continuous_querier // import "github.com/ayang64/reflux/services/continuous_querier"
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"strings"
@@ -10,11 +9,11 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/ayang64/reflux/influxql"
 	"github.com/ayang64/reflux/logger"
 	"github.com/ayang64/reflux/models"
 	"github.com/ayang64/reflux/query"
 	"github.com/ayang64/reflux/services/meta"
+	"github.com/ayang64/reflux/influxql"
 	"go.uber.org/zap"
 )
 
@@ -97,6 +96,7 @@ type Service struct {
 	mu       sync.RWMutex
 	lastRuns map[string]time.Time
 	stop     chan struct{}
+	wg       *sync.WaitGroup
 }
 
 // NewService returns a new instance of Service.
@@ -117,16 +117,32 @@ func NewService(c Config) *Service {
 }
 
 // Open starts the service.
-func (s *Service) Start(ctx context.Context) error {
+func (s *Service) Open() error {
 	s.Logger.Info("Starting continuous query service")
+
+	if s.stop != nil {
+		return nil
+	}
 
 	assert(s.MetaClient != nil, "MetaClient is nil")
 	assert(s.QueryExecutor != nil, "QueryExecutor is nil")
 
-	go s.backgroundLoop(ctx)
+	s.stop = make(chan struct{})
+	s.wg = &sync.WaitGroup{}
+	s.wg.Add(1)
+	go s.backgroundLoop()
+	return nil
+}
 
-	<-ctx.Done()
-
+// Close stops the service.
+func (s *Service) Close() error {
+	if s.stop == nil {
+		return nil
+	}
+	close(s.stop)
+	s.wg.Wait()
+	s.wg = nil
+	s.stop = nil
 	return nil
 }
 
@@ -190,16 +206,16 @@ func (s *Service) Run(database, name string, t time.Time) error {
 }
 
 // backgroundLoop runs on a go routine and periodically executes CQs.
-func (s *Service) backgroundLoop(ctx context.Context) error {
+func (s *Service) backgroundLoop() {
 	leaseName := "continuous_querier"
 	t := time.NewTimer(s.RunInterval)
 	defer t.Stop()
-
+	defer s.wg.Done()
 	for {
 		select {
-		case <-ctx.Done():
+		case <-s.stop:
 			s.Logger.Info("Terminating continuous query service")
-			return ctx.Err()
+			return
 		case req := <-s.RunCh:
 			if !s.hasContinuousQueries() {
 				continue

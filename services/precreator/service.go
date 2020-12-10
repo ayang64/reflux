@@ -2,7 +2,7 @@
 package precreator // import "github.com/ayang64/reflux/services/precreator"
 
 import (
-	"context"
+	"sync"
 	"time"
 
 	"github.com/ayang64/reflux/logger"
@@ -15,6 +15,9 @@ type Service struct {
 	advancePeriod time.Duration
 
 	Logger *zap.Logger
+
+	done chan struct{}
+	wg   sync.WaitGroup
 
 	MetaClient interface {
 		PrecreateShardGroups(now, cutoff time.Time) error
@@ -36,27 +39,46 @@ func (s *Service) WithLogger(log *zap.Logger) {
 }
 
 // Open starts the precreation service.
-func (s *Service) Start(ctx context.Context) error {
+func (s *Service) Open() error {
+	if s.done != nil {
+		return nil
+	}
+
 	s.Logger.Info("Starting precreation service",
 		logger.DurationLiteral("check_interval", s.checkInterval),
 		logger.DurationLiteral("advance_period", s.advancePeriod))
 
-	go s.runPrecreation(ctx)
+	s.done = make(chan struct{})
 
-	<-ctx.Done()
+	s.wg.Add(1)
+	go s.runPrecreation()
+	return nil
+}
 
-	return ctx.Err()
+// Close stops the precreation service.
+func (s *Service) Close() error {
+	if s.done == nil {
+		return nil
+	}
+
+	close(s.done)
+	s.wg.Wait()
+	s.done = nil
+
+	return nil
 }
 
 // runPrecreation continually checks if resources need precreation.
-func (s *Service) runPrecreation(ctx context.Context) {
+func (s *Service) runPrecreation() {
+	defer s.wg.Done()
+
 	for {
 		select {
 		case <-time.After(s.checkInterval):
 			if err := s.precreate(time.Now().UTC()); err != nil {
 				s.Logger.Info("Failed to precreate shards", zap.Error(err))
 			}
-		case <-ctx.Done():
+		case <-s.done:
 			s.Logger.Info("Terminating precreation service")
 			return
 		}
