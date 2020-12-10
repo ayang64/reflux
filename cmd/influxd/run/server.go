@@ -12,7 +12,7 @@ import (
 	"runtime/pprof"
 	"time"
 
-	"github.com/ayang64/reflux"
+	influxdb "github.com/ayang64/reflux"
 	"github.com/ayang64/reflux/coordinator"
 	"github.com/ayang64/reflux/flux/control"
 	"github.com/ayang64/reflux/logger"
@@ -73,7 +73,7 @@ type Server struct {
 
 	MetaClient *meta.Client
 
-	TSDBStore     *tsdb.Store
+	Store         *tsdb.Store
 	QueryExecutor *query.Executor
 	PointsWriter  *coordinator.PointsWriter
 	Subscriber    *subscriber.Service
@@ -190,12 +190,12 @@ func NewServer(c *Config, buildInfo *BuildInfo) (*Server, error) {
 		return nil, err
 	}
 
-	s.TSDBStore = tsdb.NewStore(c.Data.Dir)
-	s.TSDBStore.EngineOptions.Config = c.Data
+	s.Store = tsdb.NewStore(c.Data.Dir)
+	s.Store.EngineOptions.Config = c.Data
 
 	// Copy TSDB configuration.
-	s.TSDBStore.EngineOptions.EngineVersion = c.Data.Engine
-	s.TSDBStore.EngineOptions.IndexVersion = c.Data.Index
+	s.Store.EngineOptions.EngineVersion = c.Data.Engine
+	s.Store.EngineOptions.IndexVersion = c.Data.Index
 
 	// Create the Subscriber service
 	s.Subscriber = subscriber.NewService(c.Subscriber)
@@ -203,17 +203,17 @@ func NewServer(c *Config, buildInfo *BuildInfo) (*Server, error) {
 	// Initialize points writer.
 	s.PointsWriter = coordinator.NewPointsWriter()
 	s.PointsWriter.WriteTimeout = time.Duration(c.Coordinator.WriteTimeout)
-	s.PointsWriter.TSDBStore = s.TSDBStore
+	s.PointsWriter.TSDBStore = s.Store
 
 	// Initialize query executor.
 	s.QueryExecutor = query.NewExecutor()
 	s.QueryExecutor.StatementExecutor = &coordinator.StatementExecutor{
 		MetaClient:  s.MetaClient,
 		TaskManager: s.QueryExecutor.TaskManager,
-		TSDBStore:   s.TSDBStore,
+		TSDBStore:   s.Store,
 		ShardMapper: &coordinator.LocalShardMapper{
 			MetaClient: s.MetaClient,
-			TSDBStore:  coordinator.LocalTSDBStore{Store: s.TSDBStore},
+			TSDBStore:  coordinator.LocalTSDBStore{Store: s.Store},
 		},
 		Monitor:           s.Monitor,
 		PointsWriter:      s.PointsWriter,
@@ -238,7 +238,7 @@ func NewServer(c *Config, buildInfo *BuildInfo) (*Server, error) {
 func (s *Server) Statistics(tags map[string]string) []models.Statistic {
 	var statistics []models.Statistic
 	statistics = append(statistics, s.QueryExecutor.Statistics(tags)...)
-	statistics = append(statistics, s.TSDBStore.Statistics(tags)...)
+	statistics = append(statistics, s.Store.Statistics(tags)...)
 	statistics = append(statistics, s.PointsWriter.Statistics(tags)...)
 	statistics = append(statistics, s.Subscriber.Statistics(tags)...)
 	for _, srv := range s.Services {
@@ -251,7 +251,7 @@ func (s *Server) Statistics(tags map[string]string) []models.Statistic {
 
 func (s *Server) appendSnapshotterService() {
 	srv := snapshotter.NewService()
-	srv.TSDBStore = s.TSDBStore
+	srv.TSDBStore = s.Store
 	srv.MetaClient = s.MetaClient
 	s.Services = append(s.Services, srv)
 	s.SnapshotterService = srv
@@ -273,7 +273,7 @@ func (s *Server) appendRetentionPolicyService(c retention.Config) {
 	}
 	srv := retention.NewService(c)
 	srv.MetaClient = s.MetaClient
-	srv.TSDBStore = s.TSDBStore
+	srv.TSDBStore = s.Store
 	s.Services = append(s.Services, srv)
 }
 
@@ -291,7 +291,7 @@ func (s *Server) appendHTTPDService(c httpd.Config) {
 	srv.Handler.PointsWriter = s.PointsWriter
 	srv.Handler.Version = s.buildInfo.Version
 	srv.Handler.BuildType = "OSS"
-	ss := storage.NewStore(s.TSDBStore, s.MetaClient)
+	ss := storage.NewStore(s.Store, s.MetaClient)
 	srv.Handler.Store = ss
 	if s.config.HTTPD.FluxEnabled {
 		srv.Handler.Controller = control.NewController(s.MetaClient, reads.NewReader(ss), authorizer, c.AuthEnabled, s.Logger)
@@ -426,7 +426,7 @@ func (s *Server) Open() error {
 	if s.config.Meta.LoggingEnabled {
 		s.MetaClient.WithLogger(s.Logger)
 	}
-	s.TSDBStore.WithLogger(s.Logger)
+	s.Store.WithLogger(s.Logger)
 	if s.config.Data.QueryLogEnabled {
 		s.QueryExecutor.WithLogger(s.Logger)
 	}
@@ -439,7 +439,7 @@ func (s *Server) Open() error {
 	s.Monitor.WithLogger(s.Logger)
 
 	// Open TSDB store.
-	if err := s.TSDBStore.Open(); err != nil {
+	if err := s.Store.Open(); err != nil {
 		return fmt.Errorf("open tsdb store: %s", err)
 	}
 
@@ -495,8 +495,8 @@ func (s *Server) Close() error {
 	}
 
 	// Close the TSDBStore, no more reads or writes at this point
-	if s.TSDBStore != nil {
-		s.TSDBStore.Close()
+	if s.Store != nil {
+		s.Store.Close()
 	}
 
 	if s.Subscriber != nil {
@@ -539,14 +539,14 @@ func (s *Server) reportServer() {
 
 	for _, db := range dbs {
 		name := db.Name
-		n, err := s.TSDBStore.SeriesCardinality(name)
+		n, err := s.Store.SeriesCardinality(name)
 		if err != nil {
 			s.Logger.Error(fmt.Sprintf("Unable to get series cardinality for database %s: %v", name, err))
 		} else {
 			numSeries += n
 		}
 
-		n, err = s.TSDBStore.MeasurementsCardinality(name)
+		n, err = s.Store.MeasurementsCardinality(name)
 		if err != nil {
 			s.Logger.Error(fmt.Sprintf("Unable to get measurement cardinality for database %s: %v", name, err))
 		} else {

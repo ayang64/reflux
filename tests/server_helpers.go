@@ -253,7 +253,7 @@ type LocalServer struct {
 // the size of series files so that they can all be addressable in the process.
 func (s *LocalServer) Open() error {
 	if runtime.GOARCH == "386" {
-		s.Server.TSDBStore.SeriesFileMaxSize = 1 << 27 // 128MB
+		s.Server.Store.SeriesFileMaxSize = 1 << 27 // 128MB
 	}
 	return s.Server.Open()
 }
@@ -324,7 +324,7 @@ func (s *LocalServer) DropDatabase(db string) error {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
-	if err := s.TSDBStore.DeleteDatabase(db); err != nil {
+	if err := s.Store.DeleteDatabase(db); err != nil {
 		return err
 	}
 	return s.MetaClient.DropDatabase(db)

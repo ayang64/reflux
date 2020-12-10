@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ayang64/reflux/query"
 	"github.com/ayang64/reflux/influxql"
+	"github.com/ayang64/reflux/query"
 )
 
 func TestConcurrentServer_WriteValues(t *testing.T) {
@@ -95,7 +95,7 @@ func TestConcurrentServer_TagValues(t *testing.T) {
 				ids = append(ids, si.ID)
 			}
 		}
-		srv.TSDBStore.TagValues(nil, ids, cond)
+		srv.Store.TagValues(nil, ids, cond)
 	}
 
 	f3 := func() { s.DropDatabase("db0") }
@@ -133,7 +133,7 @@ func TestConcurrentServer_ShowMeasurements(t *testing.T) {
 		if !ok {
 			t.Fatal("Not a local server")
 		}
-		srv.TSDBStore.MeasurementNames(query.OpenAuthorizer, "db0", nil)
+		srv.Store.MeasurementNames(query.OpenAuthorizer, "db0", nil)
 	}
 
 	runTest(10*time.Second, f1, f2)
