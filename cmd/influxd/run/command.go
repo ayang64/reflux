@@ -13,23 +13,12 @@ import (
 	"path/filepath"
 	"runtime"
 	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/ayang64/reflux/logger"
 	"go.uber.org/zap"
 )
-
-const logo = `
- 8888888           .d888 888                   8888888b.  888888b.
-   888            d88P"  888                   888  "Y88b 888  "88b
-   888            888    888                   888    888 888  .88P
-   888   88888b.  888888 888 888  888 888  888 888    888 8888888K.
-   888   888 "88b 888    888 888  888  Y8bd8P' 888    888 888  "Y88b
-   888   888  888 888    888 888  888   X88K   888    888 888    888
-   888   888  888 888    888 Y88b 888 .d8""8b. 888  .d88P 888   d88P
- 8888888 888  888 888    888  "Y88888 888  888 8888888P"  8888888P"
-
-`
 
 // Command represents the command executed by "influxd run".
 type Command struct {
@@ -73,6 +62,12 @@ func (cmd *Command) Run(args ...string) error {
 		return err
 	}
 
+	if options.Root != "/" {
+		if err := syscall.Chroot(options.Root); err != nil {
+			log.Fatal(err)
+		}
+	}
+
 	config, err := cmd.ParseConfig(options.GetConfigPath())
 	if err != nil {
 		return fmt.Errorf("parse config: %s", err)
@@ -101,11 +96,6 @@ func (cmd *Command) Run(args ...string) error {
 		go func() { http.ListenAndServe("localhost:6060", nil) }()
 	}
 
-	// Print sweet InfluxDB logo.
-	if !config.Logging.SuppressLogo && logger.IsTerminal(cmd.Stdout) {
-		fmt.Fprint(cmd.Stdout, logo)
-	}
-
 	// Mark start-up in log.
 	cmd.Logger.Info("InfluxDB starting",
 		zap.String("version", cmd.Version),
@@ -124,6 +114,8 @@ func (cmd *Command) Run(args ...string) error {
 	if err := cmd.writePIDFile(options.PIDFile); err != nil {
 		return fmt.Errorf("write pid file: %s", err)
 	}
+	defer cmd.removePIDFile()
+
 	cmd.pidfile = options.PIDFile
 
 	if config.HTTPD.PprofEnabled {
@@ -160,7 +152,6 @@ func (cmd *Command) Run(args ...string) error {
 // Close shuts down the server.
 func (cmd *Command) Close() error {
 	defer close(cmd.Closed)
-	defer cmd.removePIDFile()
 	close(cmd.closing)
 	if cmd.Server != nil {
 		return cmd.Server.Close()
@@ -180,25 +171,15 @@ func (cmd *Command) monitorServerErrors() {
 	}
 }
 
-func (cmd *Command) removePIDFile() {
-	if cmd.pidfile != "" {
-		if err := os.Remove(cmd.pidfile); err != nil {
-			cmd.Logger.Error("Unable to remove pidfile", zap.Error(err))
-		}
-	}
-}
-
 // ParseFlags parses the command line flags from args and returns an options set.
 func (cmd *Command) ParseFlags(args ...string) (Options, error) {
 	var options Options
-	fs := flag.NewFlagSet("", flag.ContinueOnError)
-	fs.StringVar(&options.ConfigPath, "config", "", "")
-	fs.StringVar(&options.PIDFile, "pidfile", "", "")
-	// Ignore hostname option.
-	_ = fs.String("hostname", "", "")
-	fs.StringVar(&options.CPUProfile, "cpuprofile", "", "")
-	fs.StringVar(&options.MemProfile, "memprofile", "", "")
-	fs.Usage = func() { fmt.Fprintln(cmd.Stderr, usage) }
+	fs := flag.NewFlagSet("run", flag.ContinueOnError)
+	fs.StringVar(&options.Root, "root", "", "Root of chroot jail.  No Chroot() if empty.  May require root privileges")
+	fs.StringVar(&options.ConfigPath, "config", "", "Path to configuration file")
+	fs.StringVar(&options.PIDFile, "pidfile", "", "Path to write PID file.")
+	fs.StringVar(&options.CPUProfile, "cpuprofile", "", "Write CPU profile to path")
+	fs.StringVar(&options.MemProfile, "memprofile", "", "Write memory profile to path")
 	if err := fs.Parse(args); err != nil {
 		return Options{}, err
 	}
@@ -226,6 +207,14 @@ func (cmd *Command) writePIDFile(path string) error {
 	return nil
 }
 
+func (cmd *Command) removePIDFile() {
+	if cmd.pidfile != "" {
+		if err := os.Remove(cmd.pidfile); err != nil {
+			cmd.Logger.Error("Unable to remove pidfile", zap.Error(err))
+		}
+	}
+}
+
 // ParseConfig parses the config at path.
 // It returns a demo configuration if path is blank.
 func (cmd *Command) ParseConfig(path string) (*Config, error) {
@@ -245,31 +234,13 @@ func (cmd *Command) ParseConfig(path string) (*Config, error) {
 	return config, nil
 }
 
-const usage = `Runs the InfluxDB server.
-
-Usage: influxd run [flags]
-
-    -config <path>
-            Set the path to the configuration file.
-            This defaults to the environment variable INFLUXDB_CONFIG_PATH,
-            ~/.influxdb/influxdb.conf, or /etc/influxdb/influxdb.conf if a file
-            is present at any of these locations.
-            Disable the automatic loading of a configuration file using
-            the null device (such as /dev/null).
-    -pidfile <path>
-            Write process ID to a file.
-    -cpuprofile <path>
-            Write CPU profiling information to a file.
-    -memprofile <path>
-            Write memory usage information to a file.
-`
-
 // Options represents the command line options that can be parsed.
 type Options struct {
 	ConfigPath string
 	PIDFile    string
 	CPUProfile string
 	MemProfile string
+	Root       string
 }
 
 // GetConfigPath returns the config path from the options.
